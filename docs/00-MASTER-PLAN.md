@@ -1,6 +1,6 @@
 # 00 — Plano mestre: ChatAI 1.0.1
 
-Status geral: **em implementação** (atualizado ao final em `14-FINAL-AUDIT.md`).
+Status geral: **implementado e auditado** — resultado consolidado em `14-FINAL-AUDIT.md`.
 
 ## Objetivo
 

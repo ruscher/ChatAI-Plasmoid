@@ -1,6 +1,6 @@
 # 03 — Redesenho da barra de navegação
 
-Status: **planejado → implementado**.
+Status: **implementado** (evidências em 12 e 14).
 
 ## Ordem obrigatória
 

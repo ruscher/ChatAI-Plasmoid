@@ -1,6 +1,6 @@
 # 06 — Integração de provedores (registro único)
 
-Status: **planejado → implementado**.
+Status: **implementado** (evidências em 12 e 14).
 
 ## Problema
 Listas paralelas: `builtInProviders` (dados), `availableIcons` no CompactRepresentation (ícones),

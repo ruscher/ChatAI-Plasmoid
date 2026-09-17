@@ -2,351 +2,1419 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ChatAI-Plasmoid package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ChatAI-Plasmoid\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: https://github.com/ruscher/ChatAI-Plasmoid/issues\n"
+"POT-Creation-Date: 2026-09-17 02:28-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: attranslate\n"
 
-#: NEEDS WORK
-msgid "Open"
-msgstr "Avaa"
-
-#: NEEDS WORK
-msgid "ChatAI"
-msgstr "ChatAI"
-
-#: NEEDS WORK
-msgid "Back"
-msgstr "Takaisin"
-
-#: NEEDS WORK
-msgid "Forward"
-msgstr "Eteenpäin"
-
-#: NEEDS WORK
-msgid "Reload"
-msgstr "Lataa uudelleen"
-
-#: NEEDS WORK
-msgid "Save as PDF"
-msgstr "Tallenna PDF-muodossa"
-
-#: NEEDS WORK
-msgid "Save as MHTML"
-msgstr "Tallenna MHTML-muodossa"
-
-#: NEEDS WORK
-msgid "Open Link in Browser"
-msgstr "Avaa linkki selaimessa"
-
-#: NEEDS WORK
-msgid "Copy Link Address"
-msgstr "Kopioi linkin osoite"
-
-#: NEEDS WORK
-msgid "Download in progress"
-msgstr "Lataus käynnissä"
-
-#: NEEDS WORK
-msgid "The file "
-msgstr "Tiedosto"
-
-#: NEEDS WORK
-msgid "Open file"
-msgstr "Avaa tiedosto"
-
-#: NEEDS WORK
-msgid "Open folder"
-msgstr "Avaa kansio"
-
-#: NEEDS WORK
-msgid "Close"
-msgstr "Sulje"
-
-#: NEEDS WORK
-msgid "Cancel"
-msgstr "Peruuta"
-
-#: NEEDS WORK
-msgid "Go back to previous page"
-msgstr "Palaa edelliselle sivulle"
-
-#: NEEDS WORK
-msgid "Go forward to next page"
-msgstr "Siirry seuraavalle sivulle"
-
-#: NEEDS WORK
-msgid "Return to homepage/default chat"
-msgstr "Palaa etusivulle/oletuschatille"
-
-#: NEEDS WORK
-msgid "Reload current page"
-msgstr "Lataa nykyinen sivu"
-
-#: NEEDS WORK
-msgid "Select or enter chat website URL"
-msgstr "Valitse tai syötä keskustelusivuston URL-osoite"
-
-#: NEEDS WORK
-msgid "Header will hide automatically when not in use"
-msgstr "Otsikko piiloutuu automaattisesti, kun sitä ei käytetä."
-
-#: NEEDS WORK
-msgid "Header will stay visible"
-msgstr "Otsikko pysyy näkyvissä"
-
-#: NEEDS WORK
-msgid "Manage downloads and download folder"
-msgstr "Hallitse latauksia ja latauskansiota"
-
-#: NEEDS WORK
-msgid "Open Download Folder"
-msgstr "Avaa Latauskansio"
-
-#: NEEDS WORK
-msgid "Choose Download Folder"
-msgstr "Valitse Latauskansio"
-
-#: NEEDS WORK
-msgid "Widget will stay open when clicking outside"
-msgstr "Widget pysyy auki, kun klikkaat ulkopuolelle."
-
-#: NEEDS WORK
-msgid "Widget will close when clicking outside"
-msgstr "Widget sulkeutuu, kun napsautat ulkopuolella."
-
-#: NEEDS WORK
-msgid "Close the webview and release memory"
-msgstr "Sulje verkkonäkymä ja vapauta muisti"
-
-#: NEEDS WORK
-msgid "Custom URL..."
-msgstr "Mukautettu URL..."
-
-#: NEEDS WORK
-msgid "Icon:"
-msgstr "Ikoni:"
-
-#: NEEDS WORK
-msgid "Use website favicon"
-msgstr "Käytä verkkosivuston faviconia"
-
-#: NEEDS WORK
-msgid "Default adaptive icon"
-msgstr "Oletusarvoinen mukautuva kuvake"
-
-#: NEEDS WORK
-msgid "Default dark icon"
-msgstr "Oletusarvoinen tumma kuvake"
-
-#: NEEDS WORK
-msgid "Default light icon"
-msgstr "Oletusvalon kuvake"
-
-#: NEEDS WORK
-msgid "Outlined icon"
-msgstr "Kuvake, jossa on ääriviivat"
-
-#: NEEDS WORK
-msgid "Filled icon"
-msgstr "Täytetty kuvake"
-
-#: NEEDS WORK
-msgid "Colorful icon"
-msgstr "Värikäs kuvake"
-
-#: NEEDS WORK
-msgid "Header Options"
-msgstr "Otsikkovaihtoehdot"
-
-#: NEEDS WORK
-msgid "Hide header"
-msgstr "Piilota otsikko"
-
-#: NEEDS WORK
-msgid "Auto-hide header (show on mouse hover)"
-msgstr "Automaattinen piilotusotsikko (näytä hiiren osoittimella)"
-
-#: NEEDS WORK
-msgid "Hide Keep Open button"
-msgstr "Piilota Pidä auki -painike"
-
-#: NEEDS WORK
-msgid "Hide Custom URL button"
-msgstr "Piilota mukautettu URL-painike"
-
-#: NEEDS WORK
-msgid "Hide Auto-Hide button"
-msgstr "Piilota automaattisesti piilotettava painike"
-
-#: NEEDS WORK
-msgid "Hide Close button"
-msgstr "Piilota Sulje-painike"
-
-#: NEEDS WORK
-msgid "Hide Home button"
-msgstr "Piilota Koti-painike"
-
-#: NEEDS WORK
-msgid "Hide Download button"
-msgstr "Piilota Lataa-painike"
-
-#: NEEDS WORK
-msgid "Hide navigation buttons"
-msgstr "Piilota navigointipainikkeet"
-
-#: NEEDS WORK
-msgid "Hide refresh button"
-msgstr "Piilota päivitä-painike"
-
-#: NEEDS WORK
-msgid "You can still use the Go back to... and Keep open actions by right-clicking the widget icon."
-msgstr ""
-"Voit edelleen käyttää Takaisin... ja Pidä auki -toimintoja napsauttamalla hiiren oikealla "
-"painikkeella widget-ikonia."
-
-#: NEEDS WORK
-msgid "Predefined Sites"
-msgstr "Esiasetetut sivustot"
-
-#: NEEDS WORK
-msgid ""
-"Claude.ai only allows account creation or Google login in well-known browsers. To use it in this "
-"Plasmoid, you need to use login credentials previously created in a traditional browser."
-msgstr ""
-"Claude.ai sallii tilin luomisen tai Google-kirjautumisen vain tunnetuissa selaimissa. Käyttääksesi "
-"sitä tässä Plasmoidissa, sinun on käytettävä aiemmin perinteisessä selaimessa luotuja "
-"kirjautumistietoja."
-
-#: NEEDS WORK
-msgid "Custom Sites"
-msgstr "Mukautetut sivustot"
-
-#: NEEDS WORK
-msgid "Site Name"
-msgstr "Sivuston nimi"
-
-#: NEEDS WORK
-msgid "Site URL"
-msgstr "Sivuston URL"
-
-#: NEEDS WORK
-msgid "No custom sites added yet"
-msgstr "Ei mukautettuja sivustoja ole vielä lisätty."
-
-#: NEEDS WORK
-msgid "Permissions"
-msgstr "Oikeudet"
-
-#: NEEDS WORK
-msgid "Load website on Plasma startup"
-msgstr "Lataa verkkosivusto Plasma-käynnistyksessä"
-
-#: NEEDS WORK
-msgid "Allow notifications"
-msgstr "Salli ilmoitukset"
-
-#: NEEDS WORK
-msgid "If notifications are not working create the file:"
-msgstr "Jos ilmoitukset eivät toimi, luo tiedosto:"
-
-#: NEEDS WORK
-msgid "containing the following text:"
-msgstr "sisältäen seuraavan tekstin:"
-
-#: NEEDS WORK
-msgid "Allow geolocation access"
-msgstr "Salli geolokaatio-oikeudet"
-
-#: NEEDS WORK
-msgid "Allow using microphone"
-msgstr "Salli mikrofonin käyttö."
-
-#: NEEDS WORK
-msgid "Allow using webcam"
-msgstr "Salli käyttämään verkkokameraa"
-
-#: NEEDS WORK
-msgid "Allow screen sharing"
-msgstr "Salli näytön jakaminen"
-
-#: NEEDS WORK
-msgid "Web Features"
-msgstr "Verkkotoiminnot"
-
-#: NEEDS WORK
-msgid "Enable spatial navigation"
-msgstr "Ota käyttöön avaruusnavigointi"
-
-#: NEEDS WORK
-msgid "Allows navigation between focusable elements using arrow keys"
-msgstr "Sallii navigoinnin keskitettävien elementtien välillä nuolinäppäimillä."
-
-#: NEEDS WORK
-msgid "Allow JavaScript to paste from clipboard"
-msgstr "Salli JavaScriptin liittää leikepöydältä."
-
-#: NEEDS WORK
-msgid "Allow JavaScript to open new windows"
-msgstr "Salli JavaScriptin avata uusia ikkunoita"
-
-#: NEEDS WORK
-msgid "Allow JavaScript to access clipboard"
-msgstr "Salli JavaScriptin käyttää leikepöytää."
-
-#: NEEDS WORK
-msgid "Allow unknown URL schemes"
-msgstr "Salli tuntemattomat URL-skeemat"
-
-#: NEEDS WORK
-msgid "Require user gesture for media playback"
-msgstr "Vaaditaan käyttäjän ele media toistoon"
-
-#: NEEDS WORK
-msgid "Enable focus on navigation"
-msgstr "Ota navigoinnissa fokus käyttöön"
-
-#: NEEDS WORK
-msgid "Notification Settings"
-msgstr "Ilmoitusasetukset"
-
-#: NEEDS WORK
-msgid "Download Folder"
-msgstr "Latauskansio"
-
-#: NEEDS WORK
-msgid "Cache Management"
-msgstr "Välimuistin hallinta"
-
-#: NEEDS WORK
-msgid "Open Cache Folder"
-msgstr "Avaa välimuistikansio"
-
-#: NEEDS WORK
-msgid "Open Profile Folder"
-msgstr "Avaa profiilikansio"
-
-#: NEEDS WORK
-msgid ""
-"Cache location: %1\n"
-"Profile location: %2"
-msgstr ""
-"Välimuistin sijainti: %1  \n"
-"Profiilin sijainti: %2"
-
-#: NEEDS WORK
+#: contents/config/config.qml:16 contents/ui/ChatAIMenu.qml:161
+#: contents/ui/SettingsPanel.qml:34
 msgid "General"
 msgstr "Yleinen"
 
-#: NEEDS WORK
+#: contents/config/config.qml:21 contents/ui/ChatAIMenu.qml:162
+#: contents/ui/SettingsPanel.qml:35
+#, fuzzy
+msgid "Sites"
+msgstr "Sivuston URL"
+
+#: contents/config/config.qml:26 contents/ui/ChatAIMenu.qml:163
+#: contents/ui/SettingsPanel.qml:36
+msgid "Permissions"
+msgstr "Oikeudet"
+
+#: contents/config/config.qml:31 contents/ui/ChatAIMenu.qml:164
+#: contents/ui/SettingsPanel.qml:37
+msgid "Web Features"
+msgstr "Verkkotoiminnot"
+
+#: contents/config/config.qml:36 contents/ui/ChatAIMenu.qml:135
+#: contents/ui/ChatAIMenu.qml:165 contents/ui/Header.qml:183
+#: contents/ui/settings/AppearanceSettings.qml:52
+#: contents/ui/SettingsPanel.qml:38
+#, fuzzy
+msgid "Downloads"
+msgstr "Latauskansio"
+
+#: contents/config/config.qml:41 contents/ui/ChatAIMenu.qml:166
+#: contents/ui/SettingsPanel.qml:39
+#, fuzzy
+msgid "Cache and Data"
+msgstr "Välimuistin hallinta"
+
+#: contents/config/config.qml:46 contents/ui/ChatAIMenu.qml:167
+#: contents/ui/SettingsPanel.qml:40
 msgid "Appearance"
 msgstr "Ulkoasu"
+
+#: contents/config/config.qml:51 contents/ui/ChatAIMenu.qml:168
+#: contents/ui/SettingsPanel.qml:41
+msgid "Advanced"
+msgstr ""
+
+#: contents/config/config.qml:56 contents/ui/SettingsPanel.qml:42
+msgid "About"
+msgstr ""
+
+#: contents/ui/AiSelector.qml:30
+#, fuzzy
+msgid "Custom address…"
+msgstr "Mukautetut sivustot"
+
+#: contents/ui/AiSelector.qml:58
+msgid "AI assistant"
+msgstr ""
+
+#: contents/ui/AiSelector.qml:64
+msgid "Choose the AI assistant"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:47
+#, fuzzy
+msgid "Open in Browser"
+msgstr "Avaa linkki selaimessa"
+
+#: contents/ui/ChatAIMenu.qml:54
+#, fuzzy
+msgid "Copy Address"
+msgstr "Kopioi linkin osoite"
+
+#: contents/ui/ChatAIMenu.qml:61
+#, fuzzy
+msgid "Reload Ignoring Cache"
+msgstr "Lataa nykyinen sivu"
+
+#: contents/ui/ChatAIMenu.qml:71
+#, javascript-format
+msgid "Zoom (%1%)"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:76
+msgid "Zoom In"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:81
+msgid "Zoom Out"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:86
+msgid "Reset Zoom (100%)"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:94
+msgid "Exit Full Screen"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:94
+msgid "Full Screen"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:108
+#: contents/ui/settings/AppearanceSettings.qml:49
+msgid "Home"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:117
+msgid "Find in Page"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:126
+msgid "Hide Toolbar Automatically"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:141 contents/ui/Header.qml:203
+#: contents/ui/settings/DownloadsSettings.qml:81
+msgid "Open Download Folder"
+msgstr "Avaa Latauskansio"
+
+#: contents/ui/ChatAIMenu.qml:146 contents/ui/Header.qml:208
+#, fuzzy
+msgid "Choose Download Folder…"
+msgstr "Valitse Latauskansio"
+
+#: contents/ui/ChatAIMenu.qml:156
+#, fuzzy
+msgid "ChatAI Settings"
+msgstr "Ilmoitusasetukset"
+
+#: contents/ui/ChatAIMenu.qml:181
+msgid "Open Configuration Window…"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:189
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:197
+msgid "Close Developer Tools"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:197
+msgid "Developer Tools"
+msgstr ""
+
+#: contents/ui/ChatAIMenu.qml:209
+#, fuzzy
+msgid "About ChatAI"
+msgstr "ChatAI"
+
+#: contents/ui/CompactRepresentation.qml:28 contents/ui/main.qml:46
+#: contents/ui/settings/AboutSettings.qml:65 contents/ui/WebView.qml:447
+msgid "ChatAI"
+msgstr "ChatAI"
+
+#: contents/ui/CompactRepresentation.qml:43
+msgid "Open ChatAI — %1"
+msgstr ""
+
+#: contents/ui/ContextMenu.qml:32 contents/ui/Header.qml:100
+msgid "Back"
+msgstr "Takaisin"
+
+#: contents/ui/ContextMenu.qml:41 contents/ui/Header.qml:108
+msgid "Forward"
+msgstr "Eteenpäin"
+
+#: contents/ui/ContextMenu.qml:50 contents/ui/Header.qml:118
+#: contents/ui/settings/AppearanceSettings.qml:48
+msgid "Reload"
+msgstr "Lataa uudelleen"
+
+#: contents/ui/ContextMenu.qml:56
+msgid "Save as PDF"
+msgstr "Tallenna PDF-muodossa"
+
+#: contents/ui/ContextMenu.qml:63
+msgid "Save as MHTML"
+msgstr "Tallenna MHTML-muodossa"
+
+#: contents/ui/ContextMenu.qml:70
+msgid "Open Link in Browser"
+msgstr "Avaa linkki selaimessa"
+
+#: contents/ui/ContextMenu.qml:77
+msgid "Copy Link Address"
+msgstr "Kopioi linkin osoite"
+
+#: contents/ui/DevToolsWindow.qml:22
+msgid "ChatAI — Developer tools"
+msgstr ""
+
+#: contents/ui/DownloadBar.qml:34
+msgid "Saving PDF…"
+msgstr ""
+
+#: contents/ui/DownloadBar.qml:37
+#: contents/ui/settings/DownloadsSettings.qml:142
+msgid "Waiting"
+msgstr ""
+
+#: contents/ui/DownloadBar.qml:39
+#: contents/ui/settings/DownloadsSettings.qml:139
+#, fuzzy
+msgid "Downloading"
+msgstr "Lataus käynnissä"
+
+#: contents/ui/DownloadBar.qml:41
+#: contents/ui/settings/DownloadsSettings.qml:138
+msgid "Completed"
+msgstr ""
+
+#: contents/ui/DownloadBar.qml:43
+#: contents/ui/settings/DownloadsSettings.qml:140
+#, fuzzy
+msgid "Cancelled"
+msgstr "Peruuta"
+
+#: contents/ui/DownloadBar.qml:45
+#: contents/ui/settings/DownloadsSettings.qml:141
+msgid "Interrupted"
+msgstr ""
+
+#: contents/ui/DownloadBar.qml:47
+msgid "Unknown state"
+msgstr ""
+
+#: contents/ui/DownloadBar.qml:104
+msgid "Resume"
+msgstr ""
+
+#: contents/ui/DownloadBar.qml:104
+msgid "Pause"
+msgstr ""
+
+#: contents/ui/DownloadBar.qml:114
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: contents/ui/DownloadBar.qml:124
+msgid "Open file"
+msgstr "Avaa tiedosto"
+
+#: contents/ui/DownloadBar.qml:133 contents/ui/settings/SitesSettings.qml:298
+msgid "Remove"
+msgstr ""
+
+#: contents/ui/ErrorView.qml:21
+msgid "Web content error"
+msgstr ""
+
+#: contents/ui/ErrorView.qml:31
+msgid "This service could not be loaded inside ChatAI."
+msgstr ""
+
+#: contents/ui/ErrorView.qml:54
+msgid "Try again"
+msgstr ""
+
+#: contents/ui/ErrorView.qml:61
+#, fuzzy
+msgid "Open in browser"
+msgstr "Avaa linkki selaimessa"
+
+#: contents/ui/FindBar.qml:28 contents/ui/settings/AboutSettings.qml:44
+msgid "Find in page"
+msgstr ""
+
+#: contents/ui/FindBar.qml:47
+msgid "Find in page…"
+msgstr ""
+
+#: contents/ui/FindBar.qml:61
+msgid "Find previous"
+msgstr ""
+
+#: contents/ui/FindBar.qml:75
+msgid "Find next"
+msgstr ""
+
+#: contents/ui/FindBar.qml:89 contents/ui/settings/AppearanceSettings.qml:53
+msgid "Close"
+msgstr "Sulje"
+
+#: contents/ui/FullScreenWindow.qml:24
+msgid "ChatAI — Full screen"
+msgstr ""
+
+#: contents/ui/Header.qml:92
+#, fuzzy
+msgid "Pinned: stays open when clicking outside"
+msgstr "Widget pysyy auki, kun klikkaat ulkopuolelle."
+
+#: contents/ui/Header.qml:92
+#, fuzzy
+msgid "Pin: keep open when clicking outside"
+msgstr "Widget pysyy auki, kun klikkaat ulkopuolelle."
+
+#: contents/ui/Header.qml:118
+msgid "Stop loading"
+msgstr ""
+
+#: contents/ui/Header.qml:127
+msgid "Home page of the current assistant"
+msgstr ""
+
+#: contents/ui/Header.qml:147
+#, fuzzy
+msgid "Custom address"
+msgstr "Mukautetut sivustot"
+
+#: contents/ui/Header.qml:160
+msgid "Find in page (Ctrl+F)"
+msgstr ""
+
+#: contents/ui/Header.qml:173
+msgid "Toolbar hides automatically; click to keep it visible"
+msgstr ""
+
+#: contents/ui/Header.qml:173
+msgid "Hide the toolbar automatically"
+msgstr ""
+
+#: contents/ui/Header.qml:183
+#, fuzzy
+msgid "One download in progress"
+msgid_plural "%1 downloads in progress"
+msgstr[0] "Lataus käynnissä"
+msgstr[1] "Lataus käynnissä"
+
+#: contents/ui/Header.qml:214
+#, fuzzy
+msgid "One download in progress (%2%)"
+msgid_plural "%1 downloads in progress (%2%)"
+msgstr[0] "Lataus käynnissä"
+msgstr[1] "Lataus käynnissä"
+
+#: contents/ui/Header.qml:215
+#, fuzzy
+msgid "No downloads in progress"
+msgstr "Lataus käynnissä"
+
+#: contents/ui/Header.qml:220 contents/ui/settings/DownloadsSettings.qml:151
+msgid "Clear Finished Downloads"
+msgstr ""
+
+#: contents/ui/Header.qml:229 contents/ui/settings/DownloadsSettings.qml:88
+msgid "Choose Download Folder"
+msgstr "Valitse Latauskansio"
+
+#: contents/ui/Header.qml:238
+msgid "More actions"
+msgstr ""
+
+#: contents/ui/Header.qml:261
+#, fuzzy
+msgid "Close and release memory"
+msgstr "Sulje verkkonäkymä ja vapauta muisti"
+
+#: contents/ui/PermissionBar.qml:40
+#, fuzzy
+msgid "%1 wants to show notifications"
+msgstr "Salli ilmoitukset"
+
+#: contents/ui/PermissionBar.qml:42
+msgid "%1 wants to use your microphone"
+msgstr ""
+
+#: contents/ui/PermissionBar.qml:44
+msgid "%1 wants to use your camera"
+msgstr ""
+
+#: contents/ui/PermissionBar.qml:46
+msgid "%1 wants to use your camera and microphone"
+msgstr ""
+
+#: contents/ui/PermissionBar.qml:49
+msgid "%1 wants to share your screen"
+msgstr ""
+
+#: contents/ui/PermissionBar.qml:51
+msgid "%1 wants to know your location"
+msgstr ""
+
+#: contents/ui/PermissionBar.qml:53
+msgid "%1 wants to read your clipboard"
+msgstr ""
+
+#: contents/ui/PermissionBar.qml:55
+msgid "%1 requests a permission"
+msgstr ""
+
+#: contents/ui/PermissionBar.qml:91
+msgid "Your choice is remembered for this site. Review it in Settings › Permissions."
+msgstr ""
+
+#: contents/ui/PermissionBar.qml:100
+msgid "Block"
+msgstr ""
+
+#: contents/ui/PermissionBar.qml:106
+msgid "Allow"
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:33
+#, fuzzy
+msgctxt "provider category"
+msgid "General"
+msgstr "Yleinen"
+
+#: contents/ui/ProviderModel.qml:34
+msgctxt "provider category"
+msgid "Search"
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:35
+msgctxt "provider category"
+msgid "Code"
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:36
+msgctxt "provider category"
+msgid "Privacy"
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:37
+msgctxt "provider category"
+msgid "Agents"
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:38
+#, fuzzy
+msgctxt "provider category"
+msgid "Open models"
+msgstr "Avaa kansio"
+
+#: contents/ui/ProviderModel.qml:41
+msgid "Google sign-in is blocked inside embedded browsers by Google. Sign in with e-mail, or reuse a session created in a regular browser."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:47
+msgid "OpenAI's assistant with voice, files and web search."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:54
+msgid "Anthropic's assistant for writing, analysis and code."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:57
+#, fuzzy
+msgid "Claude only allows account creation and Google sign-in in well-known browsers. Sign in with an e-mail code or reuse credentials created in a regular browser."
+msgstr "Claude.ai sallii tilin luomisen tai Google-kirjautumisen vain tunnetuissa selaimissa. Käyttääksesi sitä tässä Plasmoidissa, sinun on käytettävä aiemmin perinteisessä selaimessa luotuja kirjautumistietoja."
+
+#: contents/ui/ProviderModel.qml:62
+msgid "Google's multimodal assistant."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:69
+msgid "DeepSeek's chat with reasoning mode."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:76
+msgid "Private, anonymous access to several models. No account needed."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:83
+msgid "Answer engine with cited web sources."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:90
+msgid "Microsoft's assistant (formerly Bing Copilot)."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:97
+msgid "Copilot Chat on github.com with repository context. Requires a GitHub account."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:104
+msgid "Mistral's assistant and agent (formerly Le Chat)."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:111
+msgid "xAI's assistant. Works without an account with limits."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:118
+msgid "Alibaba's Qwen Studio: chat, images, documents and web search."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:125
+msgid "Moonshot AI's assistant with long-context and research modes."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:132
+msgid "General AI agent with a chat mode. Requires an account."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:139
+msgid "Hugging Face's chat with open models (Omni router)."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:146
+msgid "Meta's assistant. Availability depends on your region."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:153
+msgid "Fast multi-model chat client."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:160
+msgid "You.com chat. The product now targets enterprise users; a login is required."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:167
+msgid "Coding-oriented assistant."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:174
+msgid "LobeHub cloud chat (bring your own keys or subscription)."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:181
+msgid "Big-AGI web client (bring your own keys)."
+msgstr ""
+
+#: contents/ui/ProviderModel.qml:293
+#, fuzzy
+msgctxt "provider category"
+msgid "Custom"
+msgstr "Mukautetut sivustot"
+
+#: contents/ui/settings/AboutSettings.qml:45
+msgid "Zoom in / out"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:46
+msgid "Reset zoom"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:47
+msgid "Full screen (Esc exits)"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:48
+msgctxt "mouse buttons"
+msgid "Mouse back / forward"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:48
+msgid "Navigate history"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:49
+msgid "Close find bar, settings or full screen"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:69
+msgid "Version %1"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:73
+msgid "AI assistants inside KDE Plasma"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:80
+msgid "ChatAI embeds the official web apps of AI assistants in a native Plasma widget, with a persistent profile, per-site permissions and a memory-conscious web engine lifecycle. It does not provide an AI API and does not bypass authentication or anti-bot protections."
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:89
+msgid "Repository:"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:94
+msgid "Report a problem:"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:99
+msgid "License:"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:109
+msgid "Authors"
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:123
+msgid "Provider icons: Icons8, IconScout, Simple Icons (CC0) and the services' own brand assets. Trademarks belong to their owners."
+msgstr ""
+
+#: contents/ui/settings/AboutSettings.qml:135
+msgid "Keyboard shortcuts"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:41
+#: contents/ui/settings/AdvancedSettings.qml:42
+msgid "unknown"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:48
+msgid "custom"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:65
+msgid "These options are for troubleshooting. The defaults are the safe choice."
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:72
+msgid "Browser identity:"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:73
+msgid "Identify as Chromium (hide the Qt WebEngine token)"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:79
+msgid "Enable if a site refuses to load or sign in. The Chromium version stays truthful."
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:87
+msgid "Custom user agent:"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:90
+msgid "Leave empty for the default"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:92
+msgid "Custom user agent"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:98
+msgid "Resources:"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:99
+msgid "Freeze the page while the widget is hidden"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:105
+msgid "Pauses scripts of the hidden page after 30 seconds when the engine reports it is safe (no audio, upload or download). Resumes instantly on opening."
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:113
+msgid "Discard hidden page after:"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:118
+msgid "Never"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:118
+msgid "%1 minute"
+msgid_plural "%1 minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: contents/ui/settings/AdvancedSettings.qml:121
+msgid "Discard hidden page after"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:125
+msgid "Discarding frees most memory but reloads the page on the next opening; unsent text is lost."
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:135
+msgid "Developer tools:"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:136
+msgid "Show \"Developer Tools\" in the ⋮ menu"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:147
+#: contents/ui/settings/AdvancedSettings.qml:158
+msgid "Diagnostics"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:166
+msgid "Refresh"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:172
+msgid "Copy Diagnostics"
+msgstr ""
+
+#: contents/ui/settings/AdvancedSettings.qml:182
+msgid "No cookies, tokens or page contents are included."
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:35
+#, fuzzy
+msgid "Website favicon"
+msgstr "Käytä verkkosivuston faviconia"
+
+#: contents/ui/settings/AppearanceSettings.qml:36
+msgid "ChatAI logo (adapts to the theme)"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:37
+msgid "ChatAI logo, dark"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:38
+msgid "ChatAI logo, light"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:39
+msgid "Assistant icon, outlined"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:40
+msgid "Assistant icon, filled"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:41
+msgid "Assistant icon, colorful"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:42
+#, fuzzy
+msgid "Custom icon"
+msgstr "Mukautetut sivustot"
+
+#: contents/ui/settings/AppearanceSettings.qml:46
+msgid "Pin"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:47
+#, fuzzy
+msgid "Back and Forward"
+msgstr "Eteenpäin"
+
+#: contents/ui/settings/AppearanceSettings.qml:50
+msgid "\"Custom address…\" entry in the selector"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:51
+msgid "Auto-hide toolbar toggle"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:61
+msgid "Panel icon:"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:66
+#, fuzzy
+msgid "Panel icon"
+msgstr "Kuvake, jossa on ääriviivat"
+
+#: contents/ui/settings/AppearanceSettings.qml:71
+msgid "Assistants without a dedicated icon fall back to the ChatAI logo."
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:81
+#, fuzzy
+msgid "Custom icon:"
+msgstr "Mukautetut sivustot"
+
+#: contents/ui/settings/AppearanceSettings.qml:84
+msgid "Choose custom icon"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:107
+msgid "Toolbar buttons:"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:108
+msgid "Hidden buttons remain available in the ⋮ menu where it makes sense."
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:128
+msgid "Theme:"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:129
+msgid "Colours, spacing and animations follow your Plasma theme. Pages receive a dark-mode hint when the theme is dark."
+msgstr ""
+
+#: contents/ui/settings/DownloadsSettings.qml:48
+#: contents/ui/settings/StorageSettings.qml:182
+msgid "Folder:"
+msgstr ""
+
+#: contents/ui/settings/DownloadsSettings.qml:56
+#, fuzzy
+msgid "Download folder"
+msgstr "Latauskansio"
+
+#: contents/ui/settings/DownloadsSettings.qml:66
+msgid "Choose…"
+msgstr ""
+
+#: contents/ui/settings/DownloadsSettings.qml:72
+msgid "Leave empty to use the system Downloads folder. Files are saved automatically with a sanitized name and are never executed."
+msgstr ""
+
+#: contents/ui/settings/DownloadsSettings.qml:98
+msgid "Current downloads"
+msgstr ""
+
+#: contents/ui/settings/DownloadsSettings.qml:106
+msgid "Downloads are listed here while the ChatAI widget is open."
+msgstr ""
+
+#: contents/ui/settings/DownloadsSettings.qml:111
+msgid "No downloads in this session."
+msgstr ""
+
+#: contents/ui/settings/GeneralSettings.qml:38
+msgid "Assistant:"
+msgstr ""
+
+#: contents/ui/settings/GeneralSettings.qml:43
+msgid "The assistant shown when the widget opens and when you press Home"
+msgstr ""
+
+#: contents/ui/settings/GeneralSettings.qml:62
+msgid "Enable more assistants in the Sites page."
+msgstr ""
+
+#: contents/ui/settings/GeneralSettings.qml:72
+msgid "Window:"
+msgstr ""
+
+#: contents/ui/settings/GeneralSettings.qml:73
+#, fuzzy
+msgid "Keep the widget open when clicking outside (pin)"
+msgstr "Widget pysyy auki, kun klikkaat ulkopuolelle."
+
+#: contents/ui/settings/GeneralSettings.qml:79
+#, fuzzy
+msgid "Preload the assistant when Plasma starts"
+msgstr "Lataa verkkosivusto Plasma-käynnistyksessä"
+
+#: contents/ui/settings/GeneralSettings.qml:85
+msgid "Preloading makes the first opening instant but keeps the web engine in memory from login."
+msgstr ""
+
+#: contents/ui/settings/GeneralSettings.qml:96
+msgid "Toolbar:"
+msgstr ""
+
+#: contents/ui/settings/GeneralSettings.qml:97
+#, fuzzy
+msgid "Hide the toolbar"
+msgstr "Piilota otsikko"
+
+#: contents/ui/settings/GeneralSettings.qml:103
+msgid "Hide the toolbar automatically and reveal it on hover"
+msgstr ""
+
+#: contents/ui/settings/GeneralSettings.qml:112
+msgid "Links:"
+msgstr ""
+
+#: contents/ui/settings/GeneralSettings.qml:113
+msgid "Links that would open a new window are opened in your default browser. Sign-in pages stay inside ChatAI so logins keep working."
+msgstr ""
+
+#: contents/ui/SettingsPanel.qml:80
+msgid "Settings categories"
+msgstr ""
+
+#: contents/ui/SettingsPanel.qml:130
+msgid "Back to the assistant"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:32
+msgid "Ask per site"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:32
+msgid "Always allow"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:32
+msgid "Always block"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:35
+#, fuzzy
+msgid "Notifications:"
+msgstr "Ilmoitusasetukset"
+
+#: contents/ui/settings/PermissionsSettings.qml:35
+#, fuzzy
+msgid "Shown as Plasma notifications."
+msgstr "Salli ilmoitukset"
+
+#: contents/ui/settings/PermissionsSettings.qml:36
+msgid "Microphone:"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:36
+msgid "Voice input. Only active while a site you allowed is recording."
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:37
+msgid "Camera:"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:38
+#, fuzzy
+msgid "Screen sharing:"
+msgstr "Salli näytön jakaminen"
+
+#: contents/ui/settings/PermissionsSettings.qml:38
+msgid "The primary screen is shared when allowed."
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:39
+#: contents/ui/settings/StorageSettings.qml:57
+msgid "Location:"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:40
+msgid "Read clipboard:"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:40
+msgid "Lets a page read what you copied. Pasting with Ctrl+V never needs this."
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:45
+#, fuzzy
+msgid "Notifications"
+msgstr "Ilmoitusasetukset"
+
+#: contents/ui/settings/PermissionsSettings.qml:46
+msgid "Microphone"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:47
+msgid "Camera"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:48
+#, fuzzy
+msgid "Camera and microphone"
+msgstr "Salli mikrofonin käyttö."
+
+#: contents/ui/settings/PermissionsSettings.qml:50
+#, fuzzy
+msgid "Screen sharing"
+msgstr "Salli näytön jakaminen"
+
+#: contents/ui/settings/PermissionsSettings.qml:51
+msgid "Location"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:52
+msgid "Clipboard"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:53
+msgid "Mouse lock"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:54
+msgid "Local fonts"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:55
+msgid "Other"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:61
+msgid "Allowed"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:62
+msgid "Blocked"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:63
+msgid "Ask"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:64
+msgid "Unknown"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:79
+#, fuzzy
+msgid "Default behaviour"
+msgstr "Oletusarvoinen tumma kuvake"
+
+#: contents/ui/settings/PermissionsSettings.qml:84
+msgid "\"Ask per site\" shows a prompt inside ChatAI the first time a site requests the permission; the answer is remembered for that site."
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:127
+#, fuzzy
+msgid "Saved site permissions"
+msgstr "Oikeudet"
+
+#: contents/ui/settings/PermissionsSettings.qml:135
+msgid "Open the ChatAI widget to review the permissions saved per site. They are stored in the web engine profile."
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:140
+msgid "No site has saved permissions yet."
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:169
+msgid "Reset"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:172
+msgid "Ask again next time"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:181
+msgid "Reset All Site Permissions…"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:187
+msgid "Reset all site permissions?"
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:188
+msgid "Every site will ask again the next time it needs a permission. Logins are not affected."
+msgstr ""
+
+#: contents/ui/settings/PermissionsSettings.qml:198
+msgid "Privacy: the microphone, camera, screen and location are only used after you allow them, and only by the site that asked. Login data belongs to the web engine profile (see Cache and Data). ChatAI does not read page contents or credentials."
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:63
+msgid "A custom site with this name or address already exists."
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:100
+#: contents/ui/settings/SitesSettings.qml:243
+msgid "Enter a name and a valid http:// or https:// address."
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:104
+msgid "Built-in assistants"
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:109
+msgid "Enabled assistants appear in the toolbar selector. ChatAI embeds each service's official website; accounts, limits and features are controlled by the service."
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:156
+msgid "Login required"
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:189
+#, fuzzy
+msgid "Custom sites"
+msgstr "Mukautetut sivustot"
+
+#: contents/ui/settings/SitesSettings.qml:194
+msgid "Add any chat website by name and address. Custom sites use the ChatAI icon and get no special access to your system."
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:206
+#, fuzzy
+msgid "Name"
+msgstr "Sivuston nimi"
+
+#: contents/ui/settings/SitesSettings.qml:209
+#, fuzzy
+msgid "Site name"
+msgstr "Sivuston nimi"
+
+#: contents/ui/settings/SitesSettings.qml:218
+#, fuzzy
+msgid "Site address"
+msgstr "Sivuston nimi"
+
+#: contents/ui/settings/SitesSettings.qml:223
+msgid "Save"
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:223
+msgid "Add"
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:230
+#, fuzzy
+msgid "Cancel editing"
+msgstr "Peruuta"
+
+#: contents/ui/settings/SitesSettings.qml:258
+msgid "%1 — %2"
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:289
+msgid "Edit"
+msgstr ""
+
+#: contents/ui/settings/SitesSettings.qml:312
+msgid "No custom sites added yet"
+msgstr "Ei mukautettuja sivustoja ole vielä lisätty."
+
+#: contents/ui/settings/StorageSettings.qml:49
+msgid "HTTP cache"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:64
+msgid "Size limit:"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:69
+msgid "Automatic"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:69
+msgid "%1 MiB"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:72
+msgid "Cache size limit"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:80
+msgid "Clearing…"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:80
+msgid "Clear Cache"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:94
+msgid "Open Cache Folder"
+msgstr "Avaa välimuistikansio"
+
+#: contents/ui/settings/StorageSettings.qml:101
+msgid "Open the ChatAI widget to clear the cache. Clearing removes downloaded page resources only; you stay signed in."
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:102
+msgid "Clearing removes downloaded page resources only; you stay signed in. Navigation is paused until it finishes."
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:115
+msgid "Site data and sessions"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:120
+msgid "Cookies, logins, local storage and per-site permissions live in the profile folder below. Qt WebEngine offers no way to wipe cookies from a widget while it is running: to end a session, use the site's own \"Sign out\", or switch to a new profile name. Site permissions can be reset in the Permissions page."
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:131
+msgid "WebEngine profile"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:136
+msgid "Each storage name is a separate folder with its own cookies, logins, cache and permissions. Use different names to keep separate accounts in different widget instances."
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:146
+msgid "Storage name:"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:155
+msgid "Storage name"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:161
+msgid "Apply"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:171
+msgid "Default"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:190
+msgid "Open Profile Folder"
+msgstr "Avaa profiilikansio"
+
+#: contents/ui/settings/StorageSettings.qml:197
+msgid "Switch WebEngine profile?"
+msgstr ""
+
+#: contents/ui/settings/StorageSettings.qml:198
+msgid "The assistant will reload using the profile \"%1\". You will be signed out of the current sessions until you sign in again; the data of the previous profile stays on disk and can be removed from its folder."
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:33
+msgid "Let pages write to the clipboard"
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:33
+msgid "Needed by the \"Copy\" buttons of most assistants. Reading the clipboard is a separate permission."
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:34
+#, fuzzy
+msgid "Let scripts paste from the clipboard"
+msgstr "Salli JavaScriptin liittää leikepöydältä."
+
+#: contents/ui/settings/WebFeaturesSettings.qml:34
+msgid "Allows a page to read the clipboard without asking. Ctrl+V works without this. Off by default for privacy."
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:35
+#, fuzzy
+msgid "Let pages open new windows"
+msgstr "Salli JavaScriptin avata uusia ikkunoita"
+
+#: contents/ui/settings/WebFeaturesSettings.qml:35
+msgid "New windows are intercepted: sign-in pages stay in ChatAI, other links open in your browser."
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:36
+#, fuzzy
+msgid "Require a click before media plays"
+msgstr "Vaaditaan käyttäjän ele media toistoon"
+
+#: contents/ui/settings/WebFeaturesSettings.qml:36
+msgid "Blocks autoplaying audio and video (including voice replies) until you interact with the page."
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:37
+msgid "Spatial navigation with arrow keys"
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:37
+msgid "Move between links and fields with the arrow keys instead of Tab."
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:38
+msgid "Focus the page after navigating"
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:38
+msgid "Lets you type immediately after the page loads. Disable if the page steals focus from the toolbar."
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:39
+msgid "Allow unknown link types after a click"
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:39
+msgid "Lets a link you click open another application (for example mailto: or a custom scheme). Links opened by scripts are still blocked."
+msgstr ""
+
+#: contents/ui/settings/WebFeaturesSettings.qml:43
+msgid "These options change how the embedded web engine behaves for every assistant. Changes apply immediately."
+msgstr ""
+
+#: contents/ui/WebView.qml:147
+msgid "The configured address is not a valid HTTP or HTTPS URL."
+msgstr ""
+
+#: contents/ui/WebView.qml:546
+msgid "Download in progress"
+msgstr "Lataus käynnissä"
+
+#: contents/ui/WebView.qml:546
+msgid "The file '%1' is already being downloaded"
+msgstr ""
+
+#: contents/ui/WebView.qml:577
+#, fuzzy
+msgid "Download finished"
+msgstr "Lataus käynnissä"
+
+#: contents/ui/WebView.qml:639
+msgid "The service did not provide an error description."
+msgstr ""
+
+#: contents/ui/WebView.qml:650
+msgid "The site's security certificate is not trusted."
+msgstr ""
+
+#: contents/ui/WebView.qml:664
+msgid "The web content process stopped unexpectedly (exit code %1)."
+msgstr ""
+
+#: contents/ui/WebView.qml:673
+msgid "The PDF could not be created."
+msgstr ""
+
+#: contents/ui/WebView.qml:683
+#, fuzzy
+msgid "Blocked navigation"
+msgstr "Ota navigoinnissa fokus käyttöön"
+
+#: contents/ui/WebView.qml:683
+msgid "Only HTTP and HTTPS links can be opened from ChatAI."
+msgstr ""
+
+#~ msgid "Open"
+#~ msgstr "Avaa"
+
+#~ msgid "The file "
+#~ msgstr "Tiedosto"
+
+#~ msgid "Go back to previous page"
+#~ msgstr "Palaa edelliselle sivulle"
+
+#~ msgid "Go forward to next page"
+#~ msgstr "Siirry seuraavalle sivulle"
+
+#~ msgid "Return to homepage/default chat"
+#~ msgstr "Palaa etusivulle/oletuschatille"
+
+#~ msgid "Select or enter chat website URL"
+#~ msgstr "Valitse tai syötä keskustelusivuston URL-osoite"
+
+#~ msgid "Header will hide automatically when not in use"
+#~ msgstr "Otsikko piiloutuu automaattisesti, kun sitä ei käytetä."
+
+#~ msgid "Header will stay visible"
+#~ msgstr "Otsikko pysyy näkyvissä"
+
+#~ msgid "Manage downloads and download folder"
+#~ msgstr "Hallitse latauksia ja latauskansiota"
+
+#~ msgid "Widget will close when clicking outside"
+#~ msgstr "Widget sulkeutuu, kun napsautat ulkopuolella."
+
+#~ msgid "Custom URL..."
+#~ msgstr "Mukautettu URL..."
+
+#~ msgid "Icon:"
+#~ msgstr "Ikoni:"
+
+#~ msgid "Default adaptive icon"
+#~ msgstr "Oletusarvoinen mukautuva kuvake"
+
+#~ msgid "Default light icon"
+#~ msgstr "Oletusvalon kuvake"
+
+#~ msgid "Filled icon"
+#~ msgstr "Täytetty kuvake"
+
+#~ msgid "Colorful icon"
+#~ msgstr "Värikäs kuvake"
+
+#~ msgid "Header Options"
+#~ msgstr "Otsikkovaihtoehdot"
+
+#~ msgid "Auto-hide header (show on mouse hover)"
+#~ msgstr "Automaattinen piilotusotsikko (näytä hiiren osoittimella)"
+
+#~ msgid "Hide Keep Open button"
+#~ msgstr "Piilota Pidä auki -painike"
+
+#~ msgid "Hide Custom URL button"
+#~ msgstr "Piilota mukautettu URL-painike"
+
+#~ msgid "Hide Auto-Hide button"
+#~ msgstr "Piilota automaattisesti piilotettava painike"
+
+#~ msgid "Hide Close button"
+#~ msgstr "Piilota Sulje-painike"
+
+#~ msgid "Hide Home button"
+#~ msgstr "Piilota Koti-painike"
+
+#~ msgid "Hide Download button"
+#~ msgstr "Piilota Lataa-painike"
+
+#~ msgid "Hide navigation buttons"
+#~ msgstr "Piilota navigointipainikkeet"
+
+#~ msgid "Hide refresh button"
+#~ msgstr "Piilota päivitä-painike"
+
+#~ msgid "You can still use the Go back to... and Keep open actions by right-clicking the widget icon."
+#~ msgstr "Voit edelleen käyttää Takaisin... ja Pidä auki -toimintoja napsauttamalla hiiren oikealla painikkeella widget-ikonia."
+
+#~ msgid "Predefined Sites"
+#~ msgstr "Esiasetetut sivustot"
+
+#~ msgid "If notifications are not working create the file:"
+#~ msgstr "Jos ilmoitukset eivät toimi, luo tiedosto:"
+
+#~ msgid "containing the following text:"
+#~ msgstr "sisältäen seuraavan tekstin:"
+
+#~ msgid "Allow geolocation access"
+#~ msgstr "Salli geolokaatio-oikeudet"
+
+#~ msgid "Allow using webcam"
+#~ msgstr "Salli käyttämään verkkokameraa"
+
+#~ msgid "Enable spatial navigation"
+#~ msgstr "Ota käyttöön avaruusnavigointi"
+
+#~ msgid "Allows navigation between focusable elements using arrow keys"
+#~ msgstr "Sallii navigoinnin keskitettävien elementtien välillä nuolinäppäimillä."
+
+#~ msgid "Allow JavaScript to access clipboard"
+#~ msgstr "Salli JavaScriptin käyttää leikepöytää."
+
+#~ msgid "Allow unknown URL schemes"
+#~ msgstr "Salli tuntemattomat URL-skeemat"
+
+#~ msgid ""
+#~ "Cache location: %1\n"
+#~ "Profile location: %2"
+#~ msgstr ""
+#~ "Välimuistin sijainti: %1  \n"
+#~ "Profiilin sijainti: %2"

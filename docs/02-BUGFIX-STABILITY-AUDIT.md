@@ -1,6 +1,6 @@
 # 02 — Correções e estabilidade
 
-Status: **planejado → implementado nesta versão** (evidências em 14).
+Status: **implementado** (evidências em 12 e 14).
 
 Cada item segue: problema → arquivos → comportamento atual → desejado → abordagem → alternativas →
 riscos → impacto → testes → aceite.

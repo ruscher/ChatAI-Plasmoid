@@ -8,6 +8,10 @@ python3 -m json.tool metadata.json >/dev/null
 xmllint --noout contents/config/main.xml
 
 mapfile -t qml_files < <(find contents/ui contents/config -type f -name '*.qml' -print | sort)
+mapfile -t po_files < <(find locale -type f -name '*.po' -print | sort)
+for po_file in "${po_files[@]}"; do
+    msgfmt --check-format -o /dev/null "$po_file"
+done
 if (( ${#qml_files[@]} == 0 )); then
     printf '%s\n' 'No QML files found' >&2
     exit 1

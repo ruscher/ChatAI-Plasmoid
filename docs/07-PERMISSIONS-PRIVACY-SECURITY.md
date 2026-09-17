@@ -1,6 +1,6 @@
 # 07 — Permissões, privacidade e segurança
 
-Status: **planejado → implementado**.
+Status: **implementado** (evidências em 12 e 14).
 
 ## Permissões (Qt WebEngine ≥ 6.8 API moderna)
 

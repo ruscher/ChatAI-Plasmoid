@@ -44,10 +44,10 @@ Racional: mudar padrões de chaves existentes altera silenciosamente listas de u
 ## User‑Agent
 
 - UA padrão do Qt 6.11: `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/6.11.2 Chrome/140.0.0.0 Safari/537.36`.
-- Único caso com diferença mensurável: GitHub (`net::ERR_NETWORK_*` com o token `QtWebEngine`, PASS sem ele — 2 execuções). Relatos anteriores dos mantenedores: ChatGPT e DeepSeek rejeitavam o token.
-- Decisão: UA global = UA padrão do Qt **sem o token `QtWebEngine/x.y.z`** (calculado em runtime a partir de
-  `WebEngine.defaultProfile.httpUserAgent`, mantendo a versão real do Chromium). Nenhum UA mobile/Chrome 76 permanece.
-  Override por provedor continua possível via `userAgent` no registro (nenhum usado). `customUserAgent` em Avançado substitui tudo.
+- Harness (22 URLs × 2 UAs, mais 3 repetições dos casos duvidosos): **nenhuma diferença reproduzível** entre o UA padrão e o UA sem o token `QtWebEngine`. A única falha com o UA padrão (GitHub, `net::ERR_NETWORK_*`) não se repetiu em 2 novas execuções: erro de rede transitório. ChatGPT expira nos dois UAs no harness headless (sem GPU) e é testado na sessão real.
+- Decisão (regra do projeto: preferir o UA padrão, override só com necessidade comprovada): **UA padrão do Qt WebEngine** para instalações novas. Opção "Identificar‑se como Chromium" (`compatibilityUserAgent`) em Avançado remove só o token `QtWebEngine/x.y.z`, mantendo a versão real do Chromium — para quem encontrar um site que recuse o token (relato dos mantenedores anteriores para ChatGPT/DeepSeek, não reproduzido aqui).
+- Instalações existentes (1.0.0 sempre usou UA Chromium) recebem `compatibilityUserAgent = true` na migração para não mudar comportamento.
+- Nenhum UA mobile/Chrome 76 permanece. Override por provedor continua possível via `userAgent` no registro (nenhum usado). `customUserAgent` substitui tudo.
 
 ## Ícones
 

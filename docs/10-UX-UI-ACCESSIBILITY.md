@@ -1,6 +1,6 @@
 # 10 — UX/UI e acessibilidade
 
-Status: **planejado → implementado**.
+Status: **implementado** (evidências em 12 e 14).
 
 ## Princípios
 Kirigami/Breeze/Plasma Components; `Kirigami.Units` para todas as medidas; `Kirigami.Theme` para cores;

@@ -1,6 +1,6 @@
 # 04 — Kebab menu (⋮) e configurações reorganizadas
 
-Status: **planejado → implementado**.
+Status: **implementado** (evidências em 12 e 14).
 
 ## Menu
 

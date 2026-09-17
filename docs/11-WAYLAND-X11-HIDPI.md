@@ -1,6 +1,6 @@
 # 11 — Wayland, X11 e HiDPI
 
-Status: **planejado → implementado; Wayland testado, X11 NÃO TESTADO nesta máquina**.
+Status: **implementado; Wayland testado, X11 NÃO TESTADO nesta máquina**.
 
 | Recurso | Implementação | Wayland | X11 |
 | --- | --- | --- | --- |

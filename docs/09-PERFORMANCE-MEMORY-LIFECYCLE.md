@@ -1,6 +1,6 @@
 # 09 — Performance, memória e lifecycle
 
-Status: **planejado → implementado; medições em 14**.
+Status: **implementado; medições em 14**.
 
 ## Baseline medido (antes) — 2026‑09‑17, Plasma 6.7.4, Qt 6.11.2, Wayland
 
@@ -9,7 +9,19 @@ Status: **planejado → implementado; medições em 14**.
 | plasmashell idle, 3 instâncias do ChatAI, WebView fechado | RSS 689 848 kB, 109 threads, 0 processos `QtWebEngineProcess` |
 | Processos WebEngine de uma WebEngineView (harness PySide6, perfil off-the-record) | zygote ×3 (61 MB, 61 MB, 17 MB) + renderer 87 MB no carregamento inicial |
 
-Os números "depois" são coletados com o mesmo método em 14; qualquer número não medido é omitido.
+## Medição depois (mesmo método, `plasmoidviewer`, Duck.ai, `tools`/`measure2.sh` por árvore de processos)
+
+| Cenário | 1.0.0 | 1.0.1 |
+| --- | --- | --- |
+| Renderer RSS aos 25 s | 222 452 kB | 216 676 kB |
+| Viewer RSS aos 25 s (inclui browser process in‑process) | 434 668 kB | 445 104 kB |
+| Renderer CPU ticks 25→45 s (visível, ociosa) | 80→84 | 95→96 |
+| Oculta 30 s | Active | **Frozen** (`recommendedState` = Discarded) |
+| Após Close | — | renderer encerrado (0 processos, −216 MB); zygotes permanecem |
+
+Interpretação: memória do renderer equivalente; o processo hospedeiro cresce ~10 MB pelo QML adicional
+(menu, seletor com delegates, registro); Frozen confirmado; Close libera o renderer. Em página ociosa o
+congelamento não altera CPU mensurável — o benefício aparece com timers/streams ativos na página.
 
 ## Estratégia de lifecycle
 
