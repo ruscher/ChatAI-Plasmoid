@@ -8,7 +8,6 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ChatAI-Plasmoid 1.0.1\n"
 "Report-Msgid-Bugs-To: https://github.com/ruscher/ChatAI-Plasmoid/issues\n"
-"POT-Creation-Date: 2026-09-17 07:15-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,7 +38,7 @@ msgid "Web Features"
 msgstr ""
 
 #: contents/config/config.qml:36 contents/ui/ChatAIMenu.qml:113
-#: contents/ui/ChatAIMenu.qml:155 contents/ui/DownloadPopup.qml:95
+#: contents/ui/ChatAIMenu.qml:155 contents/ui/DownloadPopup.qml:97
 #: contents/ui/SettingsPanel.qml:38
 msgid "Downloads"
 msgstr ""
@@ -166,8 +165,8 @@ msgstr ""
 msgid "About ChatAI"
 msgstr ""
 
-#: contents/ui/CompactRepresentation.qml:28 contents/ui/main.qml:46
-#: contents/ui/settings/AboutSettings.qml:65 contents/ui/WebView.qml:631
+#: contents/ui/CompactRepresentation.qml:28 contents/ui/WebView.qml:631
+#: contents/ui/main.qml:46 contents/ui/settings/AboutSettings.qml:65
 msgid "ChatAI"
 msgstr ""
 
@@ -175,15 +174,15 @@ msgstr ""
 msgid "Open ChatAI — %1"
 msgstr ""
 
-#: contents/ui/ContextMenu.qml:32 contents/ui/Header.qml:108
+#: contents/ui/ContextMenu.qml:32 contents/ui/Header.qml:110
 msgid "Back"
 msgstr ""
 
-#: contents/ui/ContextMenu.qml:41 contents/ui/Header.qml:116
+#: contents/ui/ContextMenu.qml:41 contents/ui/Header.qml:118
 msgid "Forward"
 msgstr ""
 
-#: contents/ui/ContextMenu.qml:50 contents/ui/Header.qml:126
+#: contents/ui/ContextMenu.qml:50 contents/ui/Header.qml:128
 #: contents/ui/settings/AppearanceSettings.qml:48
 msgid "Reload"
 msgstr ""
@@ -236,158 +235,158 @@ msgstr[1] ""
 msgid "Open the downloads list"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:40
+#: contents/ui/DownloadPopup.qml:42
 msgctxt "bytes"
 msgid "B"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:40
+#: contents/ui/DownloadPopup.qml:42
 msgctxt "kilobytes"
 msgid "kB"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:40
+#: contents/ui/DownloadPopup.qml:42
 msgctxt "megabytes"
 msgid "MB"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:40
+#: contents/ui/DownloadPopup.qml:42
 msgctxt "gigabytes"
 msgid "GB"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:40
+#: contents/ui/DownloadPopup.qml:42
 msgctxt "terabytes"
 msgid "TB"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:44
+#: contents/ui/DownloadPopup.qml:46
 msgctxt "file size: value and unit"
 msgid "%1 %2"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:48
+#: contents/ui/DownloadPopup.qml:50
 msgctxt "transfer rate"
 msgid "%1/s"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:53
+#: contents/ui/DownloadPopup.qml:55
 msgid "%1 second left"
 msgid_plural "%1 seconds left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: contents/ui/DownloadPopup.qml:55
+#: contents/ui/DownloadPopup.qml:57
 msgid "%1 minute left"
 msgid_plural "%1 minutes left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: contents/ui/DownloadPopup.qml:56
+#: contents/ui/DownloadPopup.qml:58
 msgid "%1 hour left"
 msgid_plural "%1 hours left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: contents/ui/DownloadPopup.qml:62
+#: contents/ui/DownloadPopup.qml:64
 msgid "Starting…"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:65 contents/ui/DownloadPopup.qml:67
+#: contents/ui/DownloadPopup.qml:67 contents/ui/DownloadPopup.qml:69
 msgid "%1 of %2"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:65
+#: contents/ui/DownloadPopup.qml:67
 msgid "Paused — %1"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:69
+#: contents/ui/DownloadPopup.qml:71
 #, javascript-format
 msgctxt "percentage"
 msgid "%1%"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:74
+#: contents/ui/DownloadPopup.qml:76
 msgctxt "separator between download status parts"
 msgid " · "
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:77
+#: contents/ui/DownloadPopup.qml:79
 msgid "PDF saved — %1"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:77
+#: contents/ui/DownloadPopup.qml:79
 msgid "Completed — %1"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:79
+#: contents/ui/DownloadPopup.qml:81
 #: contents/ui/settings/DownloadsSettings.qml:140
 msgid "Cancelled"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:81
+#: contents/ui/DownloadPopup.qml:83
 msgid "Interrupted — %1"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:81
+#: contents/ui/DownloadPopup.qml:83
 #: contents/ui/settings/DownloadsSettings.qml:141
 msgid "Interrupted"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:83
+#: contents/ui/DownloadPopup.qml:85
 msgid "Unknown state"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:102
+#: contents/ui/DownloadPopup.qml:104
 msgid "Clear finished"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:123
+#: contents/ui/DownloadPopup.qml:125
 msgid "No downloads in this session"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:135
+#: contents/ui/DownloadPopup.qml:137
 msgid "Downloads list"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:145
+#: contents/ui/DownloadPopup.qml:147
 msgid "%1: %2"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:223
+#: contents/ui/DownloadPopup.qml:225
 msgid "Resume"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:223
+#: contents/ui/DownloadPopup.qml:225
 msgid "Pause"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:229
+#: contents/ui/DownloadPopup.qml:231
 msgid "Cancel"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:235 contents/ui/WebView.qml:585
+#: contents/ui/DownloadPopup.qml:237 contents/ui/WebView.qml:585
 msgid "Open"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:241 contents/ui/WebView.qml:589
+#: contents/ui/DownloadPopup.qml:243 contents/ui/WebView.qml:589
 msgid "Show in Folder"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:247 contents/ui/WebView.qml:1085
+#: contents/ui/DownloadPopup.qml:249 contents/ui/WebView.qml:1085
 msgid "Retry"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:253
+#: contents/ui/DownloadPopup.qml:255
 msgid "Remove from list"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:271
+#: contents/ui/DownloadPopup.qml:273
 #: contents/ui/settings/DownloadsSettings.qml:81
 msgid "Open Download Folder"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:277
+#: contents/ui/DownloadPopup.qml:279
 msgid "Choose Folder…"
 msgstr ""
 
@@ -431,39 +430,39 @@ msgstr ""
 msgid "ChatAI — Full screen"
 msgstr ""
 
-#: contents/ui/Header.qml:100
+#: contents/ui/Header.qml:102
 msgid "Pinned: stays open when clicking outside"
 msgstr ""
 
-#: contents/ui/Header.qml:100
+#: contents/ui/Header.qml:102
 msgid "Pin: keep open when clicking outside"
 msgstr ""
 
-#: contents/ui/Header.qml:126
+#: contents/ui/Header.qml:128
 msgid "Stop loading"
 msgstr ""
 
-#: contents/ui/Header.qml:135
+#: contents/ui/Header.qml:137
 msgid "Home page of the current assistant"
 msgstr ""
 
-#: contents/ui/Header.qml:155
+#: contents/ui/Header.qml:157
 msgid "Custom address"
 msgstr ""
 
-#: contents/ui/Header.qml:168
+#: contents/ui/Header.qml:170
 msgid "Find in page (Ctrl+F)"
 msgstr ""
 
-#: contents/ui/Header.qml:187
+#: contents/ui/Header.qml:189
 msgid "More actions"
 msgstr ""
 
-#: contents/ui/Header.qml:207
+#: contents/ui/Header.qml:209
 msgid "Close and release memory"
 msgstr ""
 
-#: contents/ui/Header.qml:221 contents/ui/settings/DownloadsSettings.qml:88
+#: contents/ui/Header.qml:223 contents/ui/settings/DownloadsSettings.qml:88
 msgid "Choose Download Folder"
 msgstr ""
 
@@ -632,6 +631,94 @@ msgstr ""
 #: contents/ui/ProviderModel.qml:300
 msgctxt "provider category"
 msgid "Custom"
+msgstr ""
+
+#: contents/ui/SettingsPanel.qml:80
+msgid "Settings categories"
+msgstr ""
+
+#: contents/ui/SettingsPanel.qml:133
+msgid "Back to the assistant"
+msgstr ""
+
+#: contents/ui/WebView.qml:166
+msgid "The configured address is not a valid HTTP or HTTPS URL."
+msgstr ""
+
+#: contents/ui/WebView.qml:599
+msgid "Download finished"
+msgstr ""
+
+#: contents/ui/WebView.qml:599
+msgid "Download failed"
+msgstr ""
+
+#: contents/ui/WebView.qml:600
+msgid "interrupted"
+msgstr ""
+
+#: contents/ui/WebView.qml:600 contents/ui/settings/SitesSettings.qml:258
+msgid "%1 — %2"
+msgstr ""
+
+#: contents/ui/WebView.qml:730
+msgid "Download in progress"
+msgstr ""
+
+#: contents/ui/WebView.qml:730
+msgid "The file '%1' is already being downloaded"
+msgstr ""
+
+#: contents/ui/WebView.qml:835
+msgid "The service did not provide an error description."
+msgstr ""
+
+#: contents/ui/WebView.qml:855
+msgid "The site's security certificate is not trusted."
+msgstr ""
+
+#: contents/ui/WebView.qml:869
+msgid "The web content process stopped unexpectedly (exit code %1)."
+msgstr ""
+
+#: contents/ui/WebView.qml:878
+msgid "The PDF could not be created."
+msgstr ""
+
+#: contents/ui/WebView.qml:889
+msgid "Blocked navigation"
+msgstr ""
+
+#: contents/ui/WebView.qml:889
+msgid "Only HTTP and HTTPS links can be opened from ChatAI."
+msgstr ""
+
+#: contents/ui/WebView.qml:1031
+msgid "Sign-in blocked"
+msgstr ""
+
+#: contents/ui/WebView.qml:1031
+msgid "The sign-in site's security certificate is not trusted."
+msgstr ""
+
+#: contents/ui/WebView.qml:1081
+msgid "The site"
+msgstr ""
+
+#: contents/ui/WebView.qml:1081
+msgid "%1 is taking long to respond. Some services hold the connection for automated clients; retrying usually works."
+msgstr ""
+
+#: contents/ui/WebView.qml:1107
+msgid "At %1% zoom the page sees a %2 px wide viewport and switches to its mobile layout, which may break sign-in. Reset the zoom or widen the widget."
+msgstr ""
+
+#: contents/ui/WebView.qml:1108
+msgid "The page sees a %1 px wide viewport and switches to its mobile layout, which may break sign-in. Widen the widget by dragging its edge."
+msgstr ""
+
+#: contents/ui/WebView.qml:1113
+msgid "Reset Zoom"
 msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:45
@@ -964,14 +1051,6 @@ msgstr ""
 msgid "Links that would open a new window are opened in your default browser. Sign-in pages stay inside ChatAI so logins keep working."
 msgstr ""
 
-#: contents/ui/SettingsPanel.qml:80
-msgid "Settings categories"
-msgstr ""
-
-#: contents/ui/SettingsPanel.qml:133
-msgid "Back to the assistant"
-msgstr ""
-
 #: contents/ui/settings/PermissionsSettings.qml:32
 msgid "Ask per site"
 msgstr ""
@@ -1178,10 +1257,6 @@ msgstr ""
 msgid "Cancel editing"
 msgstr ""
 
-#: contents/ui/settings/SitesSettings.qml:258 contents/ui/WebView.qml:600
-msgid "%1 — %2"
-msgstr ""
-
 #: contents/ui/settings/SitesSettings.qml:289
 msgid "Edit"
 msgstr ""
@@ -1336,80 +1411,4 @@ msgstr ""
 
 #: contents/ui/settings/WebFeaturesSettings.qml:43
 msgid "These options change how the embedded web engine behaves for every assistant. Changes apply immediately."
-msgstr ""
-
-#: contents/ui/WebView.qml:166
-msgid "The configured address is not a valid HTTP or HTTPS URL."
-msgstr ""
-
-#: contents/ui/WebView.qml:599
-msgid "Download finished"
-msgstr ""
-
-#: contents/ui/WebView.qml:599
-msgid "Download failed"
-msgstr ""
-
-#: contents/ui/WebView.qml:600
-msgid "interrupted"
-msgstr ""
-
-#: contents/ui/WebView.qml:730
-msgid "Download in progress"
-msgstr ""
-
-#: contents/ui/WebView.qml:730
-msgid "The file '%1' is already being downloaded"
-msgstr ""
-
-#: contents/ui/WebView.qml:835
-msgid "The service did not provide an error description."
-msgstr ""
-
-#: contents/ui/WebView.qml:855
-msgid "The site's security certificate is not trusted."
-msgstr ""
-
-#: contents/ui/WebView.qml:869
-msgid "The web content process stopped unexpectedly (exit code %1)."
-msgstr ""
-
-#: contents/ui/WebView.qml:878
-msgid "The PDF could not be created."
-msgstr ""
-
-#: contents/ui/WebView.qml:889
-msgid "Blocked navigation"
-msgstr ""
-
-#: contents/ui/WebView.qml:889
-msgid "Only HTTP and HTTPS links can be opened from ChatAI."
-msgstr ""
-
-#: contents/ui/WebView.qml:1031
-msgid "Sign-in blocked"
-msgstr ""
-
-#: contents/ui/WebView.qml:1031
-msgid "The sign-in site's security certificate is not trusted."
-msgstr ""
-
-#: contents/ui/WebView.qml:1081
-msgid "The site"
-msgstr ""
-
-#: contents/ui/WebView.qml:1081
-msgid "%1 is taking long to respond. Some services hold the connection for automated clients; retrying usually works."
-msgstr ""
-
-#: contents/ui/WebView.qml:1107
-msgid "At %1% zoom the page sees a %2 px wide viewport and switches to its mobile layout, which may break sign-in. Reset the zoom or widen the widget."
-msgstr ""
-
-#: contents/ui/WebView.qml:1108
-msgid "The page sees a %1 px wide viewport and switches to its mobile layout, which may break sign-in. Widen the widget by dragging its edge."
-msgstr ""
-
-#: contents/ui/WebView.qml:1113
-msgid "Reset Zoom"
 msgstr ""

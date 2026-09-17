@@ -1,60 +1,56 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Bulgarian translations for ChatAI-Plasmoid package.
+# Copyright (C) 2026 THE ChatAI-Plasmoid'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ChatAI-Plasmoid package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Automatically generated, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ChatAI-Plasmoid\n"
+"Project-Id-Version: ChatAI-Plasmoid 1.0.1\n"
 "Report-Msgid-Bugs-To: https://github.com/ruscher/ChatAI-Plasmoid/issues\n"
-"POT-Creation-Date: 2026-09-17 07:15-0300\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: attranslate\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: contents/config/config.qml:16 contents/ui/ChatAIMenu.qml:151
 #: contents/ui/SettingsPanel.qml:34
 msgid "General"
-msgstr "Общо"
+msgstr ""
 
 #: contents/config/config.qml:21 contents/ui/ChatAIMenu.qml:152
 #: contents/ui/SettingsPanel.qml:35
-#, fuzzy
 msgid "Sites"
-msgstr "URL на сайта"
+msgstr ""
 
 #: contents/config/config.qml:26 contents/ui/ChatAIMenu.qml:153
 #: contents/ui/SettingsPanel.qml:36
 msgid "Permissions"
-msgstr "Разрешения"
+msgstr ""
 
 #: contents/config/config.qml:31 contents/ui/ChatAIMenu.qml:154
 #: contents/ui/SettingsPanel.qml:37
 msgid "Web Features"
-msgstr "Уеб функции"
+msgstr ""
 
 #: contents/config/config.qml:36 contents/ui/ChatAIMenu.qml:113
-#: contents/ui/ChatAIMenu.qml:155 contents/ui/DownloadPopup.qml:95
+#: contents/ui/ChatAIMenu.qml:155 contents/ui/DownloadPopup.qml:97
 #: contents/ui/SettingsPanel.qml:38
-#, fuzzy
 msgid "Downloads"
-msgstr "Папка за изтегляне"
+msgstr ""
 
 #: contents/config/config.qml:41 contents/ui/ChatAIMenu.qml:156
 #: contents/ui/SettingsPanel.qml:39
-#, fuzzy
 msgid "Cache and Data"
-msgstr "Управление на кеша"
+msgstr ""
 
 #: contents/config/config.qml:46 contents/ui/ChatAIMenu.qml:157
 #: contents/ui/SettingsPanel.qml:40
 msgid "Appearance"
-msgstr "Външен вид"
+msgstr ""
 
 #: contents/config/config.qml:51 contents/ui/ChatAIMenu.qml:158
 #: contents/ui/SettingsPanel.qml:41
@@ -66,9 +62,8 @@ msgid "About"
 msgstr ""
 
 #: contents/ui/AiSelector.qml:30
-#, fuzzy
 msgid "Custom address…"
-msgstr "Персонализирани сайтове"
+msgstr ""
 
 #: contents/ui/AiSelector.qml:58
 msgid "AI assistant"
@@ -92,19 +87,16 @@ msgid "Close sign-in window"
 msgstr ""
 
 #: contents/ui/ChatAIMenu.qml:45 contents/ui/WebView.qml:1090
-#, fuzzy
 msgid "Open in Browser"
-msgstr "Отворете връзката в браузъра"
+msgstr ""
 
 #: contents/ui/ChatAIMenu.qml:52
-#, fuzzy
 msgid "Copy Address"
-msgstr "Копирай адрес на връзката"
+msgstr ""
 
 #: contents/ui/ChatAIMenu.qml:59
-#, fuzzy
 msgid "Reload Ignoring Cache"
-msgstr "Презареди текущата страница"
+msgstr ""
 
 #: contents/ui/ChatAIMenu.qml:69
 #, javascript-format
@@ -136,9 +128,8 @@ msgid "Hide Toolbar Automatically"
 msgstr ""
 
 #: contents/ui/ChatAIMenu.qml:113
-#, fuzzy
 msgid "Downloads (%1)"
-msgstr "Папка за изтегляне"
+msgstr ""
 
 #: contents/ui/ChatAIMenu.qml:127
 #: contents/ui/settings/AppearanceSettings.qml:49
@@ -150,9 +141,8 @@ msgid "Find in Page"
 msgstr ""
 
 #: contents/ui/ChatAIMenu.qml:146
-#, fuzzy
 msgid "ChatAI Settings"
-msgstr "Настройки за известия"
+msgstr ""
 
 #: contents/ui/ChatAIMenu.qml:171
 msgid "Open Configuration Window…"
@@ -171,72 +161,68 @@ msgid "Developer Tools"
 msgstr ""
 
 #: contents/ui/ChatAIMenu.qml:199
-#, fuzzy
 msgid "About ChatAI"
-msgstr "ЧатAI"
+msgstr ""
 
-#: contents/ui/CompactRepresentation.qml:28 contents/ui/main.qml:46
-#: contents/ui/settings/AboutSettings.qml:65 contents/ui/WebView.qml:631
+#: contents/ui/CompactRepresentation.qml:28 contents/ui/WebView.qml:631
+#: contents/ui/main.qml:46 contents/ui/settings/AboutSettings.qml:65
 msgid "ChatAI"
-msgstr "ЧатAI"
+msgstr ""
 
 #: contents/ui/CompactRepresentation.qml:43
 msgid "Open ChatAI — %1"
 msgstr ""
 
-#: contents/ui/ContextMenu.qml:32 contents/ui/Header.qml:108
+#: contents/ui/ContextMenu.qml:32 contents/ui/Header.qml:110
 msgid "Back"
-msgstr "Назад"
+msgstr ""
 
-#: contents/ui/ContextMenu.qml:41 contents/ui/Header.qml:116
+#: contents/ui/ContextMenu.qml:41 contents/ui/Header.qml:118
 msgid "Forward"
-msgstr "Напред"
+msgstr ""
 
-#: contents/ui/ContextMenu.qml:50 contents/ui/Header.qml:126
+#: contents/ui/ContextMenu.qml:50 contents/ui/Header.qml:128
 #: contents/ui/settings/AppearanceSettings.qml:48
 msgid "Reload"
-msgstr "Презареди"
+msgstr ""
 
 #: contents/ui/ContextMenu.qml:56
 msgid "Save as PDF"
-msgstr "Запази като PDF"
+msgstr ""
 
 #: contents/ui/ContextMenu.qml:63
 msgid "Save as MHTML"
-msgstr "Запази като MHTML"
+msgstr ""
 
 #: contents/ui/ContextMenu.qml:70
 msgid "Open Link in Browser"
-msgstr "Отворете връзката в браузъра"
+msgstr ""
 
 #: contents/ui/ContextMenu.qml:77
 msgid "Copy Link Address"
-msgstr "Копирай адрес на връзката"
+msgstr ""
 
 #: contents/ui/DevToolsWindow.qml:22
 msgid "ChatAI — Developer tools"
 msgstr ""
 
 #: contents/ui/DownloadIndicator.qml:36
-#, fuzzy
 msgid "One download in progress"
 msgid_plural "%1 downloads in progress"
-msgstr[0] "Изтеглянето е в ход"
-msgstr[1] "Изтеглянето е в ход"
+msgstr[0] ""
+msgstr[1] ""
 
 #: contents/ui/DownloadIndicator.qml:37
-#, fuzzy
 msgid "One download in progress, %2%"
 msgid_plural "%1 downloads in progress, %2%"
-msgstr[0] "Изтеглянето е в ход"
-msgstr[1] "Изтеглянето е в ход"
+msgstr[0] ""
+msgstr[1] ""
 
 #: contents/ui/DownloadIndicator.qml:40
-#, fuzzy
 msgid "One download failed"
 msgid_plural "%1 downloads failed"
-msgstr[0] "Изтеглянето е в ход"
-msgstr[1] "Изтеглянето е в ход"
+msgstr[0] ""
+msgstr[1] ""
 
 #: contents/ui/DownloadIndicator.qml:41
 msgid "One download completed, not opened yet"
@@ -245,170 +231,163 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: contents/ui/DownloadIndicator.qml:44
-#, fuzzy
 msgid "Open the downloads list"
-msgstr "Отвори папката за изтегляния"
+msgstr ""
 
-#: contents/ui/DownloadPopup.qml:40
+#: contents/ui/DownloadPopup.qml:42
 msgctxt "bytes"
 msgid "B"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:40
+#: contents/ui/DownloadPopup.qml:42
 msgctxt "kilobytes"
 msgid "kB"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:40
+#: contents/ui/DownloadPopup.qml:42
 msgctxt "megabytes"
 msgid "MB"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:40
+#: contents/ui/DownloadPopup.qml:42
 msgctxt "gigabytes"
 msgid "GB"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:40
+#: contents/ui/DownloadPopup.qml:42
 msgctxt "terabytes"
 msgid "TB"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:44
+#: contents/ui/DownloadPopup.qml:46
 msgctxt "file size: value and unit"
 msgid "%1 %2"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:48
+#: contents/ui/DownloadPopup.qml:50
 msgctxt "transfer rate"
 msgid "%1/s"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:53
+#: contents/ui/DownloadPopup.qml:55
 msgid "%1 second left"
 msgid_plural "%1 seconds left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: contents/ui/DownloadPopup.qml:55
+#: contents/ui/DownloadPopup.qml:57
 msgid "%1 minute left"
 msgid_plural "%1 minutes left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: contents/ui/DownloadPopup.qml:56
+#: contents/ui/DownloadPopup.qml:58
 msgid "%1 hour left"
 msgid_plural "%1 hours left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: contents/ui/DownloadPopup.qml:62
+#: contents/ui/DownloadPopup.qml:64
 msgid "Starting…"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:65 contents/ui/DownloadPopup.qml:67
+#: contents/ui/DownloadPopup.qml:67 contents/ui/DownloadPopup.qml:69
 msgid "%1 of %2"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:65
+#: contents/ui/DownloadPopup.qml:67
 msgid "Paused — %1"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:69
+#: contents/ui/DownloadPopup.qml:71
 #, javascript-format
 msgctxt "percentage"
 msgid "%1%"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:74
+#: contents/ui/DownloadPopup.qml:76
 msgctxt "separator between download status parts"
 msgid " · "
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:77
+#: contents/ui/DownloadPopup.qml:79
 msgid "PDF saved — %1"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:77
+#: contents/ui/DownloadPopup.qml:79
 msgid "Completed — %1"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:79
-#: contents/ui/settings/DownloadsSettings.qml:140
-#, fuzzy
-msgid "Cancelled"
-msgstr "Отмени"
-
 #: contents/ui/DownloadPopup.qml:81
+#: contents/ui/settings/DownloadsSettings.qml:140
+msgid "Cancelled"
+msgstr ""
+
+#: contents/ui/DownloadPopup.qml:83
 msgid "Interrupted — %1"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:81
+#: contents/ui/DownloadPopup.qml:83
 #: contents/ui/settings/DownloadsSettings.qml:141
 msgid "Interrupted"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:83
+#: contents/ui/DownloadPopup.qml:85
 msgid "Unknown state"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:102
-#, fuzzy
+#: contents/ui/DownloadPopup.qml:104
 msgid "Clear finished"
-msgstr "Изтеглянето е в ход"
+msgstr ""
 
-#: contents/ui/DownloadPopup.qml:123
-#, fuzzy
+#: contents/ui/DownloadPopup.qml:125
 msgid "No downloads in this session"
-msgstr "Изтеглянето е в ход"
+msgstr ""
 
-#: contents/ui/DownloadPopup.qml:135
-#, fuzzy
+#: contents/ui/DownloadPopup.qml:137
 msgid "Downloads list"
-msgstr "Папка за изтегляне"
+msgstr ""
 
-#: contents/ui/DownloadPopup.qml:145
+#: contents/ui/DownloadPopup.qml:147
 msgid "%1: %2"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:223
+#: contents/ui/DownloadPopup.qml:225
 msgid "Resume"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:223
+#: contents/ui/DownloadPopup.qml:225
 msgid "Pause"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:229
+#: contents/ui/DownloadPopup.qml:231
 msgid "Cancel"
-msgstr "Отмени"
+msgstr ""
 
-#: contents/ui/DownloadPopup.qml:235 contents/ui/WebView.qml:585
+#: contents/ui/DownloadPopup.qml:237 contents/ui/WebView.qml:585
 msgid "Open"
-msgstr "Отвори"
+msgstr ""
 
-#: contents/ui/DownloadPopup.qml:241 contents/ui/WebView.qml:589
-#, fuzzy
+#: contents/ui/DownloadPopup.qml:243 contents/ui/WebView.qml:589
 msgid "Show in Folder"
-msgstr "Папка за изтегляне"
+msgstr ""
 
-#: contents/ui/DownloadPopup.qml:247 contents/ui/WebView.qml:1085
+#: contents/ui/DownloadPopup.qml:249 contents/ui/WebView.qml:1085
 msgid "Retry"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:253
+#: contents/ui/DownloadPopup.qml:255
 msgid "Remove from list"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:271
+#: contents/ui/DownloadPopup.qml:273
 #: contents/ui/settings/DownloadsSettings.qml:81
 msgid "Open Download Folder"
-msgstr "Отвори папката за изтегляния"
+msgstr ""
 
-#: contents/ui/DownloadPopup.qml:277
-#, fuzzy
+#: contents/ui/DownloadPopup.qml:279
 msgid "Choose Folder…"
-msgstr "Изберете папка за изтегляне"
+msgstr ""
 
 #: contents/ui/ErrorView.qml:21
 msgid "Web content error"
@@ -423,9 +402,8 @@ msgid "Try again"
 msgstr ""
 
 #: contents/ui/ErrorView.qml:61
-#, fuzzy
 msgid "Open in browser"
-msgstr "Отворете връзката в браузъра"
+msgstr ""
 
 #: contents/ui/FindBar.qml:28 contents/ui/settings/AboutSettings.qml:44
 msgid "Find in page"
@@ -445,56 +423,51 @@ msgstr ""
 
 #: contents/ui/FindBar.qml:89 contents/ui/settings/AppearanceSettings.qml:51
 msgid "Close"
-msgstr "Затвори"
+msgstr ""
 
 #: contents/ui/FullScreenWindow.qml:24
 msgid "ChatAI — Full screen"
 msgstr ""
 
-#: contents/ui/Header.qml:100
-#, fuzzy
+#: contents/ui/Header.qml:102
 msgid "Pinned: stays open when clicking outside"
-msgstr "Уиджетът ще остане отворен при кликване извън него."
+msgstr ""
 
-#: contents/ui/Header.qml:100
-#, fuzzy
+#: contents/ui/Header.qml:102
 msgid "Pin: keep open when clicking outside"
-msgstr "Уиджетът ще остане отворен при кликване извън него."
+msgstr ""
 
-#: contents/ui/Header.qml:126
+#: contents/ui/Header.qml:128
 msgid "Stop loading"
 msgstr ""
 
-#: contents/ui/Header.qml:135
+#: contents/ui/Header.qml:137
 msgid "Home page of the current assistant"
 msgstr ""
 
-#: contents/ui/Header.qml:155
-#, fuzzy
+#: contents/ui/Header.qml:157
 msgid "Custom address"
-msgstr "Персонализирани сайтове"
+msgstr ""
 
-#: contents/ui/Header.qml:168
+#: contents/ui/Header.qml:170
 msgid "Find in page (Ctrl+F)"
 msgstr ""
 
-#: contents/ui/Header.qml:187
+#: contents/ui/Header.qml:189
 msgid "More actions"
 msgstr ""
 
-#: contents/ui/Header.qml:207
-#, fuzzy
+#: contents/ui/Header.qml:209
 msgid "Close and release memory"
-msgstr "Затворете уеб изгледа и освободете паметта"
+msgstr ""
 
-#: contents/ui/Header.qml:221 contents/ui/settings/DownloadsSettings.qml:88
+#: contents/ui/Header.qml:223 contents/ui/settings/DownloadsSettings.qml:88
 msgid "Choose Download Folder"
-msgstr "Изберете папка за изтегляне"
+msgstr ""
 
 #: contents/ui/PermissionBar.qml:40
-#, fuzzy
 msgid "%1 wants to show notifications"
-msgstr "Разреши известията"
+msgstr ""
 
 #: contents/ui/PermissionBar.qml:42
 msgid "%1 wants to use your microphone"
@@ -537,10 +510,9 @@ msgid "Allow"
 msgstr ""
 
 #: contents/ui/ProviderModel.qml:34
-#, fuzzy
 msgctxt "provider category"
 msgid "General"
-msgstr "Общо"
+msgstr ""
 
 #: contents/ui/ProviderModel.qml:35
 msgctxt "provider category"
@@ -563,10 +535,9 @@ msgid "Agents"
 msgstr ""
 
 #: contents/ui/ProviderModel.qml:39
-#, fuzzy
 msgctxt "provider category"
 msgid "Open models"
-msgstr "Отвори папка"
+msgstr ""
 
 #: contents/ui/ProviderModel.qml:42
 msgid "Google sign-in works with the default browser identity. If Google says the browser may not be secure, make sure \"Identify as Chromium\" is off in Advanced."
@@ -581,9 +552,8 @@ msgid "Anthropic's assistant for writing, analysis and code."
 msgstr ""
 
 #: contents/ui/ProviderModel.qml:58
-#, fuzzy
 msgid "Claude only allows account creation and Google sign-in in well-known browsers. Sign in with an e-mail code or reuse credentials created in a regular browser."
-msgstr "Claude.ai позволява създаване на акаунт или вход с Google само в известни браузъри. За да го използвате в този Plasmoid, трябва да използвате данни за вход, създадени предварително в традиционен браузър."
+msgstr ""
 
 #: contents/ui/ProviderModel.qml:63
 msgid "Google's multimodal assistant."
@@ -658,10 +628,97 @@ msgid "Big-AGI web client (bring your own keys)."
 msgstr ""
 
 #: contents/ui/ProviderModel.qml:300
-#, fuzzy
 msgctxt "provider category"
 msgid "Custom"
-msgstr "Персонализирани сайтове"
+msgstr ""
+
+#: contents/ui/SettingsPanel.qml:80
+msgid "Settings categories"
+msgstr ""
+
+#: contents/ui/SettingsPanel.qml:133
+msgid "Back to the assistant"
+msgstr ""
+
+#: contents/ui/WebView.qml:166
+msgid "The configured address is not a valid HTTP or HTTPS URL."
+msgstr ""
+
+#: contents/ui/WebView.qml:599
+msgid "Download finished"
+msgstr ""
+
+#: contents/ui/WebView.qml:599
+msgid "Download failed"
+msgstr ""
+
+#: contents/ui/WebView.qml:600
+msgid "interrupted"
+msgstr ""
+
+#: contents/ui/WebView.qml:600 contents/ui/settings/SitesSettings.qml:258
+msgid "%1 — %2"
+msgstr ""
+
+#: contents/ui/WebView.qml:730
+msgid "Download in progress"
+msgstr ""
+
+#: contents/ui/WebView.qml:730
+msgid "The file '%1' is already being downloaded"
+msgstr ""
+
+#: contents/ui/WebView.qml:835
+msgid "The service did not provide an error description."
+msgstr ""
+
+#: contents/ui/WebView.qml:855
+msgid "The site's security certificate is not trusted."
+msgstr ""
+
+#: contents/ui/WebView.qml:869
+msgid "The web content process stopped unexpectedly (exit code %1)."
+msgstr ""
+
+#: contents/ui/WebView.qml:878
+msgid "The PDF could not be created."
+msgstr ""
+
+#: contents/ui/WebView.qml:889
+msgid "Blocked navigation"
+msgstr ""
+
+#: contents/ui/WebView.qml:889
+msgid "Only HTTP and HTTPS links can be opened from ChatAI."
+msgstr ""
+
+#: contents/ui/WebView.qml:1031
+msgid "Sign-in blocked"
+msgstr ""
+
+#: contents/ui/WebView.qml:1031
+msgid "The sign-in site's security certificate is not trusted."
+msgstr ""
+
+#: contents/ui/WebView.qml:1081
+msgid "The site"
+msgstr ""
+
+#: contents/ui/WebView.qml:1081
+msgid "%1 is taking long to respond. Some services hold the connection for automated clients; retrying usually works."
+msgstr ""
+
+#: contents/ui/WebView.qml:1107
+msgid "At %1% zoom the page sees a %2 px wide viewport and switches to its mobile layout, which may break sign-in. Reset the zoom or widen the widget."
+msgstr ""
+
+#: contents/ui/WebView.qml:1108
+msgid "The page sees a %1 px wide viewport and switches to its mobile layout, which may break sign-in. Widen the widget by dragging its edge."
+msgstr ""
+
+#: contents/ui/WebView.qml:1113
+msgid "Reset Zoom"
+msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:45
 msgid "Zoom in / out"
@@ -821,9 +878,8 @@ msgid "No cookies, tokens or page contents are included."
 msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:35
-#, fuzzy
 msgid "Website favicon"
-msgstr "Използвайте иконата на уебсайта"
+msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:36
 msgid "ChatAI logo (adapts to the theme)"
@@ -850,18 +906,16 @@ msgid "Assistant icon, colorful"
 msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:42
-#, fuzzy
 msgid "Custom icon"
-msgstr "Персонализирани сайтове"
+msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:46
 msgid "Pin"
 msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:47
-#, fuzzy
 msgid "Back and Forward"
-msgstr "Напред"
+msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:50
 msgid "\"Custom address…\" entry in the selector"
@@ -872,18 +926,16 @@ msgid "Panel icon:"
 msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:64
-#, fuzzy
 msgid "Panel icon"
-msgstr "Икона с контур"
+msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:69
 msgid "Assistants without a dedicated icon fall back to the ChatAI logo."
 msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:79
-#, fuzzy
 msgid "Custom icon:"
-msgstr "Персонализирани сайтове"
+msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:82
 msgid "Choose custom icon"
@@ -911,9 +963,8 @@ msgid "Folder:"
 msgstr ""
 
 #: contents/ui/settings/DownloadsSettings.qml:56
-#, fuzzy
 msgid "Download folder"
-msgstr "Папка за изтегляне"
+msgstr ""
 
 #: contents/ui/settings/DownloadsSettings.qml:66
 msgid "Choose…"
@@ -940,9 +991,8 @@ msgid "Completed"
 msgstr ""
 
 #: contents/ui/settings/DownloadsSettings.qml:139
-#, fuzzy
 msgid "Downloading"
-msgstr "Изтеглянето е в ход"
+msgstr ""
 
 #: contents/ui/settings/DownloadsSettings.qml:142
 msgid "Waiting"
@@ -969,14 +1019,12 @@ msgid "Window:"
 msgstr ""
 
 #: contents/ui/settings/GeneralSettings.qml:73
-#, fuzzy
 msgid "Keep the widget open when clicking outside (pin)"
-msgstr "Уиджетът ще остане отворен при кликване извън него."
+msgstr ""
 
 #: contents/ui/settings/GeneralSettings.qml:79
-#, fuzzy
 msgid "Preload the assistant when Plasma starts"
-msgstr "Заредете уебсайт при стартиране на Plasma"
+msgstr ""
 
 #: contents/ui/settings/GeneralSettings.qml:85
 msgid "Preloading makes the first opening instant but keeps the web engine in memory from login."
@@ -987,9 +1035,8 @@ msgid "Toolbar:"
 msgstr ""
 
 #: contents/ui/settings/GeneralSettings.qml:97
-#, fuzzy
 msgid "Hide the toolbar"
-msgstr "Скрий заглавието"
+msgstr ""
 
 #: contents/ui/settings/GeneralSettings.qml:103
 msgid "Hide the toolbar automatically and reveal it on hover"
@@ -1001,14 +1048,6 @@ msgstr ""
 
 #: contents/ui/settings/GeneralSettings.qml:113
 msgid "Links that would open a new window are opened in your default browser. Sign-in pages stay inside ChatAI so logins keep working."
-msgstr ""
-
-#: contents/ui/SettingsPanel.qml:80
-msgid "Settings categories"
-msgstr ""
-
-#: contents/ui/SettingsPanel.qml:133
-msgid "Back to the assistant"
 msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:32
@@ -1024,14 +1063,12 @@ msgid "Always block"
 msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:35
-#, fuzzy
 msgid "Notifications:"
-msgstr "Настройки за известия"
+msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:35
-#, fuzzy
 msgid "Shown as Plasma notifications."
-msgstr "Разреши известията"
+msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:36
 msgid "Microphone:"
@@ -1046,9 +1083,8 @@ msgid "Camera:"
 msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:38
-#, fuzzy
 msgid "Screen sharing:"
-msgstr "Разрешете споделяне на екран"
+msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:38
 msgid "The primary screen is shared when allowed."
@@ -1068,9 +1104,8 @@ msgid "Lets a page read what you copied. Pasting with Ctrl+V never needs this."
 msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:45
-#, fuzzy
 msgid "Notifications"
-msgstr "Настройки за известия"
+msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:46
 msgid "Microphone"
@@ -1081,14 +1116,12 @@ msgid "Camera"
 msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:48
-#, fuzzy
 msgid "Camera and microphone"
-msgstr "Позволете използването на микрофон."
+msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:50
-#, fuzzy
 msgid "Screen sharing"
-msgstr "Разрешете споделяне на екран"
+msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:51
 msgid "Location"
@@ -1127,18 +1160,16 @@ msgid "Unknown"
 msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:79
-#, fuzzy
 msgid "Default behaviour"
-msgstr "Икона по подразбиране в тъмен режим"
+msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:84
 msgid "\"Ask per site\" shows a prompt inside ChatAI the first time a site requests the permission; the answer is remembered for that site."
 msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:127
-#, fuzzy
 msgid "Saved site permissions"
-msgstr "Разрешения"
+msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:135
 msgid "Open the ChatAI widget to review the permissions saved per site. They are stored in the web engine profile."
@@ -1194,28 +1225,24 @@ msgid "Login required"
 msgstr ""
 
 #: contents/ui/settings/SitesSettings.qml:189
-#, fuzzy
 msgid "Custom sites"
-msgstr "Персонализирани сайтове"
+msgstr ""
 
 #: contents/ui/settings/SitesSettings.qml:194
 msgid "Add any chat website by name and address. Custom sites use the ChatAI icon and get no special access to your system."
 msgstr ""
 
 #: contents/ui/settings/SitesSettings.qml:206
-#, fuzzy
 msgid "Name"
-msgstr "Име на сайта"
+msgstr ""
 
 #: contents/ui/settings/SitesSettings.qml:209
-#, fuzzy
 msgid "Site name"
-msgstr "Име на сайта"
+msgstr ""
 
 #: contents/ui/settings/SitesSettings.qml:218
-#, fuzzy
 msgid "Site address"
-msgstr "Име на сайта"
+msgstr ""
 
 #: contents/ui/settings/SitesSettings.qml:223
 msgid "Save"
@@ -1226,12 +1253,7 @@ msgid "Add"
 msgstr ""
 
 #: contents/ui/settings/SitesSettings.qml:230
-#, fuzzy
 msgid "Cancel editing"
-msgstr "Отмени"
-
-#: contents/ui/settings/SitesSettings.qml:258 contents/ui/WebView.qml:600
-msgid "%1 — %2"
 msgstr ""
 
 #: contents/ui/settings/SitesSettings.qml:289
@@ -1244,7 +1266,7 @@ msgstr ""
 
 #: contents/ui/settings/SitesSettings.qml:312
 msgid "No custom sites added yet"
-msgstr "Все още не са добавени персонализирани сайтове."
+msgstr ""
 
 #: contents/ui/settings/StorageSettings.qml:49
 msgid "HTTP cache"
@@ -1276,7 +1298,7 @@ msgstr ""
 
 #: contents/ui/settings/StorageSettings.qml:94
 msgid "Open Cache Folder"
-msgstr "Отворете папката с кеша"
+msgstr ""
 
 #: contents/ui/settings/StorageSettings.qml:101
 msgid "Open the ChatAI widget to clear the cache. Clearing removes downloaded page resources only; you stay signed in."
@@ -1320,7 +1342,7 @@ msgstr ""
 
 #: contents/ui/settings/StorageSettings.qml:190
 msgid "Open Profile Folder"
-msgstr "Отвори папката с профила"
+msgstr ""
 
 #: contents/ui/settings/StorageSettings.qml:197
 msgid "Switch WebEngine profile?"
@@ -1339,27 +1361,24 @@ msgid "Needed by the \"Copy\" buttons of most assistants. Reading the clipboard 
 msgstr ""
 
 #: contents/ui/settings/WebFeaturesSettings.qml:34
-#, fuzzy
 msgid "Let scripts paste from the clipboard"
-msgstr "Позволете на JavaScript да поставя от клипборда."
+msgstr ""
 
 #: contents/ui/settings/WebFeaturesSettings.qml:34
 msgid "Allows a page to read the clipboard without asking. Ctrl+V works without this. Off by default for privacy."
 msgstr ""
 
 #: contents/ui/settings/WebFeaturesSettings.qml:35
-#, fuzzy
 msgid "Let pages open new windows"
-msgstr "Позволете на JavaScript да отваря нови прозорци"
+msgstr ""
 
 #: contents/ui/settings/WebFeaturesSettings.qml:35
 msgid "New windows are intercepted: sign-in pages stay in ChatAI, other links open in your browser."
 msgstr ""
 
 #: contents/ui/settings/WebFeaturesSettings.qml:36
-#, fuzzy
 msgid "Require a click before media plays"
-msgstr "Изисква се потребителски жест за възпроизвеждане на медия."
+msgstr ""
 
 #: contents/ui/settings/WebFeaturesSettings.qml:36
 msgid "Blocks autoplaying audio and video (including voice replies) until you interact with the page."
@@ -1392,195 +1411,3 @@ msgstr ""
 #: contents/ui/settings/WebFeaturesSettings.qml:43
 msgid "These options change how the embedded web engine behaves for every assistant. Changes apply immediately."
 msgstr ""
-
-#: contents/ui/WebView.qml:166
-msgid "The configured address is not a valid HTTP or HTTPS URL."
-msgstr ""
-
-#: contents/ui/WebView.qml:599
-#, fuzzy
-msgid "Download finished"
-msgstr "Изтеглянето е в ход"
-
-#: contents/ui/WebView.qml:599
-#, fuzzy
-msgid "Download failed"
-msgstr "Изтеглянето е в ход"
-
-#: contents/ui/WebView.qml:600
-msgid "interrupted"
-msgstr ""
-
-#: contents/ui/WebView.qml:730
-msgid "Download in progress"
-msgstr "Изтеглянето е в ход"
-
-#: contents/ui/WebView.qml:730
-msgid "The file '%1' is already being downloaded"
-msgstr ""
-
-#: contents/ui/WebView.qml:835
-msgid "The service did not provide an error description."
-msgstr ""
-
-#: contents/ui/WebView.qml:855
-msgid "The site's security certificate is not trusted."
-msgstr ""
-
-#: contents/ui/WebView.qml:869
-msgid "The web content process stopped unexpectedly (exit code %1)."
-msgstr ""
-
-#: contents/ui/WebView.qml:878
-msgid "The PDF could not be created."
-msgstr ""
-
-#: contents/ui/WebView.qml:889
-#, fuzzy
-msgid "Blocked navigation"
-msgstr "Активирайте фокус върху навигацията"
-
-#: contents/ui/WebView.qml:889
-msgid "Only HTTP and HTTPS links can be opened from ChatAI."
-msgstr ""
-
-#: contents/ui/WebView.qml:1031
-msgid "Sign-in blocked"
-msgstr ""
-
-#: contents/ui/WebView.qml:1031
-msgid "The sign-in site's security certificate is not trusted."
-msgstr ""
-
-#: contents/ui/WebView.qml:1081
-#, fuzzy
-msgid "The site"
-msgstr "Файлът"
-
-#: contents/ui/WebView.qml:1081
-msgid "%1 is taking long to respond. Some services hold the connection for automated clients; retrying usually works."
-msgstr ""
-
-#: contents/ui/WebView.qml:1107
-msgid "At %1% zoom the page sees a %2 px wide viewport and switches to its mobile layout, which may break sign-in. Reset the zoom or widen the widget."
-msgstr ""
-
-#: contents/ui/WebView.qml:1108
-msgid "The page sees a %1 px wide viewport and switches to its mobile layout, which may break sign-in. Widen the widget by dragging its edge."
-msgstr ""
-
-#: contents/ui/WebView.qml:1113
-msgid "Reset Zoom"
-msgstr ""
-
-#~ msgid "Open file"
-#~ msgstr "Отвори файл"
-
-#~ msgid "Go back to previous page"
-#~ msgstr "Върнете се на предишната страница"
-
-#~ msgid "Go forward to next page"
-#~ msgstr "Отидете напред на следващата страница"
-
-#~ msgid "Return to homepage/default chat"
-#~ msgstr "Върнете се на началната страница/по подразбиране чат"
-
-#~ msgid "Select or enter chat website URL"
-#~ msgstr "Изберете или въведете URL адрес на чат уебсайт"
-
-#~ msgid "Header will hide automatically when not in use"
-#~ msgstr "Заглавието ще се скрие автоматично, когато не се използва."
-
-#~ msgid "Header will stay visible"
-#~ msgstr "Заглавието ще остане видимо"
-
-#~ msgid "Manage downloads and download folder"
-#~ msgstr "Управлявайте изтеглянията и папката за изтегляния"
-
-#~ msgid "Widget will close when clicking outside"
-#~ msgstr "Уиджетът ще се затвори при кликване извън него."
-
-#~ msgid "Custom URL..."
-#~ msgstr "Персонализиран URL..."
-
-#~ msgid "Icon:"
-#~ msgstr "Икона:"
-
-#~ msgid "Default adaptive icon"
-#~ msgstr "Икона по подразбиране с адаптивен дизайн"
-
-#~ msgid "Default light icon"
-#~ msgstr "Икона по подразбиране за светлина"
-
-#~ msgid "Filled icon"
-#~ msgstr "Запълнена икона"
-
-#~ msgid "Colorful icon"
-#~ msgstr "Цветна икона"
-
-#~ msgid "Header Options"
-#~ msgstr "Опции на заглавието"
-
-#~ msgid "Auto-hide header (show on mouse hover)"
-#~ msgstr "Автоматично скриване на заглавката (показване при задържане на мишката)"
-
-#~ msgid "Hide Keep Open button"
-#~ msgstr "Скрий бутона \"Дръж отворен\""
-
-#~ msgid "Hide Custom URL button"
-#~ msgstr "Скрий бутона за персонализиран URL"
-
-#~ msgid "Hide Auto-Hide button"
-#~ msgstr "Скрий бутона за автоматично скриване"
-
-#~ msgid "Hide Close button"
-#~ msgstr "Скрий бутона Затвори"
-
-#~ msgid "Hide Home button"
-#~ msgstr "Скрий бутона Начало"
-
-#~ msgid "Hide Download button"
-#~ msgstr "Скрий бутона за изтегляне"
-
-#~ msgid "Hide navigation buttons"
-#~ msgstr "Скрийте навигационните бутони"
-
-#~ msgid "Hide refresh button"
-#~ msgstr "Скрий бутона за опресняване"
-
-#~ msgid "You can still use the Go back to... and Keep open actions by right-clicking the widget icon."
-#~ msgstr "Все още можете да използвате действията Върни се към... и Запази отворено, като щракнете с десния бутон на мишката върху иконата на виджета."
-
-#~ msgid "Predefined Sites"
-#~ msgstr "Предефинирани сайтове"
-
-#~ msgid "If notifications are not working create the file:"
-#~ msgstr "Ако известията не работят, създайте файла:"
-
-#~ msgid "containing the following text:"
-#~ msgstr "съдържащ следния текст:"
-
-#~ msgid "Allow geolocation access"
-#~ msgstr "Позволете достъп до геолокация"
-
-#~ msgid "Allow using webcam"
-#~ msgstr "Позволете използването на уебкамера."
-
-#~ msgid "Enable spatial navigation"
-#~ msgstr "Активирайте пространствена навигация"
-
-#~ msgid "Allows navigation between focusable elements using arrow keys"
-#~ msgstr "Позволява навигация между фокусируеми елементи с помощта на стрелковите клавиши"
-
-#~ msgid "Allow JavaScript to access clipboard"
-#~ msgstr "Позволете на JavaScript да получава достъп до клипборда."
-
-#~ msgid "Allow unknown URL schemes"
-#~ msgstr "Позволете неизвестни URL схеми"
-
-#~ msgid ""
-#~ "Cache location: %1\n"
-#~ "Profile location: %2"
-#~ msgstr ""
-#~ "Местоположение на кеша: %1  \n"
-#~ "Местоположение на профила: %2"
