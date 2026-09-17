@@ -122,7 +122,10 @@
     <!-- Minutes hidden before the page may be discarded (0 = never) -->
     <entry name="discardAfterMinutes" type="Int"><default>0</default></entry>
     <entry name="enableDevTools" type="Bool"><default>false</default></entry>
-    <!-- Remove the "QtWebEngine/x.y" token from the user agent (identify as plain Chromium) -->
+    <!-- Remove the "QtWebEngine/x.y" token from the user agent (identify as plain Chromium).
+         Off by default: Google sign-in REJECTS browsers whose UA claims Chrome/Firefox but
+         whose fingerprint differs ("browser or app may not be secure"), while the honest
+         Qt WebEngine identity is accepted (measured 2026-09-17, docs/05). -->
     <entry name="compatibilityUserAgent" type="Bool"><default>false</default></entry>
     <entry name="customUserAgent" type="String"><default></default></entry>
   </group>

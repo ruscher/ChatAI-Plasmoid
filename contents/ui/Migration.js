@@ -9,7 +9,7 @@
 // See docs/13-RELEASE-1.0.1.md. `config` is plasmoid.configuration,
 // `legacyUrlMap` maps legacy provider URLs to their canonical URL.
 
-var CURRENT_VERSION = 1;
+var CURRENT_VERSION = 2;
 var LEGACY_DEFAULT_URL = "https://duckduckgo.com/chat";
 
 var POLICY_ASK = 0;
@@ -76,8 +76,6 @@ function run(config, legacyUrlMap) {
         // The default of javascriptCanPaste changed to false; keep the
         // behaviour existing users had.
         config.javascriptCanPaste = true;
-        // 1.0.0 always identified as plain Chromium; keep that for existing users.
-        config.compatibilityUserAgent = true;
     }
 
     // Provider URLs that moved (x.com/i/grok -> grok.com, duckduckgo.com/chat -> duck.ai/chat).
@@ -90,6 +88,13 @@ function run(config, legacyUrlMap) {
             }
         }
     }
+
+    // Schema 2: an earlier 1.0.1 build switched existing installs to the
+    // Chromium-compatible identity; Google sign-in rejects that identity
+    // ("browser or app may not be secure") while the honest Qt WebEngine UA
+    // is accepted, so undo it. Users can re-enable it in Advanced.
+    if (version < 2 && config.compatibilityUserAgent === true)
+        config.compatibilityUserAgent = false;
 
     config.configVersion = CURRENT_VERSION;
     return true;

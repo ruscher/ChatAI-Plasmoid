@@ -41,13 +41,27 @@ o comportamento de quem depende dos padrões) **+ Claude** (passa a `true`). Nov
 Manus, Qwen, Kimi, Mistral Vibe) começam desligados e aparecem na página Sites com ícone e descrição.
 Racional: mudar padrões de chaves existentes altera silenciosamente listas de usuários; adicionar é seguro.
 
-## User‑Agent
+## User‑Agent — decisão final (medida em 2026‑09‑17, ver também 07)
 
-- UA padrão do Qt 6.11: `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/6.11.2 Chrome/140.0.0.0 Safari/537.36`.
-- Harness (22 URLs × 2 UAs, mais 3 repetições dos casos duvidosos): **nenhuma diferença reproduzível** entre o UA padrão e o UA sem o token `QtWebEngine`. A única falha com o UA padrão (GitHub, `net::ERR_NETWORK_*`) não se repetiu em 2 novas execuções: erro de rede transitório. ChatGPT expira nos dois UAs no harness headless (sem GPU) e é testado na sessão real.
-- Decisão (regra do projeto: preferir o UA padrão, override só com necessidade comprovada): **UA padrão do Qt WebEngine** para instalações novas. Opção "Identificar‑se como Chromium" (`compatibilityUserAgent`) em Avançado remove só o token `QtWebEngine/x.y.z`, mantendo a versão real do Chromium — para quem encontrar um site que recuse o token (relato dos mantenedores anteriores para ChatGPT/DeepSeek, não reproduzido aqui).
-- Instalações existentes (1.0.0 sempre usou UA Chromium) recebem `compatibilityUserAgent = true` na migração para não mudar comportamento.
-- Nenhum UA mobile/Chrome 76 permanece. ChatGPT e DeepSeek declaram `stripQtToken: true` no registro (removem só o token `QtWebEngine/x.y.z`) porque o desafio anti-bot do ChatGPT pode travar com o token, mesmo com a identidade Chromium global desligada. Override por provedor continua possível via `userAgent` no registro (nenhum usado). `customUserAgent` substitui tudo.
+Teste real contra `accounts.google.com` (perfil descartável, identificador genérico `test@gmail.com`, e perfil
+persistente já marcado pelo Google, no widget real):
+
+| Identidade enviada | Página de e‑mail | Após enviar o e‑mail | OAuth (`/o/oauth2/v2/auth`) |
+| --- | --- | --- | --- |
+| **UA padrão do Qt** (`… QtWebEngine/6.11.2 Chrome/140 …`) | carrega | **aceito** ("conta não encontrada" para o e‑mail de teste; página de senha no perfil real) | passa (`invalid_client`, não `disallowed_useragent`) |
+| UA Chrome sem o token | carrega | **REJEITADO** — "Esse navegador ou app pode não ser seguro" | passa |
+| UA Chrome sem token + marca "Google Chrome" nos Client Hints | carrega | **REJEITADO** | — |
+| UA Firefox | carrega | **REJEITADO** | — |
+
+Os Client Hints (`Sec-CH-UA`, `navigator.userAgentData`) do Qt WebEngine já são idênticos aos de um Chromium
+(`Chromium` + `Not=A?Brand`); o único sinal de identidade é o token no `User-Agent`. O Google rejeita navegadores
+**disfarçados** (UA de Chrome/Firefox com impressão digital diferente) e aceita a identidade honesta do Qt WebEngine.
+
+Decisão: **UA padrão do Qt para todos os provedores** (`compatibilityUserAgent` desligado por padrão; a migração v2 desliga
+onde a build anterior da 1.0.1 havia ligado). `stripQtToken` permanece disponível no registro mas **nenhum provedor o usa**.
+A 1.0.0 usava UA Chrome 134 para tudo — é essa a causa histórica do "navegador pode não ser seguro" no login Google.
+ChatGPT: o carregamento oscila (anti‑bot) independentemente da identidade; sem sessão ele redireciona para o login Google,
+que agora funciona com a identidade honesta.
 
 ## Ícones
 

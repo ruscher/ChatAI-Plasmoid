@@ -20,8 +20,9 @@ import QtQuick
  *   id, name, url, legacyUrls[], configKey, iconId, iconStyles[] (subset of
  *   "colorful", "filled", "outlined"), category, description, requiresLogin,
  *   supportsMicrophone, supportsCamera, supportsUpload, supportsNotifications,
- *   supportsWebSearch, userAgent (optional override), loginNotes,
- *   compatibilityNotes.
+ *   supportsWebSearch, userAgent (optional full override), stripQtToken
+ *   (drop only the "QtWebEngine/x.y" token; avoid — Google sign-in rejects
+ *   disguised browsers), loginNotes, compatibilityNotes.
  */
 QtObject {
     id: providerModel
@@ -38,7 +39,7 @@ QtObject {
         open: i18nc("provider category", "Open models")
     })
 
-    readonly property string googleLoginNote: i18n("Google sign-in is blocked inside embedded browsers by Google. Sign in with e-mail, or reuse a session created in a regular browser.")
+    readonly property string googleLoginNote: i18n("Google sign-in works with the default browser identity. If Google says the browser may not be secure, make sure \"Identify as Chromium\" is off in Advanced.")
 
     readonly property var builtInProviders: [
         {
@@ -46,9 +47,7 @@ QtObject {
             iconId: "chatgpt", iconStyles: ["colorful", "filled", "outlined"], category: "general",
             description: i18n("OpenAI's assistant with voice, files and web search."),
             requiresLogin: true, supportsMicrophone: true, supportsCamera: false, supportsUpload: true,
-            supportsNotifications: true, supportsWebSearch: true, loginNotes: googleLoginNote,
-            // ChatGPT's anti-bot check hangs on the "QtWebEngine" product token.
-            stripQtToken: true
+            supportsNotifications: true, supportsWebSearch: true, loginNotes: googleLoginNote
         },
         {
             id: "claude", name: "Claude", url: "https://claude.ai/new", configKey: "showClaude",
@@ -70,7 +69,7 @@ QtObject {
             iconId: "deepseek", iconStyles: ["colorful", "filled", "outlined"], category: "open",
             description: i18n("DeepSeek's chat with reasoning mode."),
             requiresLogin: true, supportsMicrophone: false, supportsCamera: false, supportsUpload: true,
-            supportsNotifications: false, supportsWebSearch: true, stripQtToken: true
+            supportsNotifications: false, supportsWebSearch: true
         },
         {
             id: "duckduckgo", name: "Duck.ai", url: "https://duck.ai/chat", legacyUrls: ["https://duckduckgo.com/chat"],
@@ -343,12 +342,12 @@ QtObject {
         return /(\/oauth|\/o\/oauth2|\/authorize|\/login|\/signin|\/sign_in|\/sign-in|\/sso\b|\/auth\b|openid|saml|\/consent|\/callback)/.test(path);
     }
 
-    // User agent policy (docs/05): Qt WebEngine's default UA, unless a custom UA
-    // is set (highest precedence), a provider declares a full override, or the
-    // "QtWebEngine/x.y.z" token must be dropped — either globally (the advanced
-    // Chromium-compatible identity) or for a provider that hangs on it
-    // (stripQtToken, e.g. ChatGPT and DeepSeek). The real Chromium version is
-    // always kept.
+    // User agent policy (docs/05): Qt WebEngine's honest default UA. Measured
+    // 2026-09-17: Google sign-in ACCEPTS it and REJECTS a UA that claims plain
+    // Chrome or Firefox ("browser or app may not be secure"), so hiding the
+    // QtWebEngine token is opt-in (compatibilityUserAgent) or per provider
+    // (stripQtToken). A provider may declare a full override (userAgent); an
+    // advanced custom UA has the highest precedence.
     function stripQtToken(userAgent) {
         return String(userAgent || "").replace(/\s*QtWebEngine\/[\d.]+/, "");
     }

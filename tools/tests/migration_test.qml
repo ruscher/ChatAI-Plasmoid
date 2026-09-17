@@ -22,9 +22,9 @@ Item {
         check("notifications true -> ask", c.notificationsPolicy === 0);
         check("webcam false -> ask", c.webcamPolicy === 0);
         check("javascriptCanPaste preserved", c.javascriptCanPaste === true);
-        check("compat UA preserved", c.compatibilityUserAgent === true);
+        check("compat UA left off (Google rejects the disguised identity)", c.compatibilityUserAgent === false);
         check("url grok migrated", c.url === "https://grok.com");
-        check("configVersion", c.configVersion === 1);
+        check("configVersion", c.configVersion === 2);
         check("idempotent", Migration.run(c, legacyMap) === false);
 
         // Fresh install: nothing changes except version
@@ -35,6 +35,12 @@ Item {
         Migration.run(f, legacyMap);
         check("fresh: paste stays false", f.javascriptCanPaste === false);
         check("fresh: compat UA stays false", f.compatibilityUserAgent === false);
+        // v1 -> v2: an earlier 1.0.1 build forced compatibilityUserAgent on; v2 undoes it
+        let v1 = { configVersion: 1, compatibilityUserAgent: true, url: "https://gemini.google.com/app", customSites: "", customSitesJson: "" };
+        check("v1->v2 undoes forced Chromium identity", Migration.run(v1, legacyMap) === true && v1.compatibilityUserAgent === false && v1.configVersion === 2);
+        let v1b = { configVersion: 1, compatibilityUserAgent: false, url: "https://duck.ai/chat", customSites: "", customSitesJson: "" };
+        Migration.run(v1b, legacyMap);
+        check("v1->v2 keeps compat off", v1b.compatibilityUserAgent === false && v1b.configVersion === 2);
         check("fresh: url unchanged", f.url === "https://duck.ai/chat");
         // Existing user who disabled notifications
         let n = { configVersion: 0, notificationsEnabled: false, notificationsPolicy: 0, url: "https://chatgpt.com", lastFavIcon: "x", customSites: "", customSitesJson: "" };

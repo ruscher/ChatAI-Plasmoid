@@ -76,7 +76,7 @@ ColumnLayout {
         }
 
         QQC2.Label {
-            text: i18n("Enable if a site refuses to load or sign in. The Chromium version stays truthful.")
+            text: i18n("Not recommended for Google accounts: Google rejects browsers that hide their identity (\"This browser or app may not be secure\") and accepts the honest Qt WebEngine identity. Enable only if a specific site refuses the Qt WebEngine token.")
             font: Kirigami.Theme.smallFont
             opacity: 0.7
             wrapMode: Text.WordWrap
