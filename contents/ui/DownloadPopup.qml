@@ -31,8 +31,10 @@ PlasmaComponents3.Popup {
     readonly property var model: runtime ? runtime.downloads : null
     readonly property int count: model ? model.count : 0
 
-    width: Math.min(Kirigami.Units.gridUnit * 24, parent ? parent.width : Kirigami.Units.gridUnit * 24)
+    width: Kirigami.Units.gridUnit * 24
     padding: Kirigami.Units.smallSpacing
+    // Non-negative margins make QQC2 keep the popup within the window bounds.
+    margins: Kirigami.Units.smallSpacing
     modal: false
     focus: true
     closePolicy: PlasmaComponents3.Popup.CloseOnEscape | PlasmaComponents3.Popup.CloseOnPressOutsideParent

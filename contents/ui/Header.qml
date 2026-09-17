@@ -59,9 +59,11 @@ RowLayout {
     }
 
     function openDownloads(anchorItem) {
-        downloadPopup.parent = anchorItem || kebabButton;
-        downloadPopup.x = Math.min(0, header.width - downloadPopup.parent.x - downloadPopup.width);
-        downloadPopup.y = downloadPopup.parent.height + Kirigami.Units.smallSpacing;
+        const anchor = anchorItem || kebabButton;
+        downloadPopup.parent = anchor;
+        // Right-align with the anchor; Popup.margins keeps it inside the window.
+        downloadPopup.x = anchor.width - downloadPopup.width;
+        downloadPopup.y = anchor.height + Kirigami.Units.smallSpacing;
         downloadPopup.open();
     }
 
