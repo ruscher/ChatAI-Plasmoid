@@ -35,7 +35,7 @@ Data: 2026‑09‑17. Ambiente: Plasma 6.7.4, Qt/Qt WebEngine 6.11.2, Wayland. P
 | --- | --- |
 | indicador surge ao iniciar (`show=true active=1`) | PASS |
 | progresso real (bytes ponderados) | PASS (unit) — arquivos locais concluem em ms |
-| clique abre a lista; itens com estado/tamanho | PASS (captura) |
+| clique abre a lista; itens com estado/tamanho; popup dentro da janela, alinhado à direita | PASS (captura 1500×950) |
 | Pause/Resume/Cancel | funções ligadas ao `WebEngineDownloadRequest`; **NÃO EXERCITADO** (Blob local termina antes) |
 | concluído → Abrir / Mostrar na pasta | PASS (`openDownload`, `showDownloadInFolder` via FileManager1) |
 | aberto → `seen`; indicador some com `attention=0` | PASS (`show=false`) |

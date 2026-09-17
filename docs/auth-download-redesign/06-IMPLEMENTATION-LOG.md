@@ -18,3 +18,4 @@
 | `contents/ui/settings/AppearanceSettings.qml`, `contents/config/main.xml` | toggles de botões inexistentes | removidos da UI; chaves mantidas (obsoletas) | compat | — | — | — |
 | `tools/tests/downloads_test.qml`, `provider_checks.qml.in`, `run-unit-tests.sh` | cobertura | novos casos | — | — | 3 suites PASS | PASS |
 | `locale/*` | strings novas | `.pot` 336 msgs, catálogos e `.mo` regenerados | i18n | traduções novas em inglês | `msgfmt --check` | PASS |
+| `contents/ui/Header.qml`, `DownloadPopup.qml` | popup de downloads ultrapassava a borda da janela quando ancorado à direita | alinhado à direita da âncora + `Popup.margins` (QQC2 mantém dentro da janela) | UX | — | captura no viewer 1500×950 | PASS |
