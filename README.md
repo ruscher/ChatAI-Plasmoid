@@ -103,6 +103,13 @@ Engineering documentation lives in [`docs/`](docs/) (plan, audits, decisions, te
                 </a>
             </td>
             <td align="center">
+                <a href="https://github.com/ruscher">
+                    <img src="https://avatars.githubusercontent.com/u/355281?v=4" width="100;" alt="ruscher"/>
+                    <br />
+                    <sub><b>ruscher</b></sub>
+                </a>
+            </td>
+            <td align="center">
                 <a href="https://github.com/bigbruno">
                     <img src="https://avatars.githubusercontent.com/u/6098501?v=4" width="100;" alt="bigbruno"/>
                     <br />
@@ -130,6 +137,8 @@ Engineering documentation lives in [`docs/`](docs/) (plan, audits, decisions, te
                     <sub><b>Vitor Dantas</b></sub>
                 </a>
             </td>
+		</tr>
+		<tr>
             <td align="center">
                 <a href="https://github.com/postadelmaga">
                     <img src="https://avatars.githubusercontent.com/u/2010800?v=4" width="100;" alt="postadelmaga"/>
