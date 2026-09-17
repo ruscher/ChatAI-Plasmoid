@@ -12,15 +12,19 @@ import QtQuick.Layouts
 import QtWebEngine
 
 import org.kde.plasma.components as PlasmaComponents3
-import org.kde.kirigami 2.20 as Kirigami
+import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
 
-import Qt.labs.platform 1.1
+import Qt.labs.platform
 
 // Main configuration component for general settings
 KCM.SimpleKCM {
     id: configRoot
     readonly property string effectiveProfileName: plasmoid.configuration.webEngineProfileName && plasmoid.configuration.webEngineProfileName.length ? plasmoid.configuration.webEngineProfileName : "chat-ai"
+
+    ProviderModel {
+        id: providerModel
+    }
 
     // Parse the comma-separated string and add valid entries to the model
     function loadSitesFromConfig() {
@@ -49,15 +53,18 @@ KCM.SimpleKCM {
         if (customSiteNameField.text && customSiteUrlField.text) {
             let siteName = customSiteNameField.text.trim();
             let siteUrl = customSiteUrlField.text.trim();
-            // Add https:// if not present
             if (!/^https?:\/\//i.test(siteUrl))
                 siteUrl = "https://" + siteUrl;
+
+            if (!siteName || siteName.indexOf(",") !== -1 || siteName.indexOf("|") !== -1 || !/^(https?):\/\/[^\s]+$/i.test(siteUrl))
+                return;
 
             let newSite = siteName + "|" + siteUrl;
             // Check for duplicates
             let isDuplicate = false;
             for (let i = 0; i < customSitesModel.count; i++) {
-                if (customSitesModel.get(i).siteData === newSite) {
+                const existing = customSitesModel.get(i).siteData.split("|");
+                if (existing[0].toLowerCase() === siteName.toLowerCase() || existing.slice(1).join("|") === siteUrl) {
                     isDuplicate = true;
                     break;
                 }
@@ -123,79 +130,16 @@ KCM.SimpleKCM {
 
                 // Dynamic list of predefined sites with checkboxes
                 Repeater {
-                    // List of supported chat services with their configuration properties
-
-                    model: [
-                        {
-                            "id": "showDuckDuckGoChat",
-                            "text": "DuckDuckGo Chat"
-                        },
-                        {
-                            "id": "showChatGPT",
-                            "text": "ChatGPT"
-                        },
-                        {
-                            "id": "showHugginChat",
-                            "text": "HuggingChat"
-                        },
-                        {
-                            "id": "showGoogleGemini",
-                            "text": "Google Gemini"
-                        },
-                        {
-                            "id": "showYou",
-                            "text": "You"
-                        },
-                        {
-                            "id": "showPerplexity",
-                            "text": "Perplexity"
-                        },
-                        {
-                            "id": "showBlackBox",
-                            "text": "BlackBox AI"
-                        },
-                        {
-                            "id": "showBingCopilot",
-                            "text": "Bing Copilot"
-                        },
-                        {
-                            "id": "showBigAGI",
-                            "text": "Big AGI"
-                        },
-                        {
-                            "id": "showLobeChat",
-                            "text": "LobeChat"
-                        },
-                        {
-                            "id": "showClaude",
-                            "text": "Claude"
-                        },
-                        {
-                            "id": "showDeepSeek",
-                            "text": "DeepSeek"
-                        },
-                        {
-                            "id": "showMetaAI",
-                            "text": "Meta AI"
-                        },
-                        {
-                            "id": "showGrok",
-                            "text": "Grok"
-                        },
-                        {
-                            "id": "showT3Chat",
-                            "text": "T3 Chat"
-                        }
-                    ]
+                    model: providerModel.builtInProviders
 
                     delegate: ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 0
 
                         QQC2.CheckBox {
-                            text: modelData.text
-                            checked: plasmoid.configuration[modelData.id]
-                            onCheckedChanged: plasmoid.configuration[modelData.id] = checked
+                            text: modelData.name
+                            checked: plasmoid.configuration[modelData.configKey]
+                            onCheckedChanged: plasmoid.configuration[modelData.configKey] = checked
                             Layout.fillWidth: true
                         }
 
@@ -203,7 +147,7 @@ KCM.SimpleKCM {
                             Layout.fillWidth: true
                             type: Kirigami.MessageType.Information
                             text: i18n("Claude.ai only allows account creation or Google login in well-known browsers. To use it in this Plasmoid, you need to use login credentials previously created in a traditional browser.")
-                            visible: modelData.id === "showClaude" && plasmoid.configuration.showClaude
+                            visible: modelData.id === "claude" && plasmoid.configuration.showClaude
                         }
                     }
                 }
@@ -530,10 +474,9 @@ Action=Popup`
                     spacing: Kirigami.Units.largeSpacing
 
                     // Criar WebEngineProfile para gerenciar o cache
-                    WebEngineProfile {
+                    WebEngineProfilePrototype {
                         id: cacheProfile
                         storageName: configRoot.effectiveProfileName
-                        offTheRecord: false
                         httpCacheType: WebEngineProfile.DiskHttpCache
                         persistentCookiesPolicy: WebEngineProfile.ForcePersistentCookies
                     }
@@ -550,7 +493,7 @@ Action=Popup`
                                 text: i18n("Open Cache Folder")
                                 icon.name: "folder"
                                 onClicked: {
-                                    let cachePath = Qt.resolvedUrl(cacheProfile.cachePath).toString().replace("file://", "");
+                                    let cachePath = String(cacheProfile.cachePath || "").replace(/^file:\/\/(localhost)?/, "");
                                     Qt.openUrlExternally("file://" + cachePath);
                                 }
                             }
@@ -559,8 +502,7 @@ Action=Popup`
                                 text: i18n("Open Profile Folder")
                                 icon.name: "folder"
                                 onClicked: {
-                                    let profilePath = StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/.local/share/plasmashell/QtWebEngine/" + configRoot.effectiveProfileName;
-                                    Qt.openUrlExternally(profilePath);
+                                    Qt.openUrlExternally("file://" + cacheProfile.persistentStoragePath);
                                 }
                             }
                         }
@@ -570,7 +512,7 @@ Action=Popup`
                 Kirigami.InlineMessage {
                     Layout.fillWidth: true
                     type: Kirigami.MessageType.Information
-                    text: i18n("Cache location: %1\nProfile location: %2", Qt.resolvedUrl(cacheProfile.cachePath).toString().replace("file://", ""), StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/.local/share/plasmashell/QtWebEngine/" + configRoot.effectiveProfileName)
+                    text: i18n("Cache location: %1\nProfile location: %2", String(cacheProfile.cachePath || "").replace(/^file:\/\/(localhost)?/, ""), cacheProfile.persistentStoragePath)
                     visible: true
                 }
 
@@ -598,7 +540,7 @@ Action=Popup`
                     placeholderText: "chat-ai"
                     text: plasmoid.configuration.webEngineProfileName
                     onEditingFinished: {
-                        const trimmed = text.trim();
+                        const trimmed = text.trim().replace(/[^A-Za-z0-9._-]/g, "-").slice(0, 64);
                         const value = trimmed.length ? trimmed : "chat-ai";
                         if (text !== value)
                             text = value;

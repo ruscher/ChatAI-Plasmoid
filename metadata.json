@@ -12,12 +12,14 @@
             }
         ],
         "Category": "Online Services",
-        "Description": "A range of chatbots in your desktop",
+        "Description": "Access your favorite AI chat services from the Plasma desktop",
         "Icon": "applications-internet",
         "Id": "ChatAI-Plasmoid",
         "License": "GPL-2.0+",
         "Name": "ChatAI",
-        "Website": "https://github.com/DenysMb/ChatAI-Plasmoid"
+        "Version": "1.0.0",
+        "Website": "https://github.com/ruscher/ChatAI-Plasmoid",
+        "BugReportUrl": "https://github.com/ruscher/ChatAI-Plasmoid/issues"
     },
     "X-Plasma-API-Minimum-Version": "6.0"
 }

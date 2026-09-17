@@ -6,13 +6,14 @@
  */
 
 import QtQuick
+import QtCore
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.plasma.components as PlasmaComponents3
 import org.kde.kirigami as Kirigami
 
-import Qt.labs.platform 1.1
+import Qt.labs.platform
 
 RowLayout {
     Layout.fillWidth: true
@@ -33,8 +34,20 @@ RowLayout {
 
     // Utility function to ensure URL has a valid protocol
     function sanitizeUrl(url) {
-        if (!url || typeof url !== 'string') return '';
-        return url.match(/^https?:\/\//i) ? url : "https://" + url;
+        if (!url || typeof url !== 'string')
+            return "";
+        const trimmed = url.trim();
+        const candidate = trimmed.match(/^https?:\/\//i) ? trimmed : "https://" + trimmed;
+        return /^(https?):\/\/[^\s]+$/i.test(candidate) ? candidate : "";
+    }
+
+    function configuredDownloadPath() {
+        const configuredPath = String(plasmoid.configuration.downloadPath || "");
+        return configuredPath || StandardPaths.writableLocation(StandardPaths.DownloadLocation);
+    }
+
+    function configRootPath(path) {
+        return String(path || "").replace(/^file:\/\/(localhost)?/, "") || StandardPaths.writableLocation(StandardPaths.DownloadLocation);
     }
 
     // Navigation buttons
@@ -126,16 +139,22 @@ RowLayout {
 
         Keys.onReturnPressed: event => {
             if (currentIndex === count - 1 && editText) {
-                plasmoid.configuration.url = sanitizeUrl(editText);
-                goBackToHomePage();
+                const sanitized = sanitizeUrl(editText);
+                if (sanitized) {
+                    plasmoid.configuration.url = sanitized;
+                    goBackToHomePage();
+                }
                 event.accepted = true;
             }
         }
 
         onAccepted: {
             if (currentIndex === count - 1 && editText) {
-                plasmoid.configuration.url = sanitizeUrl(editText);
-                goBackToHomePage();
+                const sanitized = sanitizeUrl(editText);
+                if (sanitized) {
+                    plasmoid.configuration.url = sanitized;
+                    goBackToHomePage();
+                }
             }
         }
 
@@ -174,7 +193,7 @@ RowLayout {
             PlasmaComponents3.MenuItem {
                 icon.name: "folder-open"
                 text: i18n("Open Download Folder")
-                onTriggered: Qt.openUrlExternally(plasmoid.configuration.downloadPath?.replace(/^file:\/+/, '/') || StandardPaths.writableLocation(StandardPaths.DownloadLocation))
+                onTriggered: Qt.openUrlExternally(configRootPath(configuredDownloadPath()))
             }
             PlasmaComponents3.MenuItem {
                 icon.name: "folder"
@@ -187,7 +206,7 @@ RowLayout {
     // Dialog for selecting download folder location
     FolderDialog {
         id: folderDialog
-        currentFolder: plasmoid.configuration.downloadPath || StandardPaths.writableLocation(StandardPaths.DownloadLocation)
+        currentFolder: configuredDownloadPath()
         onAccepted: plasmoid.configuration.downloadPath = selectedFolder
     }
 
@@ -207,7 +226,7 @@ RowLayout {
         icon.name: "window-pin"
         display: PlasmaComponents3.AbstractButton.IconOnly
         checkable: true
-        checked: Boolean(plasmoid.configuration.keepOpen)
+        checked: Boolean(plasmoid.configuration.pin)
         onToggled: plasmoid.configuration.pin = checked
         visible: !Boolean(plasmoid.configuration.hideKeepOpen)
         z: 3
@@ -221,7 +240,8 @@ RowLayout {
         icon.name: "window-close"
         display: PlasmaComponents3.AbstractButton.IconOnly
         onClicked: {
-            closeWebViewCallback?.();
+            if (closeWebViewCallback)
+                closeWebViewCallback();
         }
         visible: !plasmoid.configuration.hideCloseButton
         z: 3
@@ -239,35 +259,26 @@ RowLayout {
     // Updates the chat model list and current selection
     // Handles both predefined and custom chat models
     function renderChatModel() {
-        // Create model list from enabled predefined models
-        const chatModel = models.filter(model => !model.prop.startsWith("showCustom_") && plasmoid.configuration[model.prop]).map(model => model.text)
-        // Add custom sites to the model list
-        .concat((plasmoid.configuration.customSites || "").split(',').filter(site => site?.includes('|')).map(site => site.split('|')[0])).concat([i18n("Custom URL...")]);
+        const chatModel = (models || [])
+            .filter(model => !model.configKey || Boolean(plasmoid.configuration[model.configKey]))
+            .map(model => model.name || model.text)
+            .concat([i18n("Custom URL...")]);
 
         // Update ComboBox model and select current item
         urlComboBox.model = chatModel;
 
-        const currentUrl = plasmoid.configuration.url;
-        const currentModel = models.find(model => !model.prop.startsWith("showCustom_") && model.url === currentUrl);
+        const currentUrl = String(plasmoid.configuration.url || "");
+        const currentModel = (models || []).find(model => model.url === currentUrl || currentUrl.indexOf(model.url + "/") === 0 || currentUrl.indexOf(model.url + "?") === 0);
 
         if (currentModel) {
-            const index = chatModel.indexOf(currentModel.text);
-            urlComboBox.currentIndex = index;
-            urlComboBox.editable = false;
+            const index = chatModel.indexOf(currentModel.name || currentModel.text);
+            urlComboBox.currentIndex = index >= 0 ? index : chatModel.length - 1;
+            urlComboBox.editable = index < 0;
         } else {
-            const customSite = (plasmoid.configuration.customSites || "").split(',').find(site => site?.includes('|') && site.split('|')[1] === currentUrl);
-
-            if (customSite) {
-                const siteName = customSite.split('|')[0];
-                const index = chatModel.indexOf(siteName);
-                urlComboBox.currentIndex = index;
-                urlComboBox.editable = false;
-            } else {
-                urlComboBox.currentIndex = chatModel.length - 1;
-                urlComboBox.customUrlText = currentUrl;
-                urlComboBox.editText = currentUrl;
-                urlComboBox.editable = true;
-            }
+            urlComboBox.currentIndex = chatModel.length - 1;
+            urlComboBox.customUrlText = currentUrl;
+            urlComboBox.editText = currentUrl;
+            urlComboBox.editable = true;
         }
     }
 
@@ -278,8 +289,11 @@ RowLayout {
             // Custom URL handling
             const url = urlComboBox.editText;
             if (url) {
-                plasmoid.configuration.url = sanitizeUrl(url);
-                goBackToHomePage();
+                const sanitized = sanitizeUrl(url);
+                if (sanitized) {
+                    plasmoid.configuration.url = sanitized;
+                    goBackToHomePage();
+                }
             }
             return;
         }
@@ -289,16 +303,9 @@ RowLayout {
             return;
         urlComboBox.displayText = selectedText;
 
-        const selectedModel = models.find(model => !model.prop.startsWith("showCustom_") && model.text === selectedText);
+        const selectedModel = (models || []).find(model => (model.name || model.text) === selectedText && (!model.configKey || Boolean(plasmoid.configuration[model.configKey])));
         if (selectedModel) {
             plasmoid.configuration.url = selectedModel.url;
-            goBackToHomePage();
-            return;
-        }
-
-        const customSite = (plasmoid.configuration.customSites || "").split(',').find(site => site?.split('|')[0] === selectedText);
-        if (customSite) {
-            plasmoid.configuration.url = customSite.split('|')[1];
             goBackToHomePage();
         }
     }

@@ -12,25 +12,94 @@ import QtQuick.Layouts
 import QtWebEngine
 
 import org.kde.plasma.components as PlasmaComponents3
-import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
-import org.kde.notification 1.0
+import org.kde.notification
 
-import Qt.labs.platform 1.1
+import Qt.labs.platform
 
 import "."
 
 Item {
     id: webViewRoot
-    readonly property string effectiveProfileName: plasmoid.configuration.webEngineProfileName && plasmoid.configuration.webEngineProfileName.length ? plasmoid.configuration.webEngineProfileName : "chat-ai"
+    readonly property string effectiveProfileName: String(plasmoid.configuration.webEngineProfileName || "").replace(/[^A-Za-z0-9._-]/g, "-").slice(0, 64) || "chat-ai"
+    property var webProfile: null
+    property bool hasLoadError: false
+    property string loadErrorDetails: ""
+
+    ProviderModel {
+        id: providerCatalog
+    }
+
+    Component.onCompleted: {
+        // Prototype instances must be created after the QML component is ready.
+        // Configure the profile before allowing WebEngineView to navigate.
+        const profile = profilePrototype.instance();
+        configureProfile(profile);
+        webProfile = profile;
+    }
+
+    Connections {
+        target: plasmoid.configuration
+
+        function onUrlChanged() {
+            configureProfile();
+            hasLoadError = false;
+        }
+
+        function onDownloadPathChanged() {
+            configureProfile();
+        }
+    }
+
+    function isHttpUrl(value) {
+        return /^(https?):\/\/[^\s]+$/i.test(String(value || ""));
+    }
+
+    function localPath(value) {
+        let path = String(value || "").trim();
+        if (path.indexOf("file://") === 0)
+            path = path.replace(/^file:\/\/(localhost)?/, "");
+        return path || String(StandardPaths.writableLocation(StandardPaths.DownloadLocation));
+    }
+
+    function downloadDirectory() {
+        const path = localPath(plasmoid.configuration.downloadPath);
+        return path.charAt(0) === "/" ? path : StandardPaths.writableLocation(StandardPaths.DownloadLocation);
+    }
+
+    function safeFileName(value, fallback) {
+        let name = String(value || fallback || "download").split(/[\\/]/).pop();
+        name = name.replace(/[\u0000-\u001f\u007f<>:"|?*]/g, "_").replace(/\.\./g, "_").trim();
+        if (name === "." || name === "..")
+            name = fallback || "download";
+        return name || fallback || "download";
+    }
+
+    function currentUserAgent() {
+        const currentUrl = String(plasmoid.configuration.url || "");
+        const provider = providerCatalog.providerForUrl(currentUrl);
+        return provider && provider.userAgent
+            ? provider.userAgent
+            : providerCatalog.desktopChromiumUserAgent;
+    }
+
+    function configureProfile(profileOverride) {
+        const profile = profileOverride || webProfile;
+        if (!profile)
+            return;
+        profile.httpUserAgent = currentUserAgent();
+        profile.downloadPath = downloadDirectory();
+    }
 
     function goBackToHomePage() {
         const url = plasmoid.configuration.url;
-        if (!url || typeof url !== 'string' || url.length === 0) {
-            console.error("Invalid or empty URL configuration");
+        if (!isHttpUrl(url)) {
+            loadErrorDetails = i18n("The configured address is not a valid HTTP or HTTPS URL.");
+            hasLoadError = true;
             return;
         }
+        hasLoadError = false;
         webview.url = url;
     }
 
@@ -47,17 +116,11 @@ Item {
     }
 
     function printPage() {
-        // Ensure downloads model exists before use
-        if (!webview.downloads) {
-            webview.downloads = Qt.createQmlObject('import QtQml; ListModel {}', webview);
-        }
-
         webview.runJavaScript("document.title", function (title) {
-            let downloadDirectory = plasmoid.configuration.downloadPath ? plasmoid.configuration.downloadPath.toString().replace(/^file:\/\//, '') : StandardPaths.writableLocation(StandardPaths.DownloadLocation);
-
+            const directory = downloadDirectory();
             let timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-            let safeName = title.replace(/[^a-z0-9]/gi, '-').toLowerCase();
-            let filename = `${downloadDirectory}/${safeName}-${timestamp}.pdf`;
+            let safeName = safeFileName(title, "ChatAI").replace(/[^a-z0-9._-]/gi, '-').toLowerCase();
+            let filename = `${directory}/${safeName}-${timestamp}.pdf`;
 
             webview.downloads.addDownload(null, `${safeName}-${timestamp}.pdf`, filename, true);
 
@@ -69,15 +132,10 @@ Item {
         webview.triggerWebAction(WebEngineView.SavePage);
     }
 
-    function getUserAgent() {
-        return plasmoid.configuration.url.includes("https://duckduckgo.com") || plasmoid.configuration.url.includes("x.com/i/grok") ? "Mozilla/5.0 (Linux; Android 9; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.111 Mobile Safari/537.36" : "";
-    }
-
     Notification {
         id: webNotification
         componentName: "chatai_plasmoid"
         eventId: "notification"
-        defaultAction: i18n("Open")
         title: i18n("ChatAI")
         iconName: "dialog-information"
     }
@@ -89,28 +147,8 @@ Item {
         webNotification.sendEvent();
     }
 
-    function getProgressPath(path) {
-        // For the progress bar, it needs file:///
-        return "file:///" + path.replace(/^\/+/, '');
-    }
-
     function getOpenPath(path) {
-        // To open the file, it cannot have file://
-        return path.replace(/^file:\/+/, '').replace(/^\/+/, '/');
-    }
-
-    // Add this helper function before the WebEngineView
-    function isDownloadInProgress(fileName) {
-        if (!webview || !webview.downloads)
-            return false;
-
-        for (let i = 0; i < webview.downloads.count; i++) {
-            let item = webview.downloads.get(i);
-            if (item && item.state === WebEngineDownloadRequest.DownloadInProgress && item.fileName === fileName) {
-                return true;
-            }
-        }
-        return false;
+        return localPath(path);
     }
 
     Layout.fillWidth: true
@@ -131,6 +169,15 @@ Item {
         onSaveMhtmlRequested: saveMHTML()
     }
 
+    WebEngineProfilePrototype {
+        id: profilePrototype
+
+        storageName: webViewRoot.effectiveProfileName
+        httpCacheType: WebEngineProfile.DiskHttpCache
+        persistentCookiesPolicy: WebEngineProfile.ForcePersistentCookies
+        persistentPermissionsPolicy: WebEngineProfile.AskEveryTime
+    }
+
     WebEngineView {
         id: webview
 
@@ -138,22 +185,22 @@ Item {
 
         property var downloads: ListModel {
             function addDownload(downloadItem, fileName, path, isPdf) {
-                let downloadId = Date.now().toString();
+                let downloadId = downloadItem ? String(downloadItem.id) : "pdf-" + Date.now().toString();
                 let download = {
                     "downloadId": downloadId,
                     "fileName": fileName,
                     "fullPath": path,
                     "progress": 0,
                     "receivedBytes": 0,
-                    "totalBytes": downloadItem ? downloadItem.totalBytes : 0,
+                    "totalBytes": downloadItem && downloadItem.totalBytes > 0 ? downloadItem.totalBytes : 0,
                     "isPdfExport": isPdf,
-                    "state": WebEngineDownloadRequest.DownloadInProgress
+                    "state": downloadItem ? downloadItem.state : WebEngineDownloadRequest.DownloadInProgress,
+                    "isPaused": downloadItem ? downloadItem.isPaused : false,
+                    "error": ""
                 };
 
-                if (downloadItem) {
-                    // Store reference in cache
+                if (downloadItem)
                     webview.downloadCache[downloadId] = downloadItem;
-                }
 
                 this.append(download);
                 return this.count - 1;
@@ -166,6 +213,49 @@ Item {
                 }
                 this.remove(index);
             }
+        }
+
+        function downloadIndex(downloadId) {
+            const id = String(downloadId || "");
+            for (let i = 0; i < downloads.count; i++) {
+                if (String(downloads.get(i).downloadId) === id)
+                    return i;
+            }
+            return -1;
+        }
+
+        function updateDownload(download) {
+            if (!download)
+                return;
+            const index = downloadIndex(download.id);
+            if (index < 0)
+                return;
+            const total = download.totalBytes > 0 ? download.totalBytes : 0;
+            const progress = total > 0 ? Math.min(1, download.receivedBytes / total) : 0;
+            downloads.setProperty(index, "state", download.state);
+            downloads.setProperty(index, "receivedBytes", download.receivedBytes);
+            downloads.setProperty(index, "totalBytes", total);
+            downloads.setProperty(index, "progress", download.state === WebEngineDownloadRequest.DownloadCompleted ? 1 : progress);
+            downloads.setProperty(index, "isPaused", download.isPaused);
+            downloads.setProperty(index, "error", download.interruptReasonString || "");
+        }
+
+        function cancelDownload(downloadId) {
+            const download = downloadCache[String(downloadId || "")];
+            if (download)
+                download.cancel();
+        }
+
+        function pauseDownload(downloadId) {
+            const download = downloadCache[String(downloadId || "")];
+            if (download)
+                download.pause();
+        }
+
+        function resumeDownload(downloadId) {
+            const download = downloadCache[String(downloadId || "")];
+            if (download)
+                download.resume();
         }
 
         function checkAndUpdateFavicon() {
@@ -244,8 +334,10 @@ Item {
         }
 
         anchors.fill: parent
-        url: plasmoid.configuration.url
-        profile: webProfile
+        // Do not start with the default profile: providers such as ChatGPT and
+        // DeepSeek reject the QtWebEngine identity before the custom profile is ready.
+        url: webViewRoot.webProfile ? plasmoid.configuration.url : ""
+        profile: webViewRoot.webProfile || WebEngine.defaultProfile
         onLinkHovered: hoveredUrl => {
             if (hoveredUrl == "") {
                 hideStatusText.start();
@@ -275,113 +367,65 @@ Item {
             request.accepted = true;
         }
 
-        // https://doc.qt.io/qt-6/qml-application-permissions.html
-        onPermissionRequested: function (request) {
-            if (request.permissionType === WebEnginePermission.Geolocation || request.permissionType === 8) {
-                if (plasmoid.configuration.geolocationEnabled) {
-                    request.grant();
-                } else {
-                    request.deny();
-                }
-                return;
+        onPermissionRequested: function (permission) {
+            let allowed = false;
+            switch (permission.permissionType) {
+            case WebEnginePermission.Notifications:
+                allowed = Boolean(plasmoid.configuration.notificationsEnabled);
+                break;
+            case WebEnginePermission.Geolocation:
+                allowed = Boolean(plasmoid.configuration.geolocationEnabled);
+                break;
+            case WebEnginePermission.MediaAudioCapture:
+                allowed = Boolean(plasmoid.configuration.microphoneEnabled);
+                break;
+            case WebEnginePermission.MediaVideoCapture:
+                allowed = Boolean(plasmoid.configuration.webcamEnabled);
+                break;
+            case WebEnginePermission.DesktopAudioVideoCapture:
+                allowed = Boolean(plasmoid.configuration.screenShareEnabled);
+                break;
+            default:
+                allowed = false;
+                break;
             }
-            if (request.permissionType === WebEnginePermission.Notifications) {
-                if (plasmoid.configuration.notificationsEnabled) {
-                    request.grant();
-                } else {
-                    request.deny();
-                }
-                return;
-            }
-            if (request.permissionType === WebEnginePermission.MediaAudioCapture || request.permissionType === 1 || request.permissionType === WebEnginePermission.MediaVideoCapture || request.permissionType === 2 || request.permissionType === 5) {
-                let isMicrophoneRequest = request.permissionType === 1 || request.permissionType === WebEnginePermission.MediaAudioCapture;
-                let isWebcamRequest = request.permissionType === 2 || request.permissionType === WebEnginePermission.MediaVideoCapture;
-                let isScreenShareRequest = request.permissionType === 5 || request.permissionType === WebEnginePermission.DesktopAudioVideoCapture;
-                return;
-            }
-            // Even if MediaAudioCapture and MediaVideoCapture are allowed, it is still necessary to allow DesktopAudioVideoCapture
-            if (request.permissionType === WebEnginePermission.DesktopAudioVideoCapture || request.permissionType === 3) {
-                if (WebEnginePermission.MediaAudioCapture && WebEnginePermission.MediaVideoCapture) {
-                    request.grant();
-                } else {
-                    request.deny();
-                }
+            if (allowed)
+                permission.grant();
+            else
+                permission.deny();
+        }
+        onLoadingChanged: function (loadingInfo) {
+            if (loadingInfo.status === WebEngineView.LoadStartedStatus)
+                hasLoadError = false;
+            else if (loadingInfo.status === WebEngineView.LoadFailedStatus) {
+                hasLoadError = true;
+                loadErrorDetails = loadingInfo.errorString || i18n("The service did not provide an error description.");
             }
 
-            request.grant();
-        }
-        onLoadingChanged: {
-            if (!webview.loading) {
+            if (loadingInfo.status === WebEngineView.LoadSucceededStatus) {
                 checkAndUpdateFavicon();
             }
-
-            var isCompatibleModel = ['duckduckgo', 'chatgpt', 'google', 'claude', 'you'].some(site => plasmoid.configuration.url.includes(site));
-
-            if (isCompatibleModel) {
-                webview.runJavaScript("
-                    document.addEventListener('keydown', function(event) {
-                        if (event.key === 'Enter' && !event.shiftKey) {
-                            var duckDuckGoButton = document.querySelector('button[aria-label=\"Send\"]');
-                            var chatGPTButton = document.querySelector('button[data-testid=\"send-button\"]');
-                            var googleGeminiButton = document.querySelector('button.send-button');
-                            var claudeButton = document.querySelector('button[aria-label=\"Send Message\"]');
-
-                            if (duckDuckGoButton) {
-                                event.preventDefault();
-                                duckDuckGoButton.click();
-                                waitForTextareaEnabledAndFocus();
-                            }
-
-                            if (chatGPTButton) {
-                                event.preventDefault();
-                                chatGPTButton.click();
-                                waitForTextareaEnabledAndFocus();
-                            }
-
-                            if (googleGeminiButton) {
-                                event.preventDefault();
-                                googleGeminiButton.click();
-                                waitForTextareaEnabledAndFocus();
-                            }
-
-                            if (claudeButton) {
-                                event.preventDefault();
-                                claudeButton.click();
-                                waitForTextareaEnabledAndFocus();
-                            }
-                        }
-                    });
-
-                    function waitForTextareaEnabledAndFocus() {
-                        var attempts = 0;
-                        var interval = 100;
-
-                        var textareaFocusInterval = setInterval(function() {
-                            var textarea = document.querySelector('textarea');
-                            if (textarea && !textarea.disabled) {
-                                clearInterval(textareaFocusInterval);
-                                setTimeout(function() {
-                                    textarea.focus();
-                                }, 100);
-                            }
-                        }, interval);
-                    }
-
-                    waitForTextareaEnabledAndFocus();
-                ");
-            }
-        }
-        onFeaturePermissionRequested: function (securityOrigin, feature) {
-            if (feature === WebEngineView.MediaAudioCapture)
-                grantFeaturePermission(securityOrigin, feature, plasmoid.configuration.microphoneEnabled);
-            else if (feature === WebEngineView.MediaVideoCapture)
-                grantFeaturePermission(securityOrigin, feature, plasmoid.configuration.webcamEnabled);
-            else if (feature === WebEngineView.DesktopAudioVideoCapture)
-                grantFeaturePermission(securityOrigin, feature, plasmoid.configuration.screenShareEnabled);
         }
 
         onPrintRequested: function () {
             webview.triggerWebAction(WebEngineView.Print);
+        }
+
+        onCertificateError: function (error) {
+            hasLoadError = true;
+            loadErrorDetails = error.description || i18n("The site's security certificate is not trusted.");
+            error.rejectCertificate();
+        }
+
+        onFullScreenRequested: function (request) {
+            // A plasmoid has no independent browser window to resize safely. Reject
+            // page-controlled fullscreen rather than changing the user's desktop.
+            request.reject();
+        }
+
+        onRenderProcessTerminated: function (terminationStatus, exitCode) {
+            hasLoadError = true;
+            loadErrorDetails = i18n("The web content process stopped unexpectedly (exit code %1).", exitCode);
         }
 
         onPdfPrintingFinished: function (filePath, success) {
@@ -390,8 +434,10 @@ Item {
                 if (downloads.get(i).fullPath === filePath) {
                     if (success) {
                         downloads.setProperty(i, "state", WebEngineDownloadRequest.DownloadCompleted);
+                        downloads.setProperty(i, "progress", 1);
                     } else {
-                        downloads.remove(i);
+                        downloads.setProperty(i, "state", WebEngineDownloadRequest.DownloadInterrupted);
+                        downloads.setProperty(i, "error", i18n("The PDF could not be created."));
                     }
                     break;
                 }
@@ -400,8 +446,17 @@ Item {
 
         // Helper function to check if it's an authentication URL
         function isAuthUrl(url) {
-            const authDomains = ['accounts.google.com', 'appleid.apple.com', 'login.live.com', 'github.com/login', 'instagram.com/oauth', 'facebook.com/oidc'];
-            return authDomains.some(domain => url.includes(domain));
+            return /(^|\/\/)(accounts\.google\.com|appleid\.apple\.com|login\.live\.com|github\.com\/login|instagram\.com\/oauth|facebook\.com\/oidc)(\/|$)/i.test(String(url || ""));
+        }
+
+        function openExternalIfSafe(url) {
+            const target = String(url || "");
+            if (!isHttpUrl(target)) {
+                showNotification(i18n("Blocked navigation"), i18n("Only HTTP and HTTPS links can be opened from ChatAI."), "dialog-warning");
+                return false;
+            }
+            Qt.openUrlExternally(target);
+            return true;
         }
 
         // Add these handlers to intercept new windows and tabs
@@ -411,13 +466,18 @@ Item {
                 webview.url = url;
                 request.action = WebEngineNewWindowRequest.IgnoreRequest;
             } else {
-                Qt.openUrlExternally(request.requestedUrl);
+                openExternalIfSafe(url);
                 request.action = WebEngineNewWindowRequest.IgnoreRequest;
             }
         }
 
         // Intercept links that try to open in new tab/window
         onNavigationRequested: function (request) {
+            const requestedUrl = request.url.toString();
+            if (!isHttpUrl(requestedUrl)) {
+                request.action = WebEngineNavigationRequest.IgnoreRequest;
+                return;
+            }
             if (request.navigationType === WebEngineNavigationRequest.NavigationTypeRedirect || request.navigationType === WebEngineNavigationRequest.NavigationTypeLinkClicked) {
 
                 // If the link has target="_blank" or similar
@@ -427,109 +487,65 @@ Item {
                         webview.url = url;
                         request.action = WebEngineNavigationRequest.IgnoreRequest;
                     } else {
-                        Qt.openUrlExternally(request.url);
+                        openExternalIfSafe(url);
                         request.action = WebEngineNavigationRequest.IgnoreRequest;
                     }
                 }
             }
         }
 
-        Component.onCompleted: {
-            if (!plasmoid.configuration.downloadPath) {
-                plasmoid.configuration.downloadPath = StandardPaths.writableLocation(StandardPaths.DownloadLocation);
-            }
-            if (!downloads) {
-                downloads = Qt.createQmlObject('import QtQml; ListModel {}', webview);
-            }
-        }
+        Connections {
+            target: webViewRoot.webProfile
 
-        WebEngineProfile {
-            id: webProfile
-            httpUserAgent: getUserAgent()
-            storageName: webViewRoot.effectiveProfileName
-            offTheRecord: false
-            httpCacheType: WebEngineProfile.DiskHttpCache
-            persistentCookiesPolicy: WebEngineProfile.ForcePersistentCookies
-            persistentPermissionsPolicy: WebEngineProfile.AskEveryTime
-            downloadPath: {
-                if (plasmoid.configuration.downloadPath)
-                    return plasmoid.configuration.downloadPath.toString().replace(/^file:\/\//, '');
-
-                return StandardPaths.writableLocation(StandardPaths.DownloadLocation);
-            }
-            onPresentNotification: function (notification) {
-                showNotification(notification.title, notification.message);
-                notification.show();
-            }
-            onDownloadRequested: function (download) {
-                // Ensure downloads model exists
-                if (!webview.downloads) {
-                    webview.downloads = Qt.createQmlObject('import QtQml; ListModel {}', webview);
+            function onPresentNotification(notification) {
+                if (plasmoid.configuration.notificationsEnabled) {
+                    showNotification(notification.title, notification.message);
+                    notification.show();
                 }
+            }
 
-                let downloadDirectory = plasmoid.configuration.downloadPath.toString().replace(/^file:\/\//, '');
+            function onDownloadRequested(download) {
+                const directory = webViewRoot.downloadDirectory();
+                const fileName = webViewRoot.safeFileName(download.downloadFileName, "download");
 
-                download.downloadDirectory = downloadDirectory;
-
-                // Check for duplicate downloads
-                for (let i = 0; i < webview.downloads.count; i++) {
-                    let currentDownload = webview.downloads.get(i);
-                    if (currentDownload.state === WebEngineDownloadRequest.DownloadInProgress && currentDownload.fileName === download.downloadFileName && !currentDownload.isPdfExport) {
-                        showNotification(i18n("Download in progress"), i18n("The file '%1' is already being downloaded", download.downloadFileName), "dialog-warning");
+                for (let i = 0; i < downloads.count; i++) {
+                    const currentDownload = downloads.get(i);
+                    if (currentDownload.state === WebEngineDownloadRequest.DownloadInProgress && currentDownload.fileName === fileName && !currentDownload.isPdfExport) {
+                        showNotification(i18n("Download in progress"), i18n("The file '%1' is already being downloaded", fileName), "dialog-warning");
                         download.cancel();
                         return;
                     }
                 }
 
-                // Create a unique ID for this download
-                let downloadId = Date.now().toString() + Math.random().toString(36).substring(7);
+                download.downloadDirectory = directory;
+                download.downloadFileName = fileName;
+                downloads.addDownload(download, fileName, directory + "/" + fileName, false);
 
-                let downloadIndex = webview.downloads.addDownload(download, download.downloadFileName, downloadDirectory + "/" + download.downloadFileName, false);
-
-                // Store the index in the download object for reference
-                let currentIndex = downloadIndex;
-
-                // Create independent connections for each download
-                let bytesConnection = function () {
-                    if (currentIndex >= 0 && currentIndex < webview.downloads.count) {
-                        let currentProgress = download.receivedBytes / download.totalBytes;
-                        webview.downloads.setProperty(currentIndex, "progress", currentProgress);
-                        webview.downloads.setProperty(currentIndex, "receivedBytes", download.receivedBytes);
-                        webview.downloads.setProperty(currentIndex, "totalBytes", download.totalBytes);
-                    }
-                };
-
-                let stateConnection = function (state) {
-                    if (currentIndex >= 0 && currentIndex < webview.downloads.count) {
-                        webview.downloads.setProperty(currentIndex, "state", state);
-                        if (state === WebEngineDownloadRequest.DownloadCompleted) {
-                            webview.downloads.setProperty(currentIndex, "progress", 1.0);
-                        }
-                        // Clear connections after completion or cancellation
-                        if (state === WebEngineDownloadRequest.DownloadCompleted || state === WebEngineDownloadRequest.DownloadCancelled) {
-                            download.receivedBytesChanged.disconnect(bytesConnection);
-                            download.stateChanged.disconnect(stateConnection);
-                            delete webview.downloadCache[downloadId];
-                        }
-                    }
-                };
-
-                // Connect signals to the updated functions
-                download.receivedBytesChanged.connect(bytesConnection);
-                download.stateChanged.connect(stateConnection);
-
-                // Store all relevant information in the cache
+                const downloadId = String(download.id);
+                const updateConnection = function () { webview.updateDownload(download); };
+                download.receivedBytesChanged.connect(updateConnection);
+                download.totalBytesChanged.connect(updateConnection);
+                download.stateChanged.connect(updateConnection);
+                download.isPausedChanged.connect(updateConnection);
                 webview.downloadCache[downloadId] = {
                     download: download,
-                    index: currentIndex,
-                    bytesConnection: bytesConnection,
-                    stateConnection: stateConnection
+                    updateConnection: updateConnection
                 };
-
-                // Atualizar o modelo com o ID único
-                webview.downloads.setProperty(currentIndex, "downloadId", downloadId);
-
                 download.accept();
+                webview.updateDownload(download);
+            }
+
+            function onDownloadFinished(download) {
+                webview.updateDownload(download);
+                const downloadId = String(download.id);
+                const cached = webview.downloadCache[downloadId];
+                if (cached && cached.updateConnection) {
+                    download.receivedBytesChanged.disconnect(cached.updateConnection);
+                    download.totalBytesChanged.disconnect(cached.updateConnection);
+                    download.stateChanged.disconnect(cached.updateConnection);
+                    download.isPausedChanged.disconnect(cached.updateConnection);
+                }
+                delete webview.downloadCache[downloadId];
             }
         }
         // https://doc.qt.io/qt-6/qml-qtwebengine-webenginesettings.html
@@ -542,7 +558,7 @@ Item {
             unknownUrlSchemePolicy: plasmoid.configuration.allowUnknownUrlSchemes ? WebEngineSettings.AllowAllUnknownUrlSchemes : WebEngineSettings.DisallowUnknownUrlSchemes
             playbackRequiresUserGesture: plasmoid.configuration.playbackRequiresUserGesture
             focusOnNavigationEnabled: plasmoid.configuration.focusOnNavigationEnabled
-            screenCaptureEnabled: true
+            screenCaptureEnabled: plasmoid.configuration.screenShareEnabled
             pluginsEnabled: true
             forceDarkMode: {
                 const color = Kirigami.Theme.backgroundColor;
@@ -586,6 +602,30 @@ Item {
             NumberAnimation {
                 duration: Kirigami.Units.shortDuration
                 easing.type: Easing.InOutQuad
+            }
+        }
+    }
+
+    Rectangle {
+        id: errorOverlay
+
+        anchors.fill: parent
+        color: Kirigami.Theme.backgroundColor
+        opacity: 0.98
+        visible: webViewRoot.hasLoadError
+        z: 20
+
+        ErrorView {
+            anchors.centerIn: parent
+            width: Math.min(parent.width - Kirigami.Units.largeSpacing * 2, Kirigami.Units.gridUnit * 25)
+            errorDetails: webViewRoot.loadErrorDetails
+            onRetryRequested: {
+                webViewRoot.hasLoadError = false;
+                webview.reload();
+            }
+            onOpenExternallyRequested: {
+                if (webViewRoot.isHttpUrl(plasmoid.configuration.url))
+                    Qt.openUrlExternally(plasmoid.configuration.url);
             }
         }
     }

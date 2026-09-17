@@ -8,11 +8,15 @@
 import QtQuick
 import QtQuick.Layouts
 
+import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
 
 Item {
     id: compactRoot
+
+    required property PlasmoidItem plasmoidItem
 
     // Icon mode constants (must match ConfigAppearance.qml ComboBox order)
     readonly property int iconModeFavicon: 0
@@ -39,7 +43,16 @@ Item {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        onClicked: root.expanded = !root.expanded
+        z: 1
+        acceptedButtons: Qt.LeftButton
+        hoverEnabled: true
+        property bool wasExpanded: false
+        Accessible.name: compactRoot.currentProviderName()
+        PlasmaComponents3.ToolTip.text: i18n("Open ChatAI — %1", compactRoot.currentProviderName())
+        PlasmaComponents3.ToolTip.visible: containsMouse
+        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
+        onPressed: wasExpanded = compactRoot.plasmoidItem.expanded
+        onClicked: compactRoot.plasmoidItem.expanded = !wasExpanded
     }
 
     Kirigami.Icon {
@@ -57,30 +70,28 @@ Item {
     }
 
     function getChatModelIcon() {
-        if (!models || models.length === 0) return `assets/logo-${getBackgroundColorContrast()}.svg`;
+        if (!models || models.length === 0)
+            return `assets/logo-${getBackgroundColorContrast()}.svg`;
 
         const mode = plasmoid.configuration.iconMode;
-        const currentModel = models.find(model => plasmoid.configuration.url.includes(model.url));
+        const currentModel = models.find(model => plasmoid.configuration.url === model.url || plasmoid.configuration.url.indexOf(model.url + "/") === 0 || plasmoid.configuration.url.indexOf(model.url + "?") === 0);
         const colorContrast = getBackgroundColorContrast();
-        
-        // Colorful mode. If not in colorful mode, some models only have colorful icons available
-        const hasOnlyColorfulIcon = mode !== iconModeColorful && ["lobechat", "bigagi"].includes(currentModel?.id);
 
-        if (!currentModel || currentModel?.id === "blackbox" || hasOnlyColorfulIcon) {
+        // Colorful mode. If not in colorful mode, some models only have colorful icons available
+        const hasOnlyColorfulIcon = currentModel && mode !== iconModeColorful && ["lobechat", "bigagi"].includes(currentModel.id);
+        const iconId = currentModel ? (currentModel.iconId || currentModel.id) : "";
+        const availableIcons = ["t3", "duckduckgo", "chatgpt", "huggingface", "copilot", "google", "you", "perplexity", "claude", "deepseek"];
+
+        if (!currentModel || currentModel.custom || !availableIcons.includes(iconId) || hasOnlyColorfulIcon) {
             return `assets/logo-${colorContrast}.svg`;
         }
 
-        if (currentModel.useIcon) {
-            const style = mode === iconModeFilled ? "filled" : "outlined";
-            return `assets/${style}/${currentModel.useIcon}-${colorContrast}.svg`;
-        }
-
         if (mode === iconModeColorful) {
-            return `assets/colorful/${currentModel.id}.svg`;
+            return `assets/colorful/${iconId}.svg`;
         }
 
         const style = mode === iconModeFilled ? "filled" : "outlined";
-        return `assets/${style}/${currentModel.id}-${colorContrast}.svg`;
+        return `assets/${style}/${iconId}-${colorContrast}.svg`;
     }
 
     function getIconNameOrPath() {
@@ -113,5 +124,10 @@ Item {
         const color = Kirigami.Theme.backgroundColor;
         const luma = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
         return luma > 0.5 ? "dark" : "light";
+    }
+
+    function currentProviderName() {
+        const currentModel = models && models.find(model => plasmoid.configuration.url === model.url || plasmoid.configuration.url.indexOf(model.url + "/") === 0 || plasmoid.configuration.url.indexOf(model.url + "?") === 0);
+        return currentModel ? currentModel.name : i18n("ChatAI");
     }
 }

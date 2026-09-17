@@ -8,7 +8,6 @@
 import QtQuick
 import QtQuick.Layouts
 
-import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
 
@@ -16,120 +15,11 @@ import org.kde.kirigami as Kirigami
 PlasmoidItem {
     id: root
 
-    // Define the available chat models and their properties
-    // This property combines both predefined and custom sites
-    property var models: {
-        // Define base models with their default properties
-        let baseModels = [
-            {
-                "id": "t3",
-                "url": "https://t3.chat",
-                "text": "T3 Chat",
-                "prop": "showT3Chat"
-            },
-            {
-                "id": "duckduckgo",
-                "url": "https://duckduckgo.com/chat",
-                "text": "DuckDuckGo Chat",
-                "prop": "showDuckDuckGoChat"
-            },
-            {
-                "id": "chatgpt",
-                "url": "https://chatgpt.com",
-                "text": "ChatGPT",
-                "prop": "showChatGPT"
-            },
-            {
-                "id": "huggingface",
-                "url": "https://huggingface.co/chat",
-                "text": "HuggingChat",
-                "prop": "showHugginChat"
-            },
-            {
-                "id": "copilot",
-                "url": "https://copilot.microsoft.com/",
-                "text": "Bing Copilot",
-                "prop": "showBingCopilot"
-            },
-            {
-                "id": "google",
-                "url": "https://gemini.google.com/app",
-                "text": "Google Gemini",
-                "prop": "showGoogleGemini"
-            },
-            {
-                "id": "blackbox",
-                "url": "https://www.blackbox.ai",
-                "text": "BlackBox AI",
-                "prop": "showBlackBox"
-            },
-            {
-                "id": "you",
-                "url": "https://you.com/?chatMode=default",
-                "text": "You",
-                "prop": "showYou"
-            },
-            {
-                "id": "perplexity",
-                "url": "https://www.perplexity.ai",
-                "text": "Perplexity",
-                "prop": "showPerplexity"
-            },
-            {
-                "id": "lobechat",
-                "url": "https://lobechat.com/chat",
-                "text": "LobeChat",
-                "prop": "showLobeChat"
-            },
-            {
-                "id": "bigagi",
-                "url": "https://get.big-agi.com",
-                "text": "Big-AGI",
-                "prop": "showBigAGI"
-            },
-            {
-                "id": "claude",
-                "url": "https://claude.ai/new",
-                "text": "Claude",
-                "prop": "showClaude"
-            },
-            {
-                "id": "deepseek",
-                "url": "https://chat.deepseek.com",
-                "text": "DeepSeek",
-                "prop": "showDeepSeek"
-            },
-            {
-                "id": "meta",
-                "url": "https://www.meta.ai",
-                "text": "Meta AI",
-                "prop": "showMetaAI"
-            },
-            {
-                "id": "grok",
-                "url": "https://x.com/i/grok",
-                "text": "Grok",
-                "prop": "showGrok"
-            }
-        ];
-        // Add custom sites from configuration to the models list
-        let customSites = plasmoid.configuration.customSites || [];
-        if (Array.isArray(customSites)) {
-            customSites.forEach(site => {
-                if (site && typeof site === 'string' && site.includes('|')) {
-                    const [name, url] = site.split('|');
-                    if (name && url)
-                        baseModels.push({
-                            "id": name.toLowerCase().replace(/\s+/g, '-'),
-                            "url": url,
-                            "text": name,
-                            "prop": "showCustom_" + name.toLowerCase().replace(/\s+/g, '_')
-                        });
-                }
-            });
-        }
-        return baseModels;
+    ProviderModel {
+        id: providerModel
     }
+
+    readonly property alias models: providerModel.providers
 
     // Initialize the plasmoid and check if it should load on startup
     Component.onCompleted: {
@@ -144,6 +34,7 @@ PlasmoidItem {
     compactRepresentation: CompactRepresentation {
         id: compactRep
 
+        plasmoidItem: root
         models: root.models
         webview: root.webviewRoot ? root.webviewRoot.webview : null
     }
@@ -154,32 +45,9 @@ PlasmoidItem {
 
         // Expose WebView root for other components
         property alias webviewRoot: webviewLoader.item
-        // Update the property to use Types.Location and add the change monitor
-        property bool reverseLayout: plasmoid.location === PlasmaCore.Types.TopEdge
-
         // Default dimensions (used when no saved size exists)
         readonly property int defaultWidth: Kirigami.Units.gridUnit * 28
         readonly property int defaultHeight: Kirigami.Units.gridUnit * 39
-
-        // Function to reorder components
-        function reorderComponents() {
-            let components = reverseLayout ? [webviewLoader, headerMouseArea, headerRoot] : [headerRoot, headerMouseArea, webviewLoader];
-            // Clear and re-add the components in the correct order
-            for (let i = children.length - 1; i >= 0; i--) {
-                children[i].parent = null;
-            }
-            components.forEach(component => {
-                component.parent = mainLayout;
-            });
-            // Update the anchors of headerMouseArea
-            if (headerRoot && headerMouseArea) {
-                if (reverseLayout) {
-                    headerMouseArea.Layout.alignment = Qt.AlignBottom;
-                } else {
-                    headerMouseArea.Layout.alignment = Qt.AlignTop;
-                }
-            }
-        }
 
         // Set minimum dimensions for the expanded view
         Layout.minimumWidth: Kirigami.Units.gridUnit * 20
@@ -187,10 +55,6 @@ PlasmoidItem {
         // Use saved dimensions if available, otherwise use defaults
         Layout.preferredWidth: plasmoid.configuration.dialogWidth > 0 ? plasmoid.configuration.dialogWidth : defaultWidth
         Layout.preferredHeight: plasmoid.configuration.dialogHeight > 0 ? plasmoid.configuration.dialogHeight : defaultHeight
-
-        Component.onCompleted: {
-            reorderComponents();
-        }
 
         // Save window size when user resizes
         // Use a timer to debounce saves (avoid saving on every pixel change)
@@ -218,16 +82,6 @@ PlasmoidItem {
         onHeightChanged: saveSizeTimer.restart()
 
         spacing: 0
-
-        // Add monitor for plasmoid location change
-        Connections {
-            function onLocationChanged() {
-                mainLayout.reverseLayout = plasmoid.location === PlasmaCore.Types.TopEdge;
-                reorderComponents();
-            }
-
-            target: plasmoid
-        }
 
         // Header component with auto-hide behavior
         Header {
@@ -271,15 +125,6 @@ PlasmoidItem {
             visible: Layout.preferredHeight > 0
             opacity: Layout.preferredHeight > 0 ? 1 : 0
             clip: true
-            // Adjust the anchors of headerMouseArea based on the panel position
-            Component.onCompleted: {
-                if (mainLayout.reverseLayout) {
-                    headerMouseArea.Layout.alignment = Qt.AlignBottom;
-                } else {
-                    headerMouseArea.Layout.alignment = Qt.AlignTop;
-                }
-            }
-
             // Timer for hiding
             Timer {
                 id: hideTimer
@@ -289,41 +134,6 @@ PlasmoidItem {
                     if (!headerRoot.isInteracting)
                         headerRoot.headerVisible = false;
                 }
-            }
-
-            // Timer to check interactions
-            Timer {
-                id: interactionTimer
-
-                interval: 500
-                repeat: true
-                running: headerRoot.isInteracting
-                onTriggered: {
-                    // Check if there is still interaction with any component
-                    let stillInteracting = false;
-                    for (let i = 0; i < headerRoot.children.length; i++) {
-                        let child = headerRoot.children[i];
-                        if (child.activeFocus || (child.hasOwnProperty("pressed") && child.pressed)) {
-                            stillInteracting = true;
-                            break;
-                        }
-                    }
-                    headerRoot.isInteracting = stillInteracting;
-                    if (!stillInteracting && !headerMouseArea.containsMouse)
-                        hideTimer.restart();
-                }
-            }
-
-            // Connections to monitor interactions
-            Connections {
-                function onActiveFocusChanged() {
-                    if (target.activeFocus) {
-                        headerRoot.isInteracting = true;
-                        hideTimer.stop();
-                    }
-                }
-
-                target: headerRoot
             }
 
             // Intercept mouse events
@@ -354,17 +164,16 @@ PlasmoidItem {
                 }
             }
 
-            // Animations
             Behavior on Layout.preferredHeight {
                 NumberAnimation {
-                    duration: 400
+                    duration: 150
                     easing.type: Easing.InOutCubic
                 }
             }
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: 400
+                    duration: 150
                     easing.type: Easing.InOutQuad
                 }
             }

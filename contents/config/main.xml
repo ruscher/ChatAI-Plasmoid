@@ -132,13 +132,13 @@
       <default>false</default>
     </entry>
     <entry name="microphoneEnabled" type="Bool">
-      <default>true</default>
+      <default>false</default>
     </entry>
     <entry name="webcamEnabled" type="Bool">
-      <default>true</default>
+      <default>false</default>
     </entry>
     <entry name="screenShareEnabled" type="Bool">
-      <default>true</default>
+      <default>false</default>
     </entry>
     <entry name="downloadPath" type="String">
       <default></default>
@@ -175,7 +175,7 @@
     </entry>
     <entry name="allowUnknownUrlSchemes" type="Bool">
       <label>Allow unknown URL schemes</label>
-      <default>true</default>
+      <default>false</default>
     </entry>
     <entry name="playbackRequiresUserGesture" type="Bool">
       <label>Require user gesture for media playback</label>
