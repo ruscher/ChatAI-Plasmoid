@@ -101,6 +101,23 @@ riscos → impacto → testes → aceite.
 
 - Handler seleciona a primeira tela (`request.selectScreen(request.screensModel.index(0, 0))`) apenas quando a política de compartilhamento de tela permite; caso contrário `request.cancel()`.
 
+## B16 — ChatGPT "travado" (diagnóstico pós‑release, 2026‑09‑17)
+
+Dois problemas distintos, ambos medidos com *net log* do Chromium no widget real:
+
+1. **Largura do popup.** Com ~500 px o ChatGPT serve o layout mobile; com cookies do Google no perfil ele dispara sozinho
+   "Continuar com o Google" (`/auth/login_with?…direct-social-login`), registra `client-fatal-error` e a navegação para
+   `auth.openai.com/authorize` é abortada (`ERR_ABORTED`) → página em branco com spinner. Com 960 px o mesmo perfil fica na
+   página de chat normalmente. **Correção**: `Layout.minimumWidth` = 780 px (UIs de IA trocam para mobile abaixo de 768 CSS px),
+   largura padrão ≥ 780 + 2 gridUnits, e aviso quando o zoom reduz a largura CSS abaixo de 768.
+2. **Servidor retém a conexão.** Em parte das cargas a requisição principal conecta (TCP/TLS/HTTP‑2 em 250 ms), envia os
+   cabeçalhos e o servidor não responde (`READ_HEADERS` pendente >30 s) — mitigação anti‑bot do lado Cloudflare/OpenAI,
+   intermitente (outras cargas respondem em 2 s), independente do UA. **Correção de UX**: após 12 s a 0 % aparece um aviso
+   com "Tentar novamente" (Home: `stop()` + recarregar) e "Abrir no navegador".
+
+Também corrigido: `navigationRequested` só restringe a esquemas HTTP(S) no *main frame*; iframes (Turnstile, One Tap) podem
+navegar para `about:blank`/`blob:`.
+
 ## Critérios de aceite da fase
 
 - `qmllint` sem novos avisos; nenhum TypeError no `journalctl --user` ao usar downloads, Close e navegação.

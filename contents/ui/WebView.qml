@@ -37,6 +37,14 @@ Item {
 
     property bool hasLoadError: false
     property string loadErrorDetails: ""
+    // True when the main document has been waiting for the server for a while
+    // (some anti-bot front ends hold the connection without answering).
+    property bool slowResponse: false
+    // CSS viewport width seen by the page (zoom shrinks it). Below 768 px most
+    // assistants switch to mobile layouts whose sign-in flows misbehave here.
+    readonly property int desktopViewportWidth: 768
+    readonly property real cssViewportWidth: webview.zoomFactor > 0 ? webview.width / webview.zoomFactor : webview.width
+    property bool mobileLayoutHintDismissed: false
     property bool findBarVisible: false
 
     // Permissions
@@ -308,6 +316,15 @@ Item {
                 return;
             if (webview.recommendedState !== WebEngineView.LifecycleState.Active)
                 webview.lifecycleState = WebEngineView.LifecycleState.Discarded;
+        }
+    }
+
+    Timer {
+        id: slowResponseTimer
+        interval: 12 * 1000
+        onTriggered: {
+            if (webview.loading && webview.loadProgress < 10)
+                webViewRoot.slowResponse = true;
         }
     }
 
@@ -642,12 +659,25 @@ Item {
         onLoadingChanged: function (loadingInfo) {
             if (loadingInfo.status === WebEngineView.LoadStartedStatus) {
                 webViewRoot.hasLoadError = false;
+                webViewRoot.slowResponse = false;
+                slowResponseTimer.restart();
             } else if (loadingInfo.status === WebEngineView.LoadFailedStatus) {
+                slowResponseTimer.stop();
+                webViewRoot.slowResponse = false;
                 webViewRoot.hasLoadError = true;
                 webViewRoot.loadErrorDetails = loadingInfo.errorString || i18n("The service did not provide an error description.");
             } else if (loadingInfo.status === WebEngineView.LoadSucceededStatus) {
+                slowResponseTimer.stop();
+                webViewRoot.slowResponse = false;
                 // Chromium keeps zoom per host; re-apply the global preference.
                 webViewRoot.applyZoom();
+            }
+        }
+
+        onLoadProgressChanged: {
+            if (loadProgress >= 10) {
+                slowResponseTimer.stop();
+                webViewRoot.slowResponse = false;
             }
         }
 
@@ -706,6 +736,11 @@ Item {
 
         onNavigationRequested: function (request) {
             const requestedUrl = String(request.url);
+            // Sub-frames legitimately navigate to about:blank, blob: and data:
+            // (Cloudflare Turnstile, Google One Tap, React portals); only the
+            // main frame is restricted to HTTP(S).
+            if (!request.isMainFrame)
+                return;
             if (!webViewRoot.isHttpUrl(requestedUrl)) {
                 request.action = WebEngineNavigationRequest.IgnoreRequest;
                 return;
@@ -822,6 +857,50 @@ Item {
             from: 0
             to: 100
             value: webview.loadProgress
+        }
+
+        Kirigami.InlineMessage {
+            id: slowResponseMessage
+            Layout.fillWidth: true
+            Layout.margins: visible ? Kirigami.Units.smallSpacing : 0
+            visible: webViewRoot.slowResponse
+            type: Kirigami.MessageType.Warning
+            text: i18n("%1 is taking long to respond. Some services hold the connection for automated clients; retrying usually works.", webViewRoot.providerModel.hostOf(webViewRoot.currentUrl) || i18n("The site"))
+            actions: [
+                Kirigami.Action {
+                    icon.name: "view-refresh"
+                    text: i18n("Retry")
+                    onTriggered: webViewRoot.goHome()
+                },
+                Kirigami.Action {
+                    icon.name: "internet-web-browser"
+                    text: i18n("Open in Browser")
+                    onTriggered: {
+                        if (webViewRoot.isHttpUrl(plasmoid.configuration.url))
+                            Qt.openUrlExternally(plasmoid.configuration.url);
+                    }
+                }
+            ]
+        }
+
+        Kirigami.InlineMessage {
+            Layout.fillWidth: true
+            Layout.margins: visible ? Kirigami.Units.smallSpacing : 0
+            visible: !webViewRoot.mobileLayoutHintDismissed && webViewRoot.cssViewportWidth < webViewRoot.desktopViewportWidth && webview.width > 0
+            type: Kirigami.MessageType.Information
+            showCloseButton: true
+            onVisibleChanged: if (!visible && webViewRoot.cssViewportWidth < webViewRoot.desktopViewportWidth) webViewRoot.mobileLayoutHintDismissed = true
+            text: webview.zoomFactor > 1.01
+                ? i18n("At %1% zoom the page sees a %2 px wide viewport and switches to its mobile layout, which may break sign-in. Reset the zoom or widen the widget.", webViewRoot.zoomPercent, Math.round(webViewRoot.cssViewportWidth))
+                : i18n("The page sees a %1 px wide viewport and switches to its mobile layout, which may break sign-in. Widen the widget by dragging its edge.", Math.round(webViewRoot.cssViewportWidth))
+            actions: [
+                Kirigami.Action {
+                    visible: webview.zoomFactor > 1.01
+                    icon.name: "zoom-original"
+                    text: i18n("Reset Zoom")
+                    onTriggered: webViewRoot.zoomReset()
+                }
+            ]
         }
 
         PermissionBar {

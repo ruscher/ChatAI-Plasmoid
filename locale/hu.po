@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ChatAI-Plasmoid\n"
 "Report-Msgid-Bugs-To: https://github.com/ruscher/ChatAI-Plasmoid/issues\n"
-"POT-Creation-Date: 2026-09-17 05:49-0300\n"
+"POT-Creation-Date: 2026-09-17 06:20-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Choose the AI assistant"
 msgstr ""
 
-#: contents/ui/ChatAIMenu.qml:47
+#: contents/ui/ChatAIMenu.qml:47 contents/ui/WebView.qml:877
 #, fuzzy
 msgid "Open in Browser"
 msgstr "Link megnyitása a böngészőben"
@@ -169,7 +169,7 @@ msgid "About ChatAI"
 msgstr "ChatAI"
 
 #: contents/ui/CompactRepresentation.qml:28 contents/ui/main.qml:46
-#: contents/ui/settings/AboutSettings.qml:65 contents/ui/WebView.qml:455
+#: contents/ui/settings/AboutSettings.qml:65 contents/ui/WebView.qml:472
 msgid "ChatAI"
 msgstr "ChatAI"
 
@@ -1262,53 +1262,75 @@ msgstr ""
 msgid "These options change how the embedded web engine behaves for every assistant. Changes apply immediately."
 msgstr ""
 
-#: contents/ui/WebView.qml:147
+#: contents/ui/WebView.qml:155
 msgid "The configured address is not a valid HTTP or HTTPS URL."
 msgstr ""
 
-#: contents/ui/WebView.qml:554
+#: contents/ui/WebView.qml:571
 msgid "Download in progress"
 msgstr "Letöltés folyamatban"
 
-#: contents/ui/WebView.qml:554
+#: contents/ui/WebView.qml:571
 msgid "The file '%1' is already being downloaded"
 msgstr ""
 
-#: contents/ui/WebView.qml:585
+#: contents/ui/WebView.qml:602
 #, fuzzy
 msgid "Download finished"
 msgstr "Letöltés folyamatban"
 
-#: contents/ui/WebView.qml:647
+#: contents/ui/WebView.qml:668
 msgid "The service did not provide an error description."
 msgstr ""
 
-#: contents/ui/WebView.qml:658
+#: contents/ui/WebView.qml:688
 msgid "The site's security certificate is not trusted."
 msgstr ""
 
-#: contents/ui/WebView.qml:672
+#: contents/ui/WebView.qml:702
 msgid "The web content process stopped unexpectedly (exit code %1)."
 msgstr ""
 
-#: contents/ui/WebView.qml:681
+#: contents/ui/WebView.qml:711
 msgid "The PDF could not be created."
 msgstr ""
 
-#: contents/ui/WebView.qml:691
+#: contents/ui/WebView.qml:721
 #, fuzzy
 msgid "Blocked navigation"
 msgstr "Engedélyezze a fókuszt a navigáción."
 
-#: contents/ui/WebView.qml:691
+#: contents/ui/WebView.qml:721
 msgid "Only HTTP and HTTPS links can be opened from ChatAI."
+msgstr ""
+
+#: contents/ui/WebView.qml:868
+#, fuzzy
+msgid "The site"
+msgstr "A fájl"
+
+#: contents/ui/WebView.qml:868
+msgid "%1 is taking long to respond. Some services hold the connection for automated clients; retrying usually works."
+msgstr ""
+
+#: contents/ui/WebView.qml:872
+msgid "Retry"
+msgstr ""
+
+#: contents/ui/WebView.qml:894
+msgid "At %1% zoom the page sees a %2 px wide viewport and switches to its mobile layout, which may break sign-in. Reset the zoom or widen the widget."
+msgstr ""
+
+#: contents/ui/WebView.qml:895
+msgid "The page sees a %1 px wide viewport and switches to its mobile layout, which may break sign-in. Widen the widget by dragging its edge."
+msgstr ""
+
+#: contents/ui/WebView.qml:900
+msgid "Reset Zoom"
 msgstr ""
 
 #~ msgid "Open"
 #~ msgstr "Megnyitás"
-
-#~ msgid "The file "
-#~ msgstr "A fájl"
 
 #~ msgid "Go back to previous page"
 #~ msgstr "Térj vissza az előző oldalra"

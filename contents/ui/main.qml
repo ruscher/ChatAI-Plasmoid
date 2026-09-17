@@ -89,10 +89,14 @@ PlasmoidItem {
     fullRepresentation: ColumnLayout {
         id: mainLayout
 
-        readonly property int defaultWidth: Kirigami.Units.gridUnit * 28
+        // AI web apps switch to their mobile layouts below 768 CSS px, and
+        // ChatGPT's mobile flow breaks inside the widget (docs/02 B16), so the
+        // popup never goes narrower than a desktop viewport.
+        readonly property int minimumViewportWidth: 780
+        readonly property int defaultWidth: Math.max(Kirigami.Units.gridUnit * 28, minimumViewportWidth + Kirigami.Units.gridUnit * 2)
         readonly property int defaultHeight: Kirigami.Units.gridUnit * 39
 
-        Layout.minimumWidth: Kirigami.Units.gridUnit * 20
+        Layout.minimumWidth: Math.max(Kirigami.Units.gridUnit * 20, minimumViewportWidth)
         Layout.minimumHeight: Kirigami.Units.gridUnit * 28
         Layout.preferredWidth: plasmoid.configuration.dialogWidth > 0 ? plasmoid.configuration.dialogWidth : defaultWidth
         Layout.preferredHeight: plasmoid.configuration.dialogHeight > 0 ? plasmoid.configuration.dialogHeight : defaultHeight
