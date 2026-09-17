@@ -24,7 +24,7 @@ The widget does not provide an AI API, does not bypass authentication and does n
 Enabled by default on new installations: ChatGPT, Claude, Google Gemini, DeepSeek, Duck.ai, HuggingChat and T3 Chat.
 Also available: Perplexity, Microsoft Copilot, **GitHub Copilot**, **Mistral Vibe**, Grok, **Qwen**, **Kimi**, **Manus**, Meta AI, You.com, BlackBox AI, LobeChat, Big-AGI, plus any custom site.
 
-Availability, login methods and features are decided by each service. Google sign-in is blocked by Google inside embedded browsers; sign in with e-mail or reuse a session created in a regular browser. The research behind the list, with load tests, is in [`docs/05-AI-PROVIDERS-RESEARCH.md`](docs/05-AI-PROVIDERS-RESEARCH.md).
+Availability, login methods and features are decided by each service. "Continue with Google" works with the default browser identity (popups open in an in-widget sign-in window; redirect flows stay in the main view). The research behind the list, with load tests, is in [`docs/05-AI-PROVIDERS-RESEARCH.md`](docs/05-AI-PROVIDERS-RESEARCH.md).
 
 ## Requirements
 
@@ -51,7 +51,7 @@ Then add **ChatAI** from Plasma's widget chooser. Upgrading from 1.0.0 keeps you
 | Zoom | ⋮ › Zoom, or Ctrl++ / Ctrl+- / Ctrl+0 |
 | Full screen | ⋮ › Full Screen or F11; Esc exits |
 | Keep open when clicking outside | Pin button |
-| Hide the toolbar | Eye button (auto-hide) or Settings › General |
+| Hide the toolbar | ⋮ › Hide Toolbar Automatically, or Settings › General |
 | Downloads | Click the ↓ indicator while it is shown, or ⋮ › Downloads |
 | Free memory | Close button (destroys the web engine; logins are kept on disk) |
 
@@ -61,7 +61,7 @@ Then add **ChatAI** from Plasma's widget chooser. Upgrading from 1.0.0 keeps you
 - **Sites** – enable built-in assistants (with login notes), add/edit/remove custom sites.
 - **Permissions** – Ask/Allow/Block per type; list and reset decisions saved per site.
 - **Web Features** – clipboard, new windows, autoplay, spatial navigation, focus, unknown link types (each explained).
-- **Downloads** – folder, open folder, current downloads.
+- **Downloads** – folder, open folder, current downloads (the list itself is in ⋮ › Downloads or behind the toolbar indicator).
 - **Cache and Data** – cache location and limit, clear cache, profile storage name (switching recreates the view; confirmation required).
 - **Appearance** – panel icon, toolbar buttons.
 - **Advanced** – browser identity (Chromium-compatible user agent), custom user agent, freeze/discard hidden page, developer tools, diagnostics.
