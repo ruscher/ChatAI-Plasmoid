@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="contents/ui/assets/logo.svg" width="128" alt="ChatAI logo">
+  <img src=".github/assets/logo.svg" width="128" alt="ChatAI logo">
 </p>
 
 <h1 align="center">ChatAI</h1>
@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <img alt="ChatAI running in KDE Plasma" src="https://github.com/user-attachments/assets/0e72709b-3d10-430c-a24e-8a0511c05423" width="720">
+  <img alt="ChatAI running in KDE Plasma" src=".github/assets/chatai-main.webp" width="720">
 </p>
 
 ---
@@ -32,6 +32,7 @@
 ## Table of Contents
 
 - [About](#about)
+- [Screenshots](#screenshots)
 - [What's New in 1.0.1](#whats-new-in-101)
 - [Features](#features)
 - [Providers](#providers)
@@ -78,6 +79,33 @@ a normal browser. Closing the widget releases the web engine to free memory.
 
 If a service works in a regular Chromium browser, it generally works here too,
 subject to that service's own rules for embedded browsers.
+
+---
+
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src=".github/assets/chatai-providers.webp" alt="Provider selector" width="100%"><br>
+      <sub><b>Switch between assistants</b></sub>
+    </td>
+    <td align="center" width="50%">
+      <img src=".github/assets/chatai-settings.webp" alt="Settings — Sites" width="100%"><br>
+      <sub><b>Configuration inside the widget</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src=".github/assets/chatai-permissions.webp" alt="Per-site permissions" width="100%"><br>
+      <sub><b>Per-site permissions</b></sub>
+    </td>
+    <td align="center" width="50%">
+      <img src=".github/assets/chatai-main.webp" alt="Main interface" width="100%"><br>
+      <sub><b>Native Plasma popup</b></sub>
+    </td>
+  </tr>
+</table>
 
 ---
 
