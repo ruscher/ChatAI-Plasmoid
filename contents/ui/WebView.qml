@@ -283,7 +283,7 @@ Item {
         permissionsRevision++;
     }
 
-    // ---- lifecycle (docs/09) ----------------------------------------------
+    // ---- lifecycle ----------------------------------------------
 
     onHiddenChanged: {
         if (!hidden) {
@@ -634,7 +634,7 @@ Item {
         webNotification.sendEvent();
     }
 
-    // ---- permissions (docs/07) --------------------------------------------
+    // ---- permissions --------------------------------------------
 
     function combinePolicies(a, b) {
         if (a === policyBlock || b === policyBlock)

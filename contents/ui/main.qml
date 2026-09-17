@@ -41,7 +41,7 @@ PlasmoidItem {
     property bool settingsModalOpen: false
     readonly property var currentProvider: providerRegistry.providerForUrl(plasmoid.configuration.url)
 
-    // Pin is the single source of truth (docs/02 B1).
+    // Pin is the single source of truth.
     hideOnWindowDeactivate: !(plasmoid.configuration.pin || headerModalOpen || settingsModalOpen || fullScreenActive)
     toolTipMainText: i18n("ChatAI")
     toolTipSubText: currentProvider ? currentProvider.name : providerRegistry.nameForUrl(plasmoid.configuration.url)
@@ -90,7 +90,7 @@ PlasmoidItem {
         id: mainLayout
 
         // AI web apps switch to their mobile layouts below 768 CSS px, and
-        // ChatGPT's mobile flow breaks inside the widget (docs/02 B16), so the
+        // ChatGPT's mobile flow breaks inside the widget, so the
         // popup never goes narrower than a desktop viewport.
         readonly property int minimumViewportWidth: 780
         readonly property int defaultWidth: Math.max(Kirigami.Units.gridUnit * 28, minimumViewportWidth + Kirigami.Units.gridUnit * 2)
@@ -164,7 +164,7 @@ PlasmoidItem {
                 }
             }
 
-            // Hover detection without participating in the layout (docs/02 B4).
+            // Hover detection without participating in the layout.
             HoverHandler {
                 id: headerHover
                 onHoveredChanged: {

@@ -6,7 +6,7 @@
 .pragma library
 
 // One-shot, idempotent migration of configuration written by ChatAI <= 1.0.0.
-// See docs/13-RELEASE-1.0.1.md. `config` is plasmoid.configuration,
+// `config` is plasmoid.configuration,
 // `legacyUrlMap` maps legacy provider URLs to their canonical URL.
 
 var CURRENT_VERSION = 2;
@@ -61,7 +61,7 @@ function run(config, legacyUrlMap) {
         config.customSites = "";
     }
 
-    // Permissions: booleans -> per-type policy (docs/07).
+    // Permissions: booleans -> per-type policy.
     if (existing) {
         if (config.notificationsEnabled === false)
             config.notificationsPolicy = POLICY_BLOCK;

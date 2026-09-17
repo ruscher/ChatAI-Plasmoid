@@ -41,7 +41,7 @@ RowLayout {
     readonly property var emptyDownloadSummary: ({ active: 0, paused: 0, completedUnseen: 0, failedUnseen: 0, progress: 0, hasUnknownSize: false, showIndicator: false, attention: 0 })
     readonly property var downloadSummary: hasWebView && webviewRoot.downloadSummary ? webviewRoot.downloadSummary : emptyDownloadSummary
 
-    // Progressive overflow (docs/03): only Home and Find are optional now.
+    // Progressive overflow: only Home and Find are optional now.
     readonly property int overflowLevel: width < Kirigami.Units.gridUnit * 26 ? 2 : width < Kirigami.Units.gridUnit * 30 ? 1 : 0
     readonly property bool searchInBar: overflowLevel < 2
     readonly property bool homeInBar: !plasmoid.configuration.hideHomeButton && overflowLevel < 1

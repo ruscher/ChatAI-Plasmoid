@@ -14,7 +14,7 @@ import org.kde.kirigami as Kirigami
 /*
  * In-widget settings host. Shows the same page components used by the Plasma
  * configuration dialog (contents/ui/settings/), bound to the same
- * plasmoid.configuration — one backend, two hosts (docs/04).
+ * plasmoid.configuration — one backend, two hosts.
  */
 Item {
     id: panel

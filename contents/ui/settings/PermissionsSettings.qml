@@ -15,7 +15,7 @@ import org.kde.kirigami as Kirigami
 import ".."
 
 // Global permission policies per type plus the per-site decisions stored by
-// Qt WebEngine (docs/07).
+// Qt WebEngine.
 ColumnLayout {
     id: page
 

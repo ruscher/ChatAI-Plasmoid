@@ -16,7 +16,7 @@ import org.kde.kirigami as Kirigami
 import ".."
 
 // Cache, site data and the WebEngine profile. Paths follow the documented
-// WebEngineProfile defaults so no WebEngine instance is needed here (docs/08).
+// WebEngineProfile defaults so no WebEngine instance is needed here.
 ColumnLayout {
     id: page
 

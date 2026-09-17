@@ -1,98 +1,453 @@
-# ChatAI-Plasmoid
+<p align="center">
+  <img src="contents/ui/assets/logo.svg" width="128" alt="ChatAI logo">
+</p>
 
-**ChatAI 1.0.1** is a KDE Plasma 6 widget that puts the web apps of AI assistants — ChatGPT, Claude, Gemini, DeepSeek, Copilot, Mistral Vibe, Grok, Qwen, Kimi, Manus and others — in a compact, native Plasma popup. It embeds each service's official website with Qt WebEngine, keeps a persistent profile for logins, and frees the web engine when you close it.
+<h1 align="center">ChatAI</h1>
 
-![Screenshot_20250130_204914](https://github.com/user-attachments/assets/0e72709b-3d10-430c-a24e-8a0511c05423)
+<p align="center">
+  <b>Your AI assistants, right inside KDE Plasma.</b><br>
+  A native Plasma 6 widget that puts ChatGPT, Claude, Gemini, DeepSeek and many
+  other web assistants one click away — no extra browser tabs, no separate apps.
+</p>
 
-The widget does not provide an AI API, does not bypass authentication and does not bypass CAPTCHA or anti-bot protections.
+<p align="center">
+  <img alt="Version"  src="https://img.shields.io/badge/version-1.0.1-blue">
+  <img alt="License"  src="https://img.shields.io/badge/license-GPL--2.0%2B-green">
+  <img alt="KDE Plasma 6" src="https://img.shields.io/badge/KDE%20Plasma-6-1d99f3?logo=kde&logoColor=white">
+  <img alt="Qt 6" src="https://img.shields.io/badge/Qt-6%20%C2%B7%20WebEngine-41cd52?logo=qt&logoColor=white">
+  <img alt="Wayland" src="https://img.shields.io/badge/Wayland-supported-663399">
+  <img alt="X11" src="https://img.shields.io/badge/X11-supported-f28834">
+  <br>
+  <a href="https://github.com/ruscher/ChatAI-Plasmoid/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/ruscher/ChatAI-Plasmoid?style=flat"></a>
+  <a href="https://github.com/ruscher/ChatAI-Plasmoid/issues"><img alt="Issues" src="https://img.shields.io/github/issues/ruscher/ChatAI-Plasmoid"></a>
+  <a href="https://github.com/ruscher/ChatAI-Plasmoid/commits/main"><img alt="Last commit" src="https://img.shields.io/github/last-commit/ruscher/ChatAI-Plasmoid"></a>
+</p>
+
+<p align="center">
+  <img alt="ChatAI running in KDE Plasma" src="https://github.com/user-attachments/assets/0e72709b-3d10-430c-a24e-8a0511c05423" width="720">
+</p>
+
+---
+
+## Table of Contents
+
+- [About](#about)
+- [What's New in 1.0.1](#whats-new-in-101)
+- [Features](#features)
+- [Providers](#providers)
+- [Requirements](#requirements)
+- [Install](#install)
+- [Update](#update)
+- [Remove](#remove)
+- [Using ChatAI](#using-chatai)
+- [Settings](#settings)
+- [Privacy and Security](#privacy-and-security)
+- [Performance](#performance)
+- [Compatibility](#compatibility)
+- [Troubleshooting](#troubleshooting)
+- [Development](#development)
+- [Contributing](#contributing)
+- [Authors & Maintainers](#authors--maintainers)
+- [Contributors](#contributors)
+- [License and Assets](#license-and-assets)
+
+---
+
+## About
+
+**ChatAI** is a widget (plasmoid) for the **KDE Plasma 6** desktop. It embeds the
+official web interfaces of AI assistants inside a compact, native popup so you can
+switch between them from a single place — the panel or the desktop — instead of
+juggling browser tabs or standalone apps.
+
+Under the hood it uses **Qt WebEngine** (Chromium) with a persistent profile, so
+each service keeps its own login, cookies and local storage exactly as it would in
+a normal browser. Closing the widget releases the web engine to free memory.
+
+**What ChatAI is:**
+
+- a convenient front-end to the assistants' own websites;
+- a native Plasma integration with a toolbar, provider switcher, per-site
+  permissions, downloads and configuration.
+
+**What ChatAI is not:**
+
+- it is **not** an AI API or model, and does not replace the providers;
+- it does **not** bypass authentication, CAPTCHAs or anti-bot protections;
+- it does **not** proxy, store or inspect your conversations.
+
+If a service works in a regular Chromium browser, it generally works here too,
+subject to that service's own rules for embedded browsers.
+
+---
+
+## What's New in 1.0.1
+
+This release is a substantial overhaul focused on usability, sign-in reliability
+and resource use.
+
+### Redesigned toolbar and provider switcher
+
+A cleaner toolbar — Pin · Back · Forward · Reload/Stop · Home · **assistant
+selector** · Find · ⋮ menu · Close — with an icon-and-name selector and a kebab
+(⋮) menu that gathers zoom, full screen, downloads, settings and more. Secondary
+controls fold into the menu automatically when the popup is narrow.
+
+### Reliable sign-in, including "Continue with Google"
+
+Redirect-based logins run in the main view; `window.open()`-based logins (used by
+several providers for Google/Apple/Microsoft) now open in an **in-widget sign-in
+window that shares the same profile**, so `window.opener`, `postMessage()` and
+`window.close()` behave correctly and the callback completes. The widget keeps
+Qt WebEngine's honest identity, which Google's sign-in accepts.
+
+### More AI providers
+
+Added **GitHub Copilot**, **Manus**, **Qwen**, **Kimi** and **Mistral Vibe**, with
+optimized icons.
+
+### Granular privacy controls
+
+Per-site permissions for notifications, microphone, camera, screen sharing,
+location and clipboard, each set to **Ask / Allow / Block**. "Ask" shows an inline
+prompt and the choice is remembered per origin, reviewable and resettable.
+
+### Modern downloads
+
+A temporary toolbar indicator with a real progress ring appears only while a
+download needs attention. A popup lists downloads with pause, resume, cancel,
+open, **show in folder** and retry, plus a KDE notification with actions.
+
+### Better memory and lifecycle management
+
+The web engine is created lazily, frozen when the page is hidden (when safe) and
+fully released on Close.
+
+### Zoom, full screen and more
+
+Page zoom (50–200 %) with shortcuts, real full screen (also honouring page
+requests), PDF/MHTML export, find in page, and optional developer tools and
+diagnostics.
+
+---
 
 ## Features
 
-- **Toolbar**: Pin · Back · Forward · Reload/Stop · Home · **assistant selector** (icon + name) · Find · ⋮ menu · Close. Back/Forward follow the page history; narrow popups move Home and Find into the ⋮ menu. A **download indicator** with a progress ring appears only while a download is running or finished but not yet opened.
-- **⋮ menu**: open in browser, copy address, reload ignoring cache, zoom (50–200 %), real full screen (F11, also honours page requests), **hide toolbar automatically**, **Downloads** (list with pause/resume/cancel, open, show in folder, retry), ChatAI settings by category, keyboard shortcuts, about, optional developer tools.
-- **Settings inside the widget** and in the Plasma configuration dialog, sharing one backend: General, Sites, Permissions, Web Features, Downloads, Cache and Data, Appearance, Advanced, About.
-- **Per-site permissions**: notifications, microphone, camera, screen sharing, location and clipboard are *Ask / Allow / Block* per type; "Ask" shows an inline prompt and the answer is remembered per site (Qt WebEngine `StoreOnDisk`), reviewable and resettable.
-- **Resource-conscious**: the web engine is created on first use and destroyed by Close; a hidden page is frozen after 30 s when the engine says it is safe; optional discard after N minutes.
-- **Providers registry**: one file (`contents/ui/ProviderModel.qml`) defines every assistant; custom sites are stored as JSON.
-- Persistent WebEngine profile per widget instance (storage name), HTTP cache limit and one-click cache clearing.
-- Theme-aware panel icon: favicon, ChatAI logo (adaptive/dark/light), assistant icon (outlined/filled/colorful) or any system icon.
-- **Sign-in popups** ("Continue with Google" and similar `window.open` flows) open in an in-widget window that shares the profile, so callbacks, `window.opener` and `window.close()` work; redirect-based logins run in the main view.
-- Managed downloads (progress, speed, pause, resume, cancel, open, show in folder, retry, KDE notification with actions), PDF and MHTML export, find in page, dark-mode hint for pages.
+### 🤖 Multiple AI providers
+Switch between 20 built-in assistants from one widget, or add your own sites.
+
+### 🧭 Integrated navigation
+Back, Forward, Reload/Stop, Home, Find in page, zoom and full screen.
+
+### 🔐 Per-site permissions
+Ask / Allow / Block per permission type, remembered per origin and resettable.
+
+### 📥 Modern downloads
+Progress ring indicator, list with pause/resume/cancel, open, show in folder and retry.
+
+### ⚡ Resource-conscious
+Lazy Qt WebEngine start, page freezing when hidden, full release on Close.
+
+### 🎨 Plasma integration
+Kirigami/Breeze styling, theme-aware icons, panel or desktop, HiDPI-friendly.
+
+### 🔧 Advanced controls
+Custom sites, WebEngine profiles, cache management, user-agent options,
+developer tools and a sanitized diagnostics view.
+
+---
 
 ## Providers
 
-Enabled by default on new installations: ChatGPT, Claude, Google Gemini, DeepSeek, Duck.ai, HuggingChat and T3 Chat.
-Also available: Perplexity, Microsoft Copilot, **GitHub Copilot**, **Mistral Vibe**, Grok, **Qwen**, **Kimi**, **Manus**, Meta AI, You.com, BlackBox AI, LobeChat, Big-AGI, plus any custom site.
+Providers come from a single registry (`contents/ui/ProviderModel.qml`). Enable or
+disable any of them in **Settings → Sites**.
 
-Availability, login methods and features are decided by each service. "Continue with Google" works with the default browser identity (popups open in an in-widget sign-in window; redirect flows stay in the main view). The research behind the list, with load tests, is in [`docs/05-AI-PROVIDERS-RESEARCH.md`](docs/05-AI-PROVIDERS-RESEARCH.md).
+| Provider | Default | Login | Notes |
+| --- | :---: | :---: | --- |
+| ChatGPT | ✅ | Account | |
+| Claude | ✅ | Account | Google sign-in restricted by the service |
+| Google Gemini | ✅ | Account | |
+| DeepSeek | ✅ | Account | |
+| Duck.ai (DuckDuckGo) | ✅ | No account | Anonymous access to several models |
+| HuggingChat | ✅ | Optional | Open models |
+| Perplexity | ➖ | Optional | Answer engine with cited sources |
+| Microsoft Copilot | ➖ | Optional | |
+| GitHub Copilot | ➖ | GitHub | Coding assistant on github.com |
+| Mistral Vibe | ➖ | Account | Formerly "Le Chat" |
+| Grok | ➖ | Optional | xAI |
+| Qwen | ➖ | Optional | Alibaba |
+| Kimi | ➖ | Optional | Moonshot AI |
+| Manus | ➖ | Account | General agent with a chat mode |
+| Meta AI | ➖ | Account | Availability depends on your region |
+| T3 Chat | ➖ | Account | Multi-model client |
+| You.com | ➖ | Account | |
+| BlackBox AI | ➖ | Account | Coding assistant |
+| LobeChat | ➖ | Account | |
+| Big-AGI | ➖ | Optional | Bring your own keys |
+
+> Availability, login methods and features are decided entirely by each service.
+> Websites can change without notice, and some providers restrict sign-in inside
+> embedded browsers.
+
+### Custom sites
+
+Add any chat website in **Settings → Sites → Custom sites**: give it a name and an
+`http(s)` address. Custom sites can be edited and removed, use the ChatAI logo as
+icon, and get no special access to your system. You can also type a one-off address
+with the **Custom address…** entry in the toolbar selector.
+
+---
 
 ## Requirements
 
-KDE Plasma 6.6 or newer, KDE Frameworks 6, Qt 6.10 or newer with **Qt WebEngine** (`qt6-webengine`). Developed and tested on Plasma 6.7.4 / Qt 6.11.2 on Wayland; X11 is supported by the same code paths (see [`docs/11-WAYLAND-X11-HIDPI.md`](docs/11-WAYLAND-X11-HIDPI.md)).
+| Component | Requirement |
+| --- | --- |
+| KDE Plasma | 6 (`X-Plasma-API-Minimum-Version` 6.0) |
+| KDE Frameworks | 6 |
+| Qt | 6 |
+| Qt WebEngine | Required (`qt6-webengine`) |
+| Wayland | Supported |
+| X11 / Xorg | Supported |
 
-## Install, update, remove
+**Tested with:** Plasma 6.7, KDE Frameworks 6, Qt / Qt WebEngine 6.11 on Wayland.
+
+Qt WebEngine is the only non-standard runtime dependency; on most distributions it
+is packaged separately (for example `qt6-webengine`).
+
+---
+
+## Install
 
 ```bash
-./tools/build-package.sh                                   # → build/ChatAI-Plasmoid.plasmoid
+git clone https://github.com/ruscher/ChatAI-Plasmoid.git
+cd ChatAI-Plasmoid
+./tools/build-package.sh
 kpackagetool6 --type Plasma/Applet --install build/ChatAI-Plasmoid.plasmoid
-kpackagetool6 --type Plasma/Applet --upgrade build/ChatAI-Plasmoid.plasmoid   # update
-kpackagetool6 --type Plasma/Applet --remove ChatAI-Plasmoid                   # uninstall
 ```
 
-Then add **ChatAI** from Plasma's widget chooser. Upgrading from 1.0.0 keeps your settings: the first start migrates them (pin, custom sites, permissions, provider URLs) automatically.
+Then add the widget to your desktop or panel:
+
+1. Right-click the desktop or panel → **Enter Edit Mode**.
+2. Click **Add Widgets…**.
+3. Search for **ChatAI**.
+4. Drag it onto the panel or desktop.
+
+You can also install a downloaded `.plasmoid` file with the same
+`kpackagetool6 --install` command.
+
+---
+
+## Update
+
+```bash
+git pull
+./tools/build-package.sh
+kpackagetool6 --type Plasma/Applet --upgrade build/ChatAI-Plasmoid.plasmoid
+```
+
+Your settings are preserved across updates. On first launch the widget migrates
+older configuration automatically, keeping your enabled providers, custom sites,
+permissions and WebEngine sessions. If the widget was already running, log out and
+back in (or restart Plasma) so the new version is loaded.
+
+---
+
+## Remove
+
+**Remove the widget:**
+
+```bash
+kpackagetool6 --type Plasma/Applet --remove ChatAI-Plasmoid
+```
+
+**Remove the browsing data (optional).** Cookies, logins, storage, cache and
+per-site permissions live in the WebEngine profile folders below. Deleting them
+signs you out of every service:
+
+```bash
+rm -rf ~/.local/share/plasmashell/QtWebEngine/chat-ai
+rm -rf ~/.cache/plasmashell/QtWebEngine/chat-ai
+```
+
+Replace `chat-ai` with your profile's storage name if you changed it in
+**Settings → Cache and Data**.
+
+---
 
 ## Using ChatAI
 
 | Action | How |
 | --- | --- |
-| Switch assistant | Selector in the toolbar (keyboard: Tab to it, arrows, Enter) |
-| Custom address | "Custom address…" in the selector, or add a site in Settings › Sites |
-| Find in page | Ctrl+F |
-| Zoom | ⋮ › Zoom, or Ctrl++ / Ctrl+- / Ctrl+0 |
-| Full screen | ⋮ › Full Screen or F11; Esc exits |
-| Keep open when clicking outside | Pin button |
-| Hide the toolbar | ⋮ › Hide Toolbar Automatically, or Settings › General |
-| Downloads | Click the ↓ indicator while it is shown, or ⋮ › Downloads |
-| Free memory | Close button (destroys the web engine; logins are kept on disk) |
+| Switch assistant | Selector in the toolbar (Tab to it, arrow keys, Enter) |
+| Add / type a custom site | **Custom address…** in the selector, or Settings → Sites |
+| Go back / forward | Toolbar buttons, or the mouse Back/Forward buttons |
+| Reload / stop | Reload button (turns into Stop while loading) |
+| Home | Home button — the current assistant's start page |
+| Find in page | `Ctrl+F` |
+| Zoom in / out / reset | `Ctrl++` / `Ctrl+-` / `Ctrl+0`, or ⋮ → Zoom |
+| Full screen | `F11` (or ⋮ → Full Screen); `Esc` exits |
+| Keep the popup open | Pin button |
+| Downloads | The ↓ indicator when shown, or ⋮ → Downloads |
+| Open the current page in a browser | ⋮ → Open in Browser |
+| Release web engine memory | Close button |
+
+---
 
 ## Settings
 
-- **General** – home assistant, pin, preload at login, toolbar visibility.
-- **Sites** – enable built-in assistants (with login notes), add/edit/remove custom sites.
-- **Permissions** – Ask/Allow/Block per type; list and reset decisions saved per site.
-- **Web Features** – clipboard, new windows, autoplay, spatial navigation, focus, unknown link types (each explained).
-- **Downloads** – folder, open folder, current downloads (the list itself is in ⋮ › Downloads or behind the toolbar indicator).
-- **Cache and Data** – cache location and limit, clear cache, profile storage name (switching recreates the view; confirmation required).
-- **Appearance** – panel icon, toolbar buttons.
-- **Advanced** – browser identity (Chromium-compatible user agent), custom user agent, freeze/discard hidden page, developer tools, diagnostics.
+Settings are available both in the Plasma configuration dialog and inside the
+widget (⋮ → ChatAI Settings), sharing the same options.
 
-## Privacy and security
+| Page | What you configure |
+| --- | --- |
+| **General** | Home assistant, pin, preload at login, toolbar behaviour |
+| **Sites** | Enable built-in assistants; add, edit and remove custom sites |
+| **Permissions** | Ask/Allow/Block per type; review and reset per-site decisions |
+| **Web Features** | Clipboard, new windows, autoplay, spatial navigation, focus, unknown schemes |
+| **Downloads** | Download folder and the current download list |
+| **Cache and Data** | Cache location and limit, clear cache, WebEngine profile (storage name) |
+| **Appearance** | Panel icon style and which toolbar buttons are shown |
+| **Advanced** | Browser identity / user agent, page freezing, discard timer, developer tools, diagnostics |
+| **About** | Version, links, authors and keyboard shortcuts |
 
-- Site data (cookies, logins, storage, cache, permissions) lives in the WebEngine profile folder: `~/.local/share/plasmashell/QtWebEngine/<storage name>` and `~/.cache/plasmashell/QtWebEngine/<storage name>`.
-- Microphone, camera, screen and location are used only after you allow them, and only by the site that asked. Unknown permission types are denied.
-- Only `http(s)` links navigate or open externally; unknown URL schemes are blocked unless you enable them, and then only after a click. Invalid TLS certificates are rejected. Downloaded file names are sanitized and files are never executed.
-- ChatAI does not read page contents, credentials or clipboard. Clearing the cache does not sign you out; to end a session use the site's "Sign out" or switch the profile storage name.
+---
+
+## Privacy and Security
+
+ChatAI separates **what the widget does locally** from **what the AI services do
+with your data**.
+
+### Local privacy (handled by ChatAI)
+
+- **Profile & sessions** — cookies, logins, local storage and per-site permissions
+  are stored by Qt WebEngine under
+  `~/.local/share/plasmashell/QtWebEngine/<storage name>` (cache under
+  `~/.cache/...`). Each storage name is a separate, isolated profile.
+- **Permissions** — microphone, camera, screen sharing, location, notifications and
+  clipboard are used only after you allow them, and only for the site that asked.
+  Unknown permission types are denied.
+- **Links & schemes** — only `http(s)` navigates or opens externally; unknown URL
+  schemes are blocked unless you enable them, and then only after a click. Invalid
+  TLS certificates are rejected.
+- **Downloads** — file names are sanitized and files are never executed
+  automatically.
+- ChatAI does **not** log or transmit your cookies, credentials, page contents or
+  clipboard. Clearing the cache does not sign you out.
+
+### AI provider privacy (handled by each service)
+
+Anything you type or upload to ChatGPT, Claude, Gemini, DeepSeek or any other
+provider is sent to **that service** and is governed by **its** terms and privacy
+policy. ChatAI is only the window to their websites — it has no control over how
+they process, store or use your data. Review each provider's policy for details.
+
+---
+
+## Performance
+
+- **Lazy start** — Qt WebEngine is created only when the widget is first opened
+  (or preloaded at login if you enable it).
+- **Freeze when hidden** — a hidden page is frozen after a short delay when the
+  engine reports it is safe (no audio, upload or download in progress); it resumes
+  instantly when shown. An optional timer can discard very old hidden pages.
+- **Release on close** — the Close button destroys the web view and its renderer
+  process, returning memory to the system. Logins remain on disk.
+- **Cache control** — set an HTTP cache size limit and clear the cache on demand.
+
+---
+
+## Compatibility
+
+- **KDE Plasma 6** on both **Wayland** and **X11/Xorg**.
+- **HiDPI** — vector icons and Plasma units scale with the display.
+- **Qt WebEngine** — the widget uses the version provided by your system.
+- **Embedded-login limits** — a few services restrict sign-in inside embedded
+  browsers (Google's OAuth is the most common). Where a provider blocks embedded
+  sign-in by policy, use e-mail sign-in or a session created in a regular browser.
+
+---
 
 ## Troubleshooting
 
-- A site refuses to load or to sign in: try **Advanced › Identify as Chromium**, then **Open in Browser** from the ⋮ menu.
-- Google sign-in says "This browser or app may not be secure": make sure Advanced › *Identify as Chromium* is **off** (Google accepts Qt WebEngine's real identity and rejects disguised ones).
-- Notifications do not appear: set Permissions › Notifications to *Ask* or *Allow* and check Plasma's notification settings.
-- Downloads fail: choose an existing, writable folder in Settings › Downloads.
-- Something looks wrong after an update: Advanced › Diagnostics has a **Copy** button; paste it in an issue.
+| Problem | Solution |
+| --- | --- |
+| A provider does not load | Use ⋮ → Reload, or **Open in Browser**; the site may reject embedded sessions |
+| ChatGPT seems stuck at first | Give it a moment; if a "slow to respond" notice appears, use **Retry**. Keep the popup reasonably wide (its mobile layout can misbehave) |
+| Google sign-in says "browser may not be secure" | Make sure **Advanced → Identify as Chromium** is **off** — Google accepts the honest Qt WebEngine identity and rejects disguised ones |
+| A sign-in popup does not finish | Complete it in the in-widget sign-in window; press `Esc` or its close button to cancel and try again |
+| Notifications do not appear | Set Permissions → Notifications to Ask/Allow and check Plasma's notification settings |
+| Downloads fail | Choose an existing, writable folder in Settings → Downloads |
+| A provider stopped working | The service may have changed its site; report it in the issues tracker |
+| Something looks wrong after an update | Advanced → Diagnostics → **Copy**, then include the sanitized info in an issue |
+
+Still stuck? Open an issue: <https://github.com/ruscher/ChatAI-Plasmoid/issues>
+
+---
 
 ## Development
 
-```bash
-./tools/validate.sh              # JSON, XML, qmllint, .po check, package contents
-./tools/update-translations.sh   # regenerate .pot, merge .po, compile .mo
-plasmoidviewer -a .              # run the widget in a window
-python3 tools/provider-probe/probe.py default   # headless load test of every provider (PySide6)
+The project is pure QML/JavaScript on top of Qt Quick, Qt WebEngine and Kirigami —
+no compiled code.
+
+```text
+ChatAI-Plasmoid/
+├── .github/workflows/     # CI: validation, translation, contributors list
+├── contents/
+│   ├── config/            # KConfig schema (main.xml) and config categories
+│   ├── locale/            # Compiled translations shipped with the package
+│   └── ui/                # QML: widget, WebView, provider registry, settings
+│       ├── settings/      # Shared settings pages (dialog + in-widget panel)
+│       └── assets/        # Provider and logo SVG icons
+├── locale/                # Translation sources (.pot / .po / .json)
+├── tools/                 # Packaging, validation and translation scripts
+├── metadata.json          # Plasma package metadata
+├── LICENSE
+└── README.md
 ```
 
-Engineering documentation lives in [`docs/`](docs/) (plan, audits, decisions, test matrix, final audit). Translation sources are in `locale/`; compiled catalogs shipped in the package are in `contents/locale/`. Keep SPDX headers and avoid new runtime dependencies.
+Key pieces: `main.qml` orchestrates the plasmoid; `WebView.qml` hosts Qt WebEngine
+(profile, navigation, permissions, downloads, zoom, full screen, lifecycle);
+`ProviderModel.qml` is the single source of truth for providers; `Header.qml`,
+`AiSelector.qml` and `ChatAIMenu.qml` build the toolbar; the `settings/` pages are
+shared between the Plasma configuration dialog and the in-widget panel.
+
+### Commands
+
+```bash
+./tools/build-package.sh         # build build/ChatAI-Plasmoid.plasmoid
+./tools/validate.sh              # JSON + XML + qmllint + translations + package checks
+./tools/update-translations.sh   # regenerate the .pot, merge .po and compile .mo
+plasmoidviewer -a .              # run the widget in a standalone window
+```
+
+Continuous integration (`.github/workflows/`) runs the validation suite on every
+push and keeps translations and the contributors list up to date.
+
+---
+
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repository and create a branch.
+2. Make your change (keep Plasma 6 / KF6 / Qt 6 compatibility, no new runtime deps).
+3. Run `./tools/validate.sh`.
+4. Commit with a clear message and open a Pull Request.
+
+Please keep the existing SPDX license headers in the files you touch.
+
+---
+
+## Authors & Maintainers
+
+- **Rafael Ruscher** ([@ruscher](https://github.com/ruscher)) — current maintainer
+- **Denys Madureira** ([@DenysMb](https://github.com/DenysMb)) — original author
+- **Bruno Gonçalves** ([@bigbruno](https://github.com/bigbruno)) — author
+
+See `metadata.json` for the authors recorded in the package.
 
 ## Contributors
+
 <!-- readme: contributors -start -->
 <table>
 	<tbody>
@@ -102,6 +457,13 @@ Engineering documentation lives in [`docs/`](docs/) (plan, audits, decisions, te
                     <img src="https://avatars.githubusercontent.com/u/33737137?v=4" width="100;" alt="DenysMb"/>
                     <br />
                     <sub><b>Denys Madureira</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/ruscher">
+                    <img src="https://avatars.githubusercontent.com/u/355281?v=4" width="100;" alt="ruscher"/>
+                    <br />
+                    <sub><b>ruscher</b></sub>
                 </a>
             </td>
             <td align="center">
@@ -132,6 +494,8 @@ Engineering documentation lives in [`docs/`](docs/) (plan, audits, decisions, te
                     <sub><b>Vitor Dantas</b></sub>
                 </a>
             </td>
+		</tr>
+		<tr>
             <td align="center">
                 <a href="https://github.com/postadelmaga">
                     <img src="https://avatars.githubusercontent.com/u/2010800?v=4" width="100;" alt="postadelmaga"/>
@@ -144,8 +508,12 @@ Engineering documentation lives in [`docs/`](docs/) (plan, audits, decisions, te
 </table>
 <!-- readme: contributors -end -->
 
-Maintainer of this fork: Rafael Ruscher <rruscher@gmail.com>.
+---
 
-## License and assets
+## License and Assets
 
-Code: GPL-2.0-or-later (see `LICENSE`). Colorful ChatGPT icon by [IconScout](https://iconscout.com/); other original chat icons by [Icons8](https://icons8.com/). GitHub Copilot, Qwen, Kimi, Mistral and Meta icons from [Simple Icons](https://simpleicons.org/) (CC0 1.0); the Manus icon is the service's own SVG icon. All trademarks belong to their respective owners and are used only to identify the services.
+- **Code** — GPL-2.0-or-later (see [`LICENSE`](LICENSE) and the SPDX headers in each file).
+- **Provider icons** — from [Icons8](https://icons8.com/), [IconScout](https://iconscout.com/)
+  and [Simple Icons](https://simpleicons.org/) (CC0), plus some services' own brand assets.
+- **Trademarks** — all product names, logos and brands are property of their
+  respective owners and are used only to identify the services ChatAI links to.

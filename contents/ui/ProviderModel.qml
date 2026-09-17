@@ -203,7 +203,7 @@ QtObject {
     // True for http(s) URLs with a host. Only the scheme and host are checked:
     // QUrl converted to a JS string is "pretty decoded", so query strings may
     // legitimately contain spaces (e.g. OAuth "scope=openid profile email").
-    // Rejecting those aborted every Google sign-in (docs/auth-download-redesign/02).
+    // Rejecting those aborted every Google sign-in.
     function isHttpUrl(value) {
         return /^https?:\/\/[^\s\/?#]+([\/?#]|$)/i.test(String(value || ""));
     }
@@ -363,7 +363,7 @@ QtObject {
         return /(^|\/)(oauth2?|o\/oauth2|authorize|login|signin|sign_in|sign-in|sso|auth|openid|saml|consent|callback)(\/|$|\.)/.test(path);
     }
 
-    // User agent policy (docs/05): Qt WebEngine's honest default UA. Measured
+    // User agent policy: Qt WebEngine's honest default UA. Measured
     // 2026-09-17: Google sign-in ACCEPTS it and REJECTS a UA that claims plain
     // Chrome or Firefox ("browser or app may not be secure"), so hiding the
     // QtWebEngine token is opt-in (compatibilityUserAgent) or per provider
