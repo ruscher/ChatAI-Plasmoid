@@ -16,10 +16,11 @@
             }
         ],
         "Category": "Online Services",
+        "Copyright": "© 2024–2026 The ChatAI authors",
         "Description": "Access AI chat assistants (ChatGPT, Claude, Gemini, DeepSeek, Copilot and more) from the Plasma desktop",
-        "Icon": "applications-internet",
+        "Icon": "chatai",
         "Id": "ChatAI-Plasmoid",
-        "License": "GPL-2.0+",
+        "License": "GPL-2.0-or-later",
         "Name": "ChatAI",
         "Version": "1.0.1",
         "Website": "https://github.com/ruscher/ChatAI-Plasmoid",

@@ -53,8 +53,11 @@ ConfigModel {
         source: "ConfigAdvanced.qml"
     }
     ConfigCategory {
-        name: i18n("About")
-        icon: "help-about"
-        source: "ConfigAbout.qml"
+        name: i18n("Help")
+        icon: "help-hint"
+        source: "ConfigHelp.qml"
     }
+    // Plasma appends its own native "Keyboard Shortcuts" and "About" pages, so
+    // we don't add those here (they would duplicate). The Help page carries the
+    // shortcut reference and credits those native pages can't show.
 }

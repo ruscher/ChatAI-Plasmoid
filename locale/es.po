@@ -59,9 +59,9 @@ msgstr "Apariencia"
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: contents/config/config.qml:56 contents/ui/SettingsPanel.qml:42
-msgid "About"
-msgstr "Acerca de"
+#: contents/config/config.qml:56
+msgid "Help"
+msgstr "Ayuda"
 
 #: contents/ui/AiSelector.qml:30
 msgid "Custom address…"
@@ -408,6 +408,7 @@ msgid "Open in browser"
 msgstr "Abrir en el navegador"
 
 #: contents/ui/FindBar.qml:28 contents/ui/settings/AboutSettings.qml:44
+#: contents/ui/settings/HelpSettings.qml:21
 msgid "Find in page"
 msgstr "Buscar en la página"
 
@@ -634,6 +635,10 @@ msgctxt "provider category"
 msgid "Custom"
 msgstr "Personalizado"
 
+#: contents/ui/SettingsPanel.qml:42
+msgid "About"
+msgstr "Acerca de"
+
 #: contents/ui/SettingsPanel.qml:80
 msgid "Settings categories"
 msgstr "Categorías de ajustes"
@@ -723,27 +728,33 @@ msgid "Reset Zoom"
 msgstr "Restablecer zoom"
 
 #: contents/ui/settings/AboutSettings.qml:45
+#: contents/ui/settings/HelpSettings.qml:22
 msgid "Zoom in / out"
 msgstr "Acercar / alejar"
 
 #: contents/ui/settings/AboutSettings.qml:46
+#: contents/ui/settings/HelpSettings.qml:23
 msgid "Reset zoom"
 msgstr "Restablecer zoom"
 
 #: contents/ui/settings/AboutSettings.qml:47
+#: contents/ui/settings/HelpSettings.qml:24
 msgid "Full screen (Esc exits)"
 msgstr "Pantalla completa (Esc sale)"
 
 #: contents/ui/settings/AboutSettings.qml:48
+#: contents/ui/settings/HelpSettings.qml:25
 msgctxt "mouse buttons"
 msgid "Mouse back / forward"
 msgstr "Atrás / adelante del ratón"
 
 #: contents/ui/settings/AboutSettings.qml:48
+#: contents/ui/settings/HelpSettings.qml:25
 msgid "Navigate history"
 msgstr "Navegar por el historial"
 
 #: contents/ui/settings/AboutSettings.qml:49
+#: contents/ui/settings/HelpSettings.qml:26
 msgid "Close find bar, settings or full screen"
 msgstr "Cerrar la búsqueda, los ajustes o la pantalla completa"
 
@@ -756,6 +767,7 @@ msgid "AI assistants inside KDE Plasma"
 msgstr "Asistentes de IA dentro de KDE Plasma"
 
 #: contents/ui/settings/AboutSettings.qml:80
+#: contents/ui/settings/HelpSettings.qml:32
 msgid "ChatAI embeds the official web apps of AI assistants in a native Plasma widget, with a persistent profile, per-site permissions and a memory-conscious web engine lifecycle. It does not provide an AI API and does not bypass authentication or anti-bot protections."
 msgstr "ChatAI integra las aplicaciones web oficiales de asistentes de IA en un widget nativo de Plasma, con un perfil persistente, permisos por sitio y un ciclo de vida del motor web consciente de la memoria. No proporciona una API de IA ni evade la autenticación o las protecciones anti-bot."
 
@@ -776,10 +788,12 @@ msgid "Authors"
 msgstr "Autores"
 
 #: contents/ui/settings/AboutSettings.qml:123
+#: contents/ui/settings/HelpSettings.qml:72
 msgid "Provider icons: Icons8, IconScout, Simple Icons (CC0) and the services' own brand assets. Trademarks belong to their owners."
 msgstr "Iconos de los proveedores: Icons8, IconScout, Simple Icons (CC0) y los propios recursos de marca de los servicios. Las marcas pertenecen a sus dueños."
 
 #: contents/ui/settings/AboutSettings.qml:135
+#: contents/ui/settings/HelpSettings.qml:40
 msgid "Keyboard shortcuts"
 msgstr "Atajos de teclado"
 
@@ -1051,6 +1065,10 @@ msgstr "Enlaces:"
 #: contents/ui/settings/GeneralSettings.qml:113
 msgid "Links that would open a new window are opened in your default browser. Sign-in pages stay inside ChatAI so logins keep working."
 msgstr "Los enlaces que abrirían una ventana nueva se abren en tu navegador predeterminado. Las páginas de inicio de sesión permanecen en ChatAI para que el acceso siga funcionando."
+
+#: contents/ui/settings/HelpSettings.qml:64
+msgid "Credits"
+msgstr "Créditos"
 
 #: contents/ui/settings/PermissionsSettings.qml:32
 msgid "Ask per site"
