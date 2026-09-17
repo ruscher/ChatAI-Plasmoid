@@ -5,6 +5,7 @@
  */
 
 import QtQuick
+import QtQuick.Layouts
 
 import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.plasmoid
@@ -41,7 +42,40 @@ PlasmaComponents3.Menu {
         }
     }
 
-    PlasmaComponents3.MenuItem {
+    // MenuItem whose icon is drawn as a monochrome mask in the theme text
+    // colour. Some icon themes (e.g. kora) ship multicolour icons for a few
+    // entries (web browser, downloads, keyboard); masking keeps every menu icon
+    // consistent. The layout mirrors the stock PlasmaComponents3 MenuItem.
+    component MonoMenuItem: PlasmaComponents3.MenuItem {
+        id: monoItem
+        contentItem: RowLayout {
+            Item {
+                Layout.preferredWidth: (monoItem.ListView.view && monoItem.ListView.view.hasCheckables) || monoItem.checkable ? monoItem.indicator.width : Kirigami.Units.smallSpacing
+            }
+            Kirigami.Icon {
+                Layout.alignment: Qt.AlignVCenter
+                visible: (monoItem.ListView.view && monoItem.ListView.view.hasIcons) || (monoItem.icon != undefined && (monoItem.icon.name.length > 0 || monoItem.icon.source.length > 0))
+                source: monoItem.icon ? (monoItem.icon.name || monoItem.icon.source) : ""
+                isMask: true
+                color: Kirigami.Theme.textColor
+                Layout.preferredHeight: Math.max(monoLabel.height, Kirigami.Units.iconSizes.small)
+                Layout.preferredWidth: Layout.preferredHeight
+            }
+            PlasmaComponents3.Label {
+                id: monoLabel
+                Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+                text: monoItem.Kirigami.MnemonicData.richTextLabel
+                font: monoItem.font
+                elide: Text.ElideRight
+                visible: monoItem.text
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+    }
+
+    MonoMenuItem {
         text: i18n("Open in Browser")
         icon.name: "internet-web-browser"
         enabled: chatAiMenu.hasPage
@@ -109,7 +143,7 @@ PlasmaComponents3.Menu {
 
     // Downloads are always reachable here; the toolbar only shows a temporary
     // indicator while something needs attention.
-    PlasmaComponents3.MenuItem {
+    MonoMenuItem {
         text: chatAiMenu.downloadAttention > 0 ? i18n("Downloads (%1)", chatAiMenu.downloadAttention) : i18n("Downloads")
         icon.name: "folder-download"
         onTriggered: chatAiMenu.downloadsRequested()
@@ -157,7 +191,7 @@ PlasmaComponents3.Menu {
                 { id: "appearance", text: i18n("Appearance"), icon: "preferences-desktop-color" },
                 { id: "advanced", text: i18n("Advanced"), icon: "preferences-other" }
             ]
-            delegate: PlasmaComponents3.MenuItem {
+            delegate: MonoMenuItem {
                 required property var modelData
                 text: modelData.text
                 icon.name: modelData.icon
@@ -175,7 +209,7 @@ PlasmaComponents3.Menu {
         }
     }
 
-    PlasmaComponents3.MenuItem {
+    MonoMenuItem {
         text: i18n("Keyboard Shortcuts")
         icon.name: "input-keyboard"
         onTriggered: chatAiMenu.shortcutsRequested()

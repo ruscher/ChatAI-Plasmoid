@@ -88,7 +88,7 @@ msgstr "Entrar"
 msgid "Close sign-in window"
 msgstr "Fechar a janela de login"
 
-#: contents/ui/ChatAIMenu.qml:45 contents/ui/WebView.qml:1090
+#: contents/ui/ChatAIMenu.qml:45 contents/ui/WebView.qml:1132
 msgid "Open in Browser"
 msgstr "Abrir no navegador"
 
@@ -126,6 +126,7 @@ msgid "Full Screen"
 msgstr "Tela cheia"
 
 #: contents/ui/ChatAIMenu.qml:102
+#: contents/ui/settings/AppearanceSettings.qml:127
 msgid "Hide Toolbar Automatically"
 msgstr "Ocultar barra automaticamente"
 
@@ -166,7 +167,7 @@ msgstr "Ferramentas do desenvolvedor"
 msgid "About ChatAI"
 msgstr "Sobre o ChatAI"
 
-#: contents/ui/CompactRepresentation.qml:28 contents/ui/WebView.qml:631
+#: contents/ui/CompactRepresentation.qml:28 contents/ui/WebView.qml:670
 #: contents/ui/main.qml:46 contents/ui/settings/AboutSettings.qml:65
 msgid "ChatAI"
 msgstr "ChatAI"
@@ -366,15 +367,15 @@ msgstr "Pausar"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: contents/ui/DownloadPopup.qml:237 contents/ui/WebView.qml:585
+#: contents/ui/DownloadPopup.qml:237 contents/ui/WebView.qml:624
 msgid "Open"
 msgstr "Abrir"
 
-#: contents/ui/DownloadPopup.qml:243 contents/ui/WebView.qml:589
+#: contents/ui/DownloadPopup.qml:243 contents/ui/WebView.qml:628
 msgid "Show in Folder"
 msgstr "Mostrar na pasta"
 
-#: contents/ui/DownloadPopup.qml:249 contents/ui/WebView.qml:1085
+#: contents/ui/DownloadPopup.qml:249 contents/ui/WebView.qml:1127
 msgid "Retry"
 msgstr "Tentar de novo"
 
@@ -456,15 +457,15 @@ msgstr "Endereço personalizado"
 msgid "Find in page (Ctrl+F)"
 msgstr "Localizar na página (Ctrl+F)"
 
-#: contents/ui/Header.qml:189
+#: contents/ui/Header.qml:193
 msgid "More actions"
 msgstr "Mais ações"
 
-#: contents/ui/Header.qml:209
+#: contents/ui/Header.qml:213
 msgid "Close and release memory"
 msgstr "Fechar e liberar memória"
 
-#: contents/ui/Header.qml:223 contents/ui/settings/DownloadsSettings.qml:88
+#: contents/ui/Header.qml:227 contents/ui/settings/DownloadsSettings.qml:88
 msgid "Choose Download Folder"
 msgstr "Escolher a pasta de downloads"
 
@@ -647,83 +648,83 @@ msgstr "Categorias de configuração"
 msgid "Back to the assistant"
 msgstr "Voltar ao assistente"
 
-#: contents/ui/WebView.qml:166
+#: contents/ui/WebView.qml:185
 msgid "The configured address is not a valid HTTP or HTTPS URL."
 msgstr "O endereço configurado não é uma URL HTTP ou HTTPS válida."
 
-#: contents/ui/WebView.qml:599
+#: contents/ui/WebView.qml:638
 msgid "Download finished"
 msgstr "Download concluído"
 
-#: contents/ui/WebView.qml:599
+#: contents/ui/WebView.qml:638
 msgid "Download failed"
 msgstr "Falha no download"
 
-#: contents/ui/WebView.qml:600
+#: contents/ui/WebView.qml:639
 msgid "interrupted"
 msgstr "interrompido"
 
-#: contents/ui/WebView.qml:600 contents/ui/settings/SitesSettings.qml:258
+#: contents/ui/WebView.qml:639 contents/ui/settings/SitesSettings.qml:258
 msgid "%1 — %2"
 msgstr "%1 — %2"
 
-#: contents/ui/WebView.qml:730
+#: contents/ui/WebView.qml:769
 msgid "Download in progress"
 msgstr "Download em andamento"
 
-#: contents/ui/WebView.qml:730
+#: contents/ui/WebView.qml:769
 msgid "The file '%1' is already being downloaded"
 msgstr "O arquivo '%1' já está sendo baixado"
 
-#: contents/ui/WebView.qml:835
+#: contents/ui/WebView.qml:875
 msgid "The service did not provide an error description."
 msgstr "O serviço não forneceu uma descrição do erro."
 
-#: contents/ui/WebView.qml:855
+#: contents/ui/WebView.qml:897
 msgid "The site's security certificate is not trusted."
 msgstr "O certificado de segurança do site não é confiável."
 
-#: contents/ui/WebView.qml:869
+#: contents/ui/WebView.qml:911
 msgid "The web content process stopped unexpectedly (exit code %1)."
 msgstr "O processo de conteúdo web parou inesperadamente (código de saída %1)."
 
-#: contents/ui/WebView.qml:878
+#: contents/ui/WebView.qml:920
 msgid "The PDF could not be created."
 msgstr "Não foi possível criar o PDF."
 
-#: contents/ui/WebView.qml:889
+#: contents/ui/WebView.qml:931
 msgid "Blocked navigation"
 msgstr "Navegação bloqueada"
 
-#: contents/ui/WebView.qml:889
+#: contents/ui/WebView.qml:931
 msgid "Only HTTP and HTTPS links can be opened from ChatAI."
 msgstr "Apenas links HTTP e HTTPS podem ser abertos pelo ChatAI."
 
-#: contents/ui/WebView.qml:1031
+#: contents/ui/WebView.qml:1073
 msgid "Sign-in blocked"
 msgstr "Login bloqueado"
 
-#: contents/ui/WebView.qml:1031
+#: contents/ui/WebView.qml:1073
 msgid "The sign-in site's security certificate is not trusted."
 msgstr "O certificado de segurança do site de login não é confiável."
 
-#: contents/ui/WebView.qml:1081
+#: contents/ui/WebView.qml:1123
 msgid "The site"
 msgstr "O site"
 
-#: contents/ui/WebView.qml:1081
+#: contents/ui/WebView.qml:1123
 msgid "%1 is taking long to respond. Some services hold the connection for automated clients; retrying usually works."
 msgstr "%1 está demorando para responder. Alguns serviços seguram a conexão de clientes automatizados; tentar de novo costuma funcionar."
 
-#: contents/ui/WebView.qml:1107
+#: contents/ui/WebView.qml:1149
 msgid "At %1% zoom the page sees a %2 px wide viewport and switches to its mobile layout, which may break sign-in. Reset the zoom or widen the widget."
 msgstr "Com %1% de zoom, a página vê uma janela de %2 px de largura e muda para o layout mobile, o que pode quebrar o login. Redefina o zoom ou alargue o widget."
 
-#: contents/ui/WebView.qml:1108
+#: contents/ui/WebView.qml:1150
 msgid "The page sees a %1 px wide viewport and switches to its mobile layout, which may break sign-in. Widen the widget by dragging its edge."
 msgstr "A página vê uma janela de %1 px de largura e muda para o layout mobile, o que pode quebrar o login. Alargue o widget arrastando a borda."
 
-#: contents/ui/WebView.qml:1113
+#: contents/ui/WebView.qml:1155
 msgid "Reset Zoom"
 msgstr "Redefinir zoom"
 
@@ -966,10 +967,21 @@ msgid "Hidden buttons remain available in the ⋮ menu where it makes sense. Aut
 msgstr "Os botões ocultos continuam disponíveis no menu ⋮ quando faz sentido. Ocultar automaticamente e Downloads ficam sempre no menu ⋮; um indicador de download aparece na barra apenas enquanto um download precisa de atenção."
 
 #: contents/ui/settings/AppearanceSettings.qml:126
+#: contents/ui/settings/GeneralSettings.qml:96
+msgid "Toolbar:"
+msgstr "Barra de ferramentas:"
+
+#: contents/ui/settings/AppearanceSettings.qml:134
+#, fuzzy
+#| msgid "Hide the toolbar"
+msgid "Always hide the toolbar"
+msgstr "Sempre ocultar a barra de ferramentas"
+
+#: contents/ui/settings/AppearanceSettings.qml:142
 msgid "Theme:"
 msgstr "Tema:"
 
-#: contents/ui/settings/AppearanceSettings.qml:127
+#: contents/ui/settings/AppearanceSettings.qml:143
 msgid "Colours, spacing and animations follow your Plasma theme. Pages receive a dark-mode hint when the theme is dark."
 msgstr "Cores, espaçamento e animações seguem o seu tema do Plasma. As páginas recebem uma dica de modo escuro quando o tema é escuro."
 
@@ -1045,10 +1057,6 @@ msgstr "Pré-carregar o assistente quando o Plasma iniciar"
 #: contents/ui/settings/GeneralSettings.qml:85
 msgid "Preloading makes the first opening instant but keeps the web engine in memory from login."
 msgstr "O pré-carregamento torna a primeira abertura instantânea, mas mantém o motor web na memória desde o login."
-
-#: contents/ui/settings/GeneralSettings.qml:96
-msgid "Toolbar:"
-msgstr "Barra de ferramentas:"
 
 #: contents/ui/settings/GeneralSettings.qml:97
 msgid "Hide the toolbar"
