@@ -22,6 +22,23 @@
         check("isAuthUrl sign_in", pm.isAuthUrl("https://chat.deepseek.com/sign_in"));
         check("not auth: docs link", !pm.isAuthUrl("https://docs.example.com/guide"));
         check("not auth: non-http", !pm.isAuthUrl("mailto:x@y"));
+        check("SECURITY: accounts.google.com.evil.example is not auth", !pm.isAuthUrl("https://accounts.google.com.evil.example/"));
+        check("SECURITY: evil-accounts.google.com.example is not auth", !pm.isAuthUrl("https://evil-accounts.google.com.example/"));
+        check("SECURITY: host containing clerk is not auth", !pm.isAuthUrl("https://clerk.evil.example/"));
+        check("SECURITY: github.com root is not auth", !pm.isAuthUrl("https://github.com/ruscher/ChatAI-Plasmoid"));
+        check("auth: github.com/login path", pm.isAuthUrl("https://github.com/login/oauth/authorize?x"));
+        check("auth: subdomain of accounts.google.com", pm.isAuthUrl("https://foo.accounts.google.com/x"));
+        check("auth: youtube SetSID hop", pm.isAuthUrl("https://accounts.youtube.com/accounts/SetSID"));
+        check("auth: port ignored", pm.isAuthUrl("https://accounts.google.com:443/signin"));
+        check("not auth: /loginfo path", !pm.isAuthUrl("https://example.com/loginfo"));
+        check("auth: /auth/callback path", pm.isAuthUrl("https://chatgpt.com/auth/callback"));
+        // Pretty-decoded QUrl strings: spaces inside the query must not reject the URL
+        check("isHttpUrl accepts decoded spaces in query (OAuth scope)", pm.isHttpUrl("https://accounts.google.com/o/oauth2/v2/auth?client_id=x&scope=openid profile email&redirect_uri=https://claude.ai/cb"));
+        check("isHttpUrl accepts spaces in path", pm.isHttpUrl("https://example.com/my file.pdf"));
+        check("isHttpUrl rejects host with space", !pm.isHttpUrl("https://exa mple.com/x"));
+        check("isHttpUrl rejects ftp / mailto / about:blank", !pm.isHttpUrl("ftp://x") && !pm.isHttpUrl("mailto:a@b") && !pm.isHttpUrl("about:blank"));
+        check("isAuthUrl works with decoded spaces", pm.isAuthUrl("https://auth.openai.com/api/accounts/authorize?scope=openid profile email"));
+        check("normalizeUrl rejects typed whitespace", pm.normalizeUrl("https://a b.com") === "" && pm.normalizeUrl("example.com/chat") === "https://example.com/chat");
         const qtUa = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/6.11.2 Chrome/140.0.0.0 Safari/537.36";
         check("UA default kept", pm.effectiveUserAgent(qtUa, null) === qtUa);
         plasmoid.configuration.compatibilityUserAgent = true;

@@ -154,6 +154,16 @@ PlasmoidItem {
             onShortcutsRequested: root.openSettings("about")
             onModalOpenChanged: root.headerModalOpen = modalOpen
 
+            // A finished or failed download reveals the auto-hidden toolbar for
+            // a moment so the indicator can be noticed (no modal popup).
+            Connections {
+                target: root.webviewRoot
+                function onDownloadAttention() {
+                    headerRoot.headerVisible = true;
+                    hideTimer.restart();
+                }
+            }
+
             // Hover detection without participating in the layout (docs/02 B4).
             HoverHandler {
                 id: headerHover
@@ -174,7 +184,7 @@ PlasmoidItem {
 
             Timer {
                 id: hideTimer
-                interval: 2000
+                interval: 3000
                 onTriggered: {
                     if (!headerRoot.menuOpen && !headerHover.hovered)
                         headerRoot.headerVisible = false;

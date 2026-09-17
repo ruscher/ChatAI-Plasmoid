@@ -48,8 +48,6 @@ ColumnLayout {
         { key: "hideRefreshButton", text: i18n("Reload") },
         { key: "hideHomeButton", text: i18n("Home") },
         { key: "hideCustomURL", text: i18n("\"Custom address…\" entry in the selector") },
-        { key: "hideAutoHideButton", text: i18n("Auto-hide toolbar toggle") },
-        { key: "hideDownloadButton", text: i18n("Downloads") },
         { key: "hideCloseButton", text: i18n("Close") }
     ]
 
@@ -105,7 +103,7 @@ ColumnLayout {
 
         QQC2.Label {
             Kirigami.FormData.label: i18n("Toolbar buttons:")
-            text: i18n("Hidden buttons remain available in the ⋮ menu where it makes sense.")
+            text: i18n("Hidden buttons remain available in the ⋮ menu where it makes sense. Auto-hide and Downloads always live in the ⋮ menu; a download indicator appears in the toolbar only while a download needs attention.")
             font: Kirigami.Theme.smallFont
             opacity: 0.7
             wrapMode: Text.WordWrap

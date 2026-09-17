@@ -69,6 +69,7 @@
     <entry name="hideRefreshButton" type="Bool"><default>false</default></entry>
     <entry name="hideHomeButton" type="Bool"><default>false</default></entry>
     <entry name="hideCustomURL" type="Bool"><default>false</default></entry>
+    <!-- Obsolete since 1.0.1: auto-hide and downloads live in the kebab menu only; kept for old configurations. -->
     <entry name="hideAutoHideButton" type="Bool"><default>false</default></entry>
     <entry name="hideDownloadButton" type="Bool"><default>false</default></entry>
     <entry name="hideCloseButton" type="Bool"><default>false</default></entry>

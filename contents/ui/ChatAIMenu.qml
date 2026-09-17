@@ -18,18 +18,16 @@ PlasmaComponents3.Menu {
     property var webviewRoot: null
     // Items whose toolbar button is currently hidden by the overflow logic.
     property bool showFindItem: false
-    property bool showAutoHideItem: false
     property bool showHomeItem: false
-    property bool showDownloadsItem: false
 
     signal settingsRequested(string category)
     signal aboutRequested()
     signal shortcutsRequested()
     signal homeRequested()
-    signal openDownloadFolderRequested()
-    signal chooseDownloadFolderRequested()
+    signal downloadsRequested()
 
     readonly property bool hasPage: webviewRoot !== null && webviewRoot.currentUrl !== ""
+    readonly property int downloadAttention: webviewRoot ? webviewRoot.downloadSummary.attention + webviewRoot.downloadSummary.active : 0
 
     // Same as the PlasmaComponents3 default delegate, but null-safe: the stock
     // one reads parent.width before sub-menu items are parented. Note: inside
@@ -97,9 +95,30 @@ PlasmaComponents3.Menu {
         onTriggered: chatAiMenu.webviewRoot.toggleFullScreen()
     }
 
+    PlasmaComponents3.MenuSeparator {}
+
+    // Toolbar auto-hide lives only here (no permanent toolbar button).
+    PlasmaComponents3.MenuItem {
+        text: i18n("Hide Toolbar Automatically")
+        icon.name: "view-hidden"
+        checkable: true
+        checked: plasmoid.configuration.autoHideHeader
+        enabled: !plasmoid.configuration.hideHeader
+        onToggled: plasmoid.configuration.autoHideHeader = checked
+    }
+
+    // Downloads are always reachable here; the toolbar only shows a temporary
+    // indicator while something needs attention.
+    PlasmaComponents3.MenuItem {
+        text: chatAiMenu.downloadAttention > 0 ? i18n("Downloads (%1)", chatAiMenu.downloadAttention) : i18n("Downloads")
+        icon.name: "folder-download"
+        onTriggered: chatAiMenu.downloadsRequested()
+    }
+
     // Overflow items (only when the toolbar is too narrow for the button)
     PlasmaComponents3.MenuSeparator {
-        visible: chatAiMenu.showFindItem || chatAiMenu.showAutoHideItem || chatAiMenu.showHomeItem || chatAiMenu.showDownloadsItem
+        visible: chatAiMenu.showFindItem || chatAiMenu.showHomeItem
+        height: visible ? implicitHeight : 0
     }
 
     PlasmaComponents3.MenuItem {
@@ -118,35 +137,6 @@ PlasmaComponents3.Menu {
         icon.name: "edit-find"
         enabled: chatAiMenu.webviewRoot !== null
         onTriggered: chatAiMenu.webviewRoot.toggleFind()
-    }
-
-    PlasmaComponents3.MenuItem {
-        visible: chatAiMenu.showAutoHideItem
-        height: visible ? implicitHeight : 0
-        text: i18n("Hide Toolbar Automatically")
-        icon.name: "view-hidden"
-        checkable: true
-        checked: plasmoid.configuration.autoHideHeader
-        onToggled: plasmoid.configuration.autoHideHeader = checked
-    }
-
-    PlasmaComponents3.Menu {
-        id: downloadsSubMenu
-        title: i18n("Downloads")
-        icon.name: "folder-download"
-        visible: chatAiMenu.showDownloadsItem
-        height: visible ? implicitHeight : 0
-
-        PlasmaComponents3.MenuItem {
-            text: i18n("Open Download Folder")
-            icon.name: "folder-open"
-            onTriggered: chatAiMenu.openDownloadFolderRequested()
-        }
-        PlasmaComponents3.MenuItem {
-            text: i18n("Choose Download Folder…")
-            icon.name: "folder"
-            onTriggered: chatAiMenu.chooseDownloadFolderRequested()
-        }
     }
 
     PlasmaComponents3.MenuSeparator {}

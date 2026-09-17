@@ -200,13 +200,19 @@ QtObject {
         return Boolean(provider) && (!provider.configKey || Boolean(plasmoid.configuration[provider.configKey]));
     }
 
+    // True for http(s) URLs with a host. Only the scheme and host are checked:
+    // QUrl converted to a JS string is "pretty decoded", so query strings may
+    // legitimately contain spaces (e.g. OAuth "scope=openid profile email").
+    // Rejecting those aborted every Google sign-in (docs/auth-download-redesign/02).
     function isHttpUrl(value) {
-        return /^(https?):\/\/[^\s]+$/i.test(String(value || ""));
+        return /^https?:\/\/[^\s\/?#]+([\/?#]|$)/i.test(String(value || ""));
     }
 
+    // Stricter validation for addresses typed by the user or stored in the
+    // configuration: no whitespace anywhere.
     function normalizeUrl(value) {
         let candidate = String(value || "").trim();
-        if (!candidate)
+        if (!candidate || /\s/.test(candidate))
             return "";
         if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(candidate))
             candidate = "https://" + candidate;
@@ -320,26 +326,41 @@ QtObject {
         return "";
     }
 
-    // Authentication URLs stay inside the widget instead of being sent to the
-    // external browser: well-known identity hosts plus common OAuth paths.
-    readonly property var authHosts: [
-        "accounts.google.com", "appleid.apple.com", "login.live.com", "login.microsoftonline.com",
-        "github.com/login", "github.com/session", "www.facebook.com", "facebook.com", "instagram.com",
-        "x.com/i/flow", "twitter.com/i/flow", "auth.openai.com", "auth0.openai.com", "login.anthropic.com",
-        "account.mistral.ai", "auth.mistral.ai", "login.aliyun.com", "account.qwen.ai", "auth.huggingface.co",
-        "accounts.x.ai", "id.kimi.com", "clerk", "auth.perplexity.ai"
+    // Authentication URLs are kept inside the widget (main view or the OAuth
+    // popup) instead of being sent to the external browser. Matching is by
+    // exact host or subdomain — never by substring — optionally limited to
+    // path prefixes. `accounts.google.com.evil.example` does not match.
+    readonly property var authRules: [
+        { host: "accounts.google.com" }, { host: "accounts.youtube.com" }, { host: "myaccount.google.com" },
+        { host: "appleid.apple.com" }, { host: "login.live.com" }, { host: "login.microsoftonline.com" }, { host: "login.microsoft.com" },
+        { host: "github.com", paths: ["/login", "/session", "/sessions"] },
+        { host: "facebook.com" }, { host: "instagram.com" },
+        { host: "x.com", paths: ["/i/flow", "/i/oauth2", "/oauth"] }, { host: "twitter.com", paths: ["/i/flow", "/i/oauth2", "/oauth"] },
+        { host: "auth.openai.com" }, { host: "auth0.openai.com" }, { host: "login.anthropic.com" },
+        { host: "account.mistral.ai" }, { host: "auth.mistral.ai" }, { host: "login.aliyun.com" }, { host: "account.qwen.ai" },
+        { host: "auth.huggingface.co" }, { host: "accounts.x.ai" }, { host: "id.kimi.com" }, { host: "auth.perplexity.ai" }
     ]
+
+    function hostMatches(host, ruleHost) {
+        return host === ruleHost || host.endsWith("." + ruleHost);
+    }
+
+    function pathOf(value) {
+        const match = String(value || "").match(/^[a-z][a-z0-9+.-]*:\/\/[^/?#]+([^?#]*)/i);
+        return match ? (match[1] || "/") : "/";
+    }
 
     function isAuthUrl(value) {
         const url = String(value || "");
         if (!isHttpUrl(url))
             return false;
-        const lower = url.toLowerCase();
-        const host = hostOf(lower);
-        const path = lower.slice(lower.indexOf(host) + host.length);
-        if (authHosts.some(entry => entry.indexOf("/") === -1 ? (host === entry || host.endsWith("." + entry) || host.indexOf(entry) !== -1) : lower.indexOf("//" + entry) !== -1 || lower.indexOf("." + entry) !== -1))
+        const host = hostOf(url).replace(/:\d+$/, "");
+        const path = pathOf(url).toLowerCase();
+        if (authRules.some(rule => hostMatches(host, rule.host) && (!rule.paths || rule.paths.some(prefix => path.indexOf(prefix) === 0))))
             return true;
-        return /(\/oauth|\/o\/oauth2|\/authorize|\/login|\/signin|\/sign_in|\/sign-in|\/sso\b|\/auth\b|openid|saml|\/consent|\/callback)/.test(path);
+        // Generic OAuth/OpenID paths on any host: keeps the flow in the widget,
+        // it never grants anything else.
+        return /(^|\/)(oauth2?|o\/oauth2|authorize|login|signin|sign_in|sign-in|sso|auth|openid|saml|consent|callback)(\/|$|\.)/.test(path);
     }
 
     // User agent policy (docs/05): Qt WebEngine's honest default UA. Measured

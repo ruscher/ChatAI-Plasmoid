@@ -8,15 +8,16 @@ The widget does not provide an AI API, does not bypass authentication and does n
 
 ## Features
 
-- **Toolbar**: Pin · Back · Forward · Reload/Stop · Home · **assistant selector** (icon + name) · Find · auto-hide toggle · Downloads · ⋮ menu · Close. Back/Forward follow the page history; narrow popups move secondary buttons into the ⋮ menu.
-- **⋮ menu**: open in browser, copy address, reload ignoring cache, zoom (50–200 %), real full screen (F11, also honours page requests), ChatAI settings by category, keyboard shortcuts, about, optional developer tools.
+- **Toolbar**: Pin · Back · Forward · Reload/Stop · Home · **assistant selector** (icon + name) · Find · ⋮ menu · Close. Back/Forward follow the page history; narrow popups move Home and Find into the ⋮ menu. A **download indicator** with a progress ring appears only while a download is running or finished but not yet opened.
+- **⋮ menu**: open in browser, copy address, reload ignoring cache, zoom (50–200 %), real full screen (F11, also honours page requests), **hide toolbar automatically**, **Downloads** (list with pause/resume/cancel, open, show in folder, retry), ChatAI settings by category, keyboard shortcuts, about, optional developer tools.
 - **Settings inside the widget** and in the Plasma configuration dialog, sharing one backend: General, Sites, Permissions, Web Features, Downloads, Cache and Data, Appearance, Advanced, About.
 - **Per-site permissions**: notifications, microphone, camera, screen sharing, location and clipboard are *Ask / Allow / Block* per type; "Ask" shows an inline prompt and the answer is remembered per site (Qt WebEngine `StoreOnDisk`), reviewable and resettable.
 - **Resource-conscious**: the web engine is created on first use and destroyed by Close; a hidden page is frozen after 30 s when the engine says it is safe; optional discard after N minutes.
 - **Providers registry**: one file (`contents/ui/ProviderModel.qml`) defines every assistant; custom sites are stored as JSON.
 - Persistent WebEngine profile per widget instance (storage name), HTTP cache limit and one-click cache clearing.
 - Theme-aware panel icon: favicon, ChatAI logo (adaptive/dark/light), assistant icon (outlined/filled/colorful) or any system icon.
-- Managed downloads (pause, resume, cancel, open), PDF and MHTML export, find in page, dark-mode hint for pages.
+- **Sign-in popups** ("Continue with Google" and similar `window.open` flows) open in an in-widget window that shares the profile, so callbacks, `window.opener` and `window.close()` work; redirect-based logins run in the main view.
+- Managed downloads (progress, speed, pause, resume, cancel, open, show in folder, retry, KDE notification with actions), PDF and MHTML export, find in page, dark-mode hint for pages.
 
 ## Providers
 
@@ -51,6 +52,7 @@ Then add **ChatAI** from Plasma's widget chooser. Upgrading from 1.0.0 keeps you
 | Full screen | ⋮ › Full Screen or F11; Esc exits |
 | Keep open when clicking outside | Pin button |
 | Hide the toolbar | Eye button (auto-hide) or Settings › General |
+| Downloads | Click the ↓ indicator while it is shown, or ⋮ › Downloads |
 | Free memory | Close button (destroys the web engine; logins are kept on disk) |
 
 ## Settings
@@ -74,7 +76,7 @@ Then add **ChatAI** from Plasma's widget chooser. Upgrading from 1.0.0 keeps you
 ## Troubleshooting
 
 - A site refuses to load or to sign in: try **Advanced › Identify as Chromium**, then **Open in Browser** from the ⋮ menu.
-- Google login fails with *disallowed_useragent*: this is Google policy for embedded browsers; use e-mail login.
+- Google sign-in says "This browser or app may not be secure": make sure Advanced › *Identify as Chromium* is **off** (Google accepts Qt WebEngine's real identity and rejects disguised ones).
 - Notifications do not appear: set Permissions › Notifications to *Ask* or *Allow* and check Plasma's notification settings.
 - Downloads fail: choose an existing, writable folder in Settings › Downloads.
 - Something looks wrong after an update: Advanced › Diagnostics has a **Copy** button; paste it in an issue.

@@ -16,8 +16,9 @@ import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
 
 /*
- * Toolbar:  📌  ←  →  ↻  ⌂  [ AI ▼ ]  🔍  👁  ⬇  ⋮  ✕
- * Secondary buttons move into the kebab menu when the bar gets narrow.
+ * Toolbar:  📌  ←  →  ↻  ⌂  [ AI ▼ ]  🔍  (↓ while downloads need attention)  ⋮  ✕
+ * Auto-hide and Downloads live in the ⋮ menu; the download indicator is
+ * temporary. Home and Find move into the kebab when the bar gets narrow.
  */
 RowLayout {
     id: header
@@ -36,14 +37,14 @@ RowLayout {
     property bool modalOpen: folderDialog.visible
 
     readonly property bool hasWebView: webviewRoot !== null
-    readonly property bool menuOpen: kebabMenu.visible || downloadMenu.visible || selector.popup.visible || customUrlField.visible
+    readonly property bool menuOpen: kebabMenu.visible || downloadPopup.visible || selector.popup.visible || customUrlField.visible
+    readonly property var emptyDownloadSummary: ({ active: 0, paused: 0, completedUnseen: 0, failedUnseen: 0, progress: 0, hasUnknownSize: false, showIndicator: false, attention: 0 })
+    readonly property var downloadSummary: hasWebView && webviewRoot.downloadSummary ? webviewRoot.downloadSummary : emptyDownloadSummary
 
-    // Progressive overflow (docs/03)
-    readonly property int overflowLevel: width < Kirigami.Units.gridUnit * 26 ? 3 : width < Kirigami.Units.gridUnit * 30 ? 2 : width < Kirigami.Units.gridUnit * 34 ? 1 : 0
-    readonly property bool eyesInBar: !plasmoid.configuration.hideAutoHideButton && overflowLevel < 1
-    readonly property bool downloadInBar: !plasmoid.configuration.hideDownloadButton && overflowLevel < 2
-    readonly property bool searchInBar: overflowLevel < 3
-    readonly property bool homeInBar: !plasmoid.configuration.hideHomeButton && overflowLevel < 3
+    // Progressive overflow (docs/03): only Home and Find are optional now.
+    readonly property int overflowLevel: width < Kirigami.Units.gridUnit * 26 ? 2 : width < Kirigami.Units.gridUnit * 30 ? 1 : 0
+    readonly property bool searchInBar: overflowLevel < 2
+    readonly property bool homeInBar: !plasmoid.configuration.hideHomeButton && overflowLevel < 1
 
     spacing: Kirigami.Units.smallSpacing
 
@@ -55,6 +56,13 @@ RowLayout {
     function openDownloadFolder() {
         const path = String(configuredDownloadPath());
         Qt.openUrlExternally(path.indexOf("file://") === 0 ? path : "file://" + path);
+    }
+
+    function openDownloads(anchorItem) {
+        downloadPopup.parent = anchorItem || kebabButton;
+        downloadPopup.x = Math.min(0, header.width - downloadPopup.parent.x - downloadPopup.width);
+        downloadPopup.y = downloadPopup.parent.height + Kirigami.Units.smallSpacing;
+        downloadPopup.open();
     }
 
     function showCustomAddress() {
@@ -164,74 +172,15 @@ RowLayout {
         onClicked: header.webviewRoot.toggleFind()
     }
 
-    // 8. Eyes (auto-hide)
-    ToolbarButton {
-        visible: header.eyesInBar
-        icon.name: plasmoid.configuration.autoHideHeader ? "view-hidden" : "view-visible"
-        checkable: true
-        checked: plasmoid.configuration.autoHideHeader
-        text: checked ? i18n("Toolbar hides automatically; click to keep it visible") : i18n("Hide the toolbar automatically")
-        onToggled: plasmoid.configuration.autoHideHeader = checked
+    // 8. Temporary download indicator (only while downloads need attention)
+    DownloadIndicator {
+        id: downloadIndicator
+        visible: header.downloadSummary.showIndicator
+        summary: header.downloadSummary
+        onClicked: header.openDownloads(downloadIndicator)
     }
 
-    // 9. Downloads
-    ToolbarButton {
-        id: downloadButton
-        visible: header.downloadInBar
-        icon.name: "folder-download"
-        readonly property int activeCount: header.hasWebView ? header.webviewRoot.activeDownloadCount : 0
-        text: activeCount > 0 ? i18np("One download in progress", "%1 downloads in progress", activeCount) : i18n("Downloads")
-        onClicked: downloadMenu.popup()
-
-        Rectangle {
-            visible: downloadButton.activeCount > 0
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            anchors.margins: 1
-            width: Kirigami.Units.smallSpacing * 2.5
-            height: width
-            radius: width / 2
-            color: Kirigami.Theme.highlightColor
-            Accessible.ignored: true
-        }
-
-        PlasmaComponents3.Menu {
-            id: downloadMenu
-
-            PlasmaComponents3.MenuItem {
-                icon.name: "folder-open"
-                text: i18n("Open Download Folder")
-                onTriggered: header.openDownloadFolder()
-            }
-            PlasmaComponents3.MenuItem {
-                icon.name: "folder"
-                text: i18n("Choose Download Folder…")
-                onTriggered: folderDialog.open()
-            }
-            PlasmaComponents3.MenuSeparator {}
-            PlasmaComponents3.MenuItem {
-                text: downloadButton.activeCount > 0
-                    ? i18np("One download in progress (%2%)", "%1 downloads in progress (%2%)", downloadButton.activeCount, Math.round((header.hasWebView ? header.webviewRoot.activeDownloadProgress : 0) * 100))
-                    : i18n("No downloads in progress")
-                enabled: false
-            }
-            PlasmaComponents3.MenuItem {
-                icon.name: "edit-clear-history"
-                text: i18n("Clear Finished Downloads")
-                enabled: header.hasWebView && header.webviewRoot.downloads.count > downloadButton.activeCount
-                onTriggered: header.webviewRoot.clearFinishedDownloads()
-            }
-        }
-    }
-
-    FolderDialog {
-        id: folderDialog
-        title: i18n("Choose Download Folder")
-        currentFolder: header.configuredDownloadPath()
-        onAccepted: plasmoid.configuration.downloadPath = selectedFolder
-    }
-
-    // 10. Kebab
+    // 9. Kebab
     ToolbarButton {
         id: kebabButton
         icon.name: "overflow-menu"
@@ -242,23 +191,35 @@ RowLayout {
             id: kebabMenu
             webviewRoot: header.webviewRoot
             showFindItem: !header.searchInBar
-            showAutoHideItem: !header.eyesInBar && !plasmoid.configuration.hideAutoHideButton
             showHomeItem: !header.homeInBar && !plasmoid.configuration.hideHomeButton
-            showDownloadsItem: !header.downloadInBar && !plasmoid.configuration.hideDownloadButton
             onSettingsRequested: category => header.settingsRequested(category)
             onAboutRequested: header.aboutRequested()
             onShortcutsRequested: header.shortcutsRequested()
             onHomeRequested: header.homeRequested()
-            onOpenDownloadFolderRequested: header.openDownloadFolder()
-            onChooseDownloadFolderRequested: folderDialog.open()
+            onDownloadsRequested: header.openDownloads(kebabButton)
         }
     }
 
-    // 11. Close
+    // 10. Close
     ToolbarButton {
         visible: !plasmoid.configuration.hideCloseButton
         icon.name: "window-close"
         text: i18n("Close and release memory")
         onClicked: header.closeRequested()
+    }
+
+    // Downloads list, anchored to the indicator or to the kebab button.
+    DownloadPopup {
+        id: downloadPopup
+        runtime: header.webviewRoot
+        onOpenDownloadFolderRequested: header.openDownloadFolder()
+        onChooseDownloadFolderRequested: folderDialog.open()
+    }
+
+    FolderDialog {
+        id: folderDialog
+        title: i18n("Choose Download Folder")
+        currentFolder: header.configuredDownloadPath()
+        onAccepted: plasmoid.configuration.downloadPath = selectedFolder
     }
 }

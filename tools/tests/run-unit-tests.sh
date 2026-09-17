@@ -4,6 +4,7 @@
 #
 # Runs the QML/JS unit tests with qml6 (no Plasma session needed):
 #   - Migration.js scenarios (docs/12)
+#   - Downloads.js: weighted progress, indicator visibility, speed/ETA
 #   - ProviderModel.qml logic, inlined into a wrapper that mocks `plasmoid` and i18n()
 set -euo pipefail
 project_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -41,7 +42,7 @@ Item {
 PY
 
 status=0
-for test in tools/tests/migration_test.qml "$tmp/provider_test.qml"; do
+for test in tools/tests/migration_test.qml tools/tests/downloads_test.qml "$tmp/provider_test.qml"; do
     printf '== %s\n' "$(basename "$test")"
     out="$(timeout 60 qml6 "$test" 2>&1 | grep -E 'PASS|FAIL|Error|error' || true)"
     printf '%s\n' "$out"

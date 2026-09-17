@@ -15,6 +15,9 @@ import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
 import org.kde.notification
+import org.kde.plasma.plasma5support as P5Support
+
+import "Downloads.js" as Downloads
 
 /*
  * Web engine host: profile, navigation, permissions, downloads, zoom,
@@ -67,15 +70,23 @@ Item {
     readonly property int lifecycleState: webview.lifecycleState
     readonly property int recommendedState: webview.recommendedState
 
-    // Downloads summary for the header badge
+    // Downloads: the single source of truth is downloadsModel (below);
+    // downloadSummary is derived for the toolbar indicator and menus.
     property int downloadsRevision: 0
-    readonly property int activeDownloadCount: countActiveDownloads(downloadsRevision)
-    readonly property real activeDownloadProgress: averageDownloadProgress(downloadsRevision)
+    readonly property var downloadSummary: Downloads.summarize(downloadItems(downloadsRevision))
+    readonly property int activeDownloadCount: downloadSummary.active
+    readonly property real activeDownloadProgress: Math.max(0, downloadSummary.progress)
     property var downloadCache: ({})
+    // Emitted when a download completes or fails so the toolbar can reveal
+    // the indicator briefly (never a modal popup).
+    signal downloadAttention()
+
+    // OAuth / window.open() popups are shown in AuthPopup with the same profile.
+    readonly property bool authPopupOpen: authPopupLoader.active
 
     // Anything that must not be interrupted by freezing the page.
     readonly property bool busy: webview.loading || webview.recentlyAudible || activeDownloadCount > 0
-        || pendingPermission !== null || devToolsOpen || clearingCache || fullScreenActive
+        || pendingPermission !== null || devToolsOpen || clearingCache || fullScreenActive || authPopupOpen
 
     readonly property var currentProvider: providerModel.providerForUrl(plasmoid.configuration.url)
 
@@ -329,28 +340,22 @@ Item {
     }
 
     // ---- downloads ---------------------------------------------------------
+    //
+    // Model roles: downloadId, fileName, fullPath, sourceUrl, mimeType,
+    // progress (0..1), receivedBytes, totalBytes (0 = unknown), isPdfExport,
+    // state (WebEngineDownloadRequest.DownloadState), isPaused, error,
+    // seen (opened/acknowledged by the user), speed (B/s or -1), eta (s or -1).
+    // UI updates from receivedBytesChanged are throttled to ~4/s.
 
-    function countActiveDownloads() {
-        let count = 0;
+    readonly property int downloadUiIntervalMs: 250
+
+    function downloadItems() {
+        const items = [];
         for (let i = 0; i < downloadsModel.count; i++) {
             const item = downloadsModel.get(i);
-            if (item.state === WebEngineDownloadRequest.DownloadInProgress || item.state === WebEngineDownloadRequest.DownloadRequested)
-                count++;
+            items.push({ state: item.state, receivedBytes: item.receivedBytes, totalBytes: item.totalBytes, seen: item.seen, isPaused: item.isPaused });
         }
-        return count;
-    }
-
-    function averageDownloadProgress() {
-        let total = 0;
-        let count = 0;
-        for (let i = 0; i < downloadsModel.count; i++) {
-            const item = downloadsModel.get(i);
-            if (item.state === WebEngineDownloadRequest.DownloadInProgress) {
-                total += item.progress;
-                count++;
-            }
-        }
-        return count ? total / count : 0;
+        return items;
     }
 
     ListModel {
@@ -362,19 +367,24 @@ Item {
                 "downloadId": downloadId,
                 "fileName": fileName,
                 "fullPath": path,
+                "sourceUrl": downloadItem ? String(downloadItem.url) : "",
+                "mimeType": downloadItem ? String(downloadItem.mimeType || "") : "application/pdf",
                 "progress": 0,
                 "receivedBytes": 0,
                 "totalBytes": downloadItem && downloadItem.totalBytes > 0 ? downloadItem.totalBytes : 0,
                 "isPdfExport": isPdf,
                 "state": downloadItem ? downloadItem.state : WebEngineDownloadRequest.DownloadInProgress,
                 "isPaused": downloadItem ? downloadItem.isPaused : false,
-                "error": ""
+                "error": "",
+                "seen": false,
+                "speed": -1,
+                "eta": -1
             });
             webViewRoot.downloadsRevision++;
             return count - 1;
         }
 
-        function removeDownload(index) {
+        function removeAt(index) {
             const item = get(index);
             if (item && item.downloadId)
                 delete webViewRoot.downloadCache[item.downloadId];
@@ -384,9 +394,8 @@ Item {
 
         function clearFinished() {
             for (let i = count - 1; i >= 0; i--) {
-                const state = get(i).state;
-                if (state !== WebEngineDownloadRequest.DownloadInProgress && state !== WebEngineDownloadRequest.DownloadRequested)
-                    removeDownload(i);
+                if (Downloads.isFinished(get(i).state))
+                    removeAt(i);
             }
         }
     }
@@ -400,21 +409,70 @@ Item {
         return -1;
     }
 
-    function updateDownload(download) {
+    function setDownloadProperty(index, role, value) {
+        if (downloadsModel.get(index)[role] !== value)
+            downloadsModel.setProperty(index, role, value);
+    }
+
+    function applyDownloadUpdate(download) {
         if (!download)
             return;
         const index = downloadIndex(download.id);
         if (index < 0)
             return;
+        const entry = downloadCache[String(download.id)];
+        const now = Date.now();
         const total = download.totalBytes > 0 ? download.totalBytes : 0;
-        const progress = total > 0 ? Math.min(1, download.receivedBytes / total) : 0;
-        downloadsModel.setProperty(index, "state", download.state);
-        downloadsModel.setProperty(index, "receivedBytes", download.receivedBytes);
-        downloadsModel.setProperty(index, "totalBytes", total);
-        downloadsModel.setProperty(index, "progress", download.state === WebEngineDownloadRequest.DownloadCompleted ? 1 : progress);
-        downloadsModel.setProperty(index, "isPaused", download.isPaused);
-        downloadsModel.setProperty(index, "error", download.interruptReasonString || "");
+        const received = download.receivedBytes;
+        const progress = total > 0 ? Math.min(1, received / total) : 0;
+        let speed = -1;
+        let eta = -1;
+        if (entry && download.state === WebEngineDownloadRequest.DownloadInProgress && !download.isPaused) {
+            entry.samples = Downloads.pushSample(entry.samples, now, received, 10000);
+            speed = Downloads.speedFromSamples(entry.samples, 10000);
+            eta = Downloads.etaSeconds(received, total, speed);
+        }
+        setDownloadProperty(index, "state", download.state);
+        setDownloadProperty(index, "receivedBytes", received);
+        setDownloadProperty(index, "totalBytes", total);
+        setDownloadProperty(index, "progress", download.state === WebEngineDownloadRequest.DownloadCompleted ? 1 : progress);
+        setDownloadProperty(index, "isPaused", download.isPaused);
+        setDownloadProperty(index, "error", download.interruptReasonString || "");
+        setDownloadProperty(index, "speed", speed);
+        setDownloadProperty(index, "eta", eta);
+        if (entry) {
+            entry.lastUpdate = now;
+            entry.pending = false;
+        }
         downloadsRevision++;
+    }
+
+    // Byte counters change hundreds of times per second; coalesce them.
+    function scheduleDownloadUpdate(download) {
+        const entry = downloadCache[String(download.id)];
+        if (!entry) {
+            applyDownloadUpdate(download);
+            return;
+        }
+        if (Date.now() - entry.lastUpdate >= downloadUiIntervalMs) {
+            applyDownloadUpdate(download);
+        } else {
+            entry.pending = true;
+            if (!downloadFlushTimer.running)
+                downloadFlushTimer.start();
+        }
+    }
+
+    Timer {
+        id: downloadFlushTimer
+        interval: webViewRoot.downloadUiIntervalMs
+        onTriggered: {
+            for (const id in webViewRoot.downloadCache) {
+                const entry = webViewRoot.downloadCache[id];
+                if (entry && entry.pending)
+                    webViewRoot.applyDownloadUpdate(entry.download);
+            }
+        }
     }
 
     function downloadEntry(downloadId) {
@@ -439,8 +497,109 @@ Item {
             entry.download.resume();
     }
 
+    function markDownloadSeen(downloadId) {
+        const index = downloadIndex(downloadId);
+        if (index >= 0 && !downloadsModel.get(index).seen) {
+            downloadsModel.setProperty(index, "seen", true);
+            downloadsRevision++;
+        }
+    }
+
+    function downloadFileUrl(path) {
+        return "file://" + String(path).split("/").map(encodeURIComponent).join("/");
+    }
+
+    function openDownload(downloadId) {
+        const index = downloadIndex(downloadId);
+        if (index < 0)
+            return;
+        const item = downloadsModel.get(index);
+        markDownloadSeen(downloadId);
+        if (item.fullPath)
+            Qt.openUrlExternally(downloadFileUrl(item.fullPath));
+    }
+
+    // Ask the file manager to reveal the file (org.freedesktop.FileManager1,
+    // implemented by Dolphin and others); falls back to opening the folder.
+    function showDownloadInFolder(downloadId) {
+        const index = downloadIndex(downloadId);
+        if (index < 0)
+            return;
+        const item = downloadsModel.get(index);
+        markDownloadSeen(downloadId);
+        if (!item.fullPath)
+            return;
+        const fileUrl = downloadFileUrl(item.fullPath);
+        const quoted = "'" + fileUrl.replace(/'/g, "'\\''") + "'";
+        fileManagerBridge.pendingFolder = item.fullPath.replace(/\/[^/]*$/, "");
+        fileManagerBridge.connectSource("dbus-send --session --print-reply --dest=org.freedesktop.FileManager1 /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:" + quoted + " string:''");
+    }
+
+    P5Support.DataSource {
+        id: fileManagerBridge
+        engine: "executable"
+        property string pendingFolder: ""
+        onNewData: function (sourceName, data) {
+            disconnectSource(sourceName);
+            if (Number(data["exit code"]) !== 0 && pendingFolder)
+                Qt.openUrlExternally(webViewRoot.downloadFileUrl(pendingFolder));
+            pendingFolder = "";
+        }
+    }
+
+    // Re-request a cancelled or interrupted download from its original URL.
+    // (Finished requests are released by Qt, so resume() is not available.)
+    function retryDownload(downloadId) {
+        const index = downloadIndex(downloadId);
+        if (index < 0)
+            return;
+        const item = downloadsModel.get(index);
+        const source = String(item.sourceUrl || "");
+        if (!isHttpUrl(source))
+            return;
+        downloadsModel.removeAt(index);
+        webview.runJavaScript("(function (u) { const a = document.createElement('a'); a.href = u; a.download = ''; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove(); })(" + JSON.stringify(source) + ")");
+    }
+
+    function removeDownload(downloadId) {
+        const index = downloadIndex(downloadId);
+        if (index >= 0 && Downloads.isFinished(downloadsModel.get(index).state))
+            downloadsModel.removeAt(index);
+    }
+
     function clearFinishedDownloads() {
         downloadsModel.clearFinished();
+    }
+
+    // Per-download KDE notification with Open / Show in Folder actions.
+    Component {
+        id: downloadNotificationComponent
+        Notification {
+            id: downloadNotification
+            property string downloadId
+            componentName: "plasma_workspace"
+            eventId: "notification"
+            iconName: "folder-download"
+            actions: [
+                NotificationAction {
+                    label: i18n("Open")
+                    onActivated: webViewRoot.openDownload(downloadNotification.downloadId)
+                },
+                NotificationAction {
+                    label: i18n("Show in Folder")
+                    onActivated: webViewRoot.showDownloadInFolder(downloadNotification.downloadId)
+                }
+            ]
+            onClosed: destroy()
+        }
+    }
+
+    function notifyDownloadFinished(download, ok) {
+        const notification = downloadNotificationComponent.createObject(webViewRoot, { downloadId: String(download.id) });
+        notification.title = ok ? i18n("Download finished") : i18n("Download failed");
+        notification.text = ok ? download.downloadFileName : i18n("%1 — %2", download.downloadFileName, download.interruptReasonString || i18n("interrupted"));
+        notification.iconName = ok ? "folder-download" : "data-warning";
+        notification.sendEvent();
     }
 
     function printPage() {
@@ -567,7 +726,7 @@ Item {
 
             for (let i = 0; i < downloadsModel.count; i++) {
                 const current = downloadsModel.get(i);
-                if (current.state === WebEngineDownloadRequest.DownloadInProgress && current.fileName === fileName && !current.isPdfExport) {
+                if (Downloads.isActive(current.state) && current.fileName === fileName && !current.isPdfExport) {
                     webViewRoot.showNotification(i18n("Download in progress"), i18n("The file '%1' is already being downloaded", fileName), "dialog-warning");
                     download.cancel();
                     return;
@@ -578,28 +737,36 @@ Item {
             download.downloadFileName = fileName;
             downloadsModel.addDownload(download, fileName, directory + "/" + fileName, false);
 
-            const updateConnection = function () { webViewRoot.updateDownload(download); };
-            download.receivedBytesChanged.connect(updateConnection);
-            download.totalBytesChanged.connect(updateConnection);
-            download.stateChanged.connect(updateConnection);
-            download.isPausedChanged.connect(updateConnection);
-            webViewRoot.downloadCache[String(download.id)] = { download: download, updateConnection: updateConnection };
+            // Byte counters are throttled; state and pause changes apply at once.
+            const throttled = function () { webViewRoot.scheduleDownloadUpdate(download); };
+            const immediate = function () { webViewRoot.applyDownloadUpdate(download); };
+            download.receivedBytesChanged.connect(throttled);
+            download.totalBytesChanged.connect(throttled);
+            download.stateChanged.connect(immediate);
+            download.isPausedChanged.connect(immediate);
+            webViewRoot.downloadCache[String(download.id)] = { download: download, throttled: throttled, immediate: immediate, samples: [], lastUpdate: 0, pending: false };
             download.accept();
-            webViewRoot.updateDownload(download);
+            webViewRoot.applyDownloadUpdate(download);
         }
 
         function onDownloadFinished(download) {
-            webViewRoot.updateDownload(download);
-            const entry = webViewRoot.downloadCache[String(download.id)];
-            if (entry && entry.updateConnection) {
-                download.receivedBytesChanged.disconnect(entry.updateConnection);
-                download.totalBytesChanged.disconnect(entry.updateConnection);
-                download.stateChanged.disconnect(entry.updateConnection);
-                download.isPausedChanged.disconnect(entry.updateConnection);
+            webViewRoot.applyDownloadUpdate(download);
+            const id = String(download.id);
+            const entry = webViewRoot.downloadCache[id];
+            if (entry) {
+                download.receivedBytesChanged.disconnect(entry.throttled);
+                download.totalBytesChanged.disconnect(entry.throttled);
+                download.stateChanged.disconnect(entry.immediate);
+                download.isPausedChanged.disconnect(entry.immediate);
             }
-            delete webViewRoot.downloadCache[String(download.id)];
-            if (download.state === WebEngineDownloadRequest.DownloadCompleted)
-                webViewRoot.showNotification(i18n("Download finished"), download.downloadFileName, "folder-download");
+            delete webViewRoot.downloadCache[id];
+            if (download.state === WebEngineDownloadRequest.DownloadCompleted) {
+                webViewRoot.notifyDownloadFinished(download, true);
+                webViewRoot.downloadAttention();
+            } else if (download.state === WebEngineDownloadRequest.DownloadInterrupted) {
+                webViewRoot.notifyDownloadFinished(download, false);
+                webViewRoot.downloadAttention();
+            }
         }
     }
 
@@ -710,6 +877,7 @@ Item {
                     if (!success)
                         downloadsModel.setProperty(i, "error", i18n("The PDF could not be created."));
                     webViewRoot.downloadsRevision++;
+                    webViewRoot.downloadAttention();
                     break;
                 }
             }
@@ -725,14 +893,29 @@ Item {
             return true;
         }
 
+        // window.open(): dialogs/windows (OAuth popups such as "Continue with
+        // Google", which need window.opener + postMessage + window.close()),
+        // popups that start blank and sign-in URLs open in AuthPopup with the
+        // same profile; plain target="_blank" links go to the system browser.
         onNewWindowRequested: function (request) {
             const url = String(request.requestedUrl);
-            request.action = WebEngineNewWindowRequest.IgnoreRequest;
-            if (webViewRoot.providerModel.isAuthUrl(url))
-                webview.url = url;
+            const startsBlank = url === "" || url === "about:blank";
+            if (!startsBlank && !webViewRoot.isHttpUrl(url))
+                return; // dropped: unknown scheme
+            // DestinationType lives on the C++ base class and is not exposed to
+            // QML; values per the Qt docs: InWindow=0, InTab=1, InDialog=2, InBackgroundTab=3.
+            const destinationWindow = WebEngineNewWindowRequest.NewViewInWindow ?? 0;
+            const destinationDialog = WebEngineNewWindowRequest.NewViewInDialog ?? 2;
+            const wantsWindow = request.destination === destinationDialog || request.destination === destinationWindow;
+            if (wantsWindow || startsBlank || webViewRoot.providerModel.isAuthUrl(url))
+                webViewRoot.openAuthPopup(request);
             else
                 openExternalIfSafe(url);
         }
+
+        // A page in the main view calling window.close() (a callback that
+        // expected to be a popup): nothing to close here; go back home.
+        onWindowCloseRequested: webViewRoot.goHome()
 
         onNavigationRequested: function (request) {
             const requestedUrl = String(request.url);
@@ -821,6 +1004,36 @@ Item {
         onReloadRequested: webViewRoot.reload()
         onSavePdfRequested: webViewRoot.printPage()
         onSaveMhtmlRequested: webViewRoot.saveMHTML()
+    }
+
+    function openAuthPopup(request) {
+        if (authPopupLoader.active)
+            authPopupLoader.active = false;
+        authPopupLoader.active = true;
+        request.openIn(authPopupLoader.item.view);
+    }
+
+    function closeAuthPopup() {
+        authPopupLoader.active = false;
+    }
+
+    Loader {
+        id: authPopupLoader
+        anchors.fill: parent
+        z: 25
+        active: false
+        sourceComponent: AuthPopup {
+            profile: webViewRoot.webProfile
+            providerModel: webViewRoot.providerModel
+            permissionHandler: webViewRoot.handlePermission
+            certificateErrorHandler: function (error) {
+                error.rejectCertificate();
+                webViewRoot.showNotification(i18n("Sign-in blocked"), i18n("The sign-in site's security certificate is not trusted."), "dialog-warning");
+                webViewRoot.closeAuthPopup();
+            }
+            onCloseRequested: webViewRoot.closeAuthPopup()
+            onExternalOpenRequested: url => webview.openExternalIfSafe(url)
+        }
     }
 
     Loader {
@@ -978,9 +1191,4 @@ Item {
         }
     }
 
-    DownloadBar {
-        downloadsModel: downloadsModel
-        downloadCache: webViewRoot.downloadCache
-        webviewItem: webViewRoot
-    }
 }
