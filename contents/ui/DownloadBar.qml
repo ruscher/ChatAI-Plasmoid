@@ -94,7 +94,7 @@ Column {
                     icon.name: model.isPaused ? "media-playback-start" : "media-playback-pause"
                     display: PlasmaComponents3.AbstractButton.IconOnly
                     visible: !model.isPdfExport && model.state === WebEngineDownloadRequest.DownloadInProgress
-                    enabled: webviewItem && downloadCache && downloadCache[model.downloadId]
+                    enabled: Boolean(webviewItem && downloadCache && downloadCache[model.downloadId])
                     onClicked: {
                         if (model.isPaused)
                             webviewItem.resumeDownload(model.downloadId);
@@ -109,7 +109,7 @@ Column {
                     icon.name: "dialog-cancel"
                     display: PlasmaComponents3.AbstractButton.IconOnly
                     visible: !model.isPdfExport && (model.state === WebEngineDownloadRequest.DownloadRequested || model.state === WebEngineDownloadRequest.DownloadInProgress || model.state === WebEngineDownloadRequest.DownloadInterrupted)
-                    enabled: webviewItem
+                    enabled: Boolean(webviewItem)
                     onClicked: webviewItem.cancelDownload(model.downloadId)
                     PlasmaComponents3.ToolTip.text: i18n("Cancel")
                     PlasmaComponents3.ToolTip.visible: hovered
@@ -119,7 +119,7 @@ Column {
                     icon.name: "document-open"
                     display: PlasmaComponents3.AbstractButton.IconOnly
                     visible: model.state === WebEngineDownloadRequest.DownloadCompleted
-                    enabled: model.fullPath
+                    enabled: Boolean(model.fullPath)
                     onClicked: Qt.openUrlExternally(downloadsBar.getOpenPath(model.fullPath))
                     PlasmaComponents3.ToolTip.text: i18n("Open file")
                     PlasmaComponents3.ToolTip.visible: hovered

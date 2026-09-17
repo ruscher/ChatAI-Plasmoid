@@ -1,347 +1,264 @@
 /*
  *  SPDX-FileCopyrightText: 2024 Denys Madureira <denysmb@zoho.com>
  *  SPDX-FileCopyrightText: 2025 Bruno Gonçalves <bigbruno@gmail.com>
+ *  SPDX-FileCopyrightText: 2026 Rafael Ruscher <rruscher@gmail.com>
  *
  *  SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
  */
 
-import QtQuick
 import QtCore
+import QtQuick
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
 
-import Qt.labs.platform
-
+/*
+ * Toolbar:  📌  ←  →  ↻  ⌂  [ AI ▼ ]  🔍  👁  ⬇  ⋮  ✕
+ * Secondary buttons move into the kebab menu when the bar gets narrow.
+ */
 RowLayout {
-    Layout.fillWidth: true
+    id: header
 
-    // Signals for communication with parent components
-    signal goBackToHomePage
-    signal reloadPageRequested
-    signal navigateBackRequested
-    signal navigateForwardRequested
-    signal printPageRequested
-    signal toggleSearchRequested
+    required property QtObject providerModel
+    // WebView.qml root while loaded, otherwise null.
+    property var webviewRoot: null
+    property bool settingsOpen: false
 
-    // Properties for managing component state
-    property var closeWebViewCallback: undefined    // Callback function for closing webview
-    property var models                            // Available chat models
-    property bool showCustomURLInput: false        // Toggle between URL selector and custom URL input
-    property var webview: (parent && parent.webviewRoot) ? parent.webviewRoot.webview : null
+    signal homeRequested()
+    signal closeRequested()
+    signal settingsRequested(string category)
+    signal aboutRequested()
+    signal shortcutsRequested()
+    // True while a native dialog owned by the header is open.
+    property bool modalOpen: folderDialog.visible
 
-    // Utility function to ensure URL has a valid protocol
-    function sanitizeUrl(url) {
-        if (!url || typeof url !== 'string')
-            return "";
-        const trimmed = url.trim();
-        const candidate = trimmed.match(/^https?:\/\//i) ? trimmed : "https://" + trimmed;
-        return /^(https?):\/\/[^\s]+$/i.test(candidate) ? candidate : "";
-    }
+    readonly property bool hasWebView: webviewRoot !== null
+    readonly property bool menuOpen: kebabMenu.visible || downloadMenu.visible || selector.popup.visible || customUrlField.visible
+
+    // Progressive overflow (docs/03)
+    readonly property int overflowLevel: width < Kirigami.Units.gridUnit * 26 ? 3 : width < Kirigami.Units.gridUnit * 30 ? 2 : width < Kirigami.Units.gridUnit * 34 ? 1 : 0
+    readonly property bool eyesInBar: !plasmoid.configuration.hideAutoHideButton && overflowLevel < 1
+    readonly property bool downloadInBar: !plasmoid.configuration.hideDownloadButton && overflowLevel < 2
+    readonly property bool searchInBar: overflowLevel < 3
+    readonly property bool homeInBar: !plasmoid.configuration.hideHomeButton && overflowLevel < 3
+
+    spacing: Kirigami.Units.smallSpacing
 
     function configuredDownloadPath() {
-        const configuredPath = String(plasmoid.configuration.downloadPath || "");
-        return configuredPath || StandardPaths.writableLocation(StandardPaths.DownloadLocation);
+        const configured = String(plasmoid.configuration.downloadPath || "");
+        return configured || StandardPaths.writableLocation(StandardPaths.DownloadLocation);
     }
 
-    function configRootPath(path) {
-        return String(path || "").replace(/^file:\/\/(localhost)?/, "") || StandardPaths.writableLocation(StandardPaths.DownloadLocation);
+    function openDownloadFolder() {
+        const path = String(configuredDownloadPath());
+        Qt.openUrlExternally(path.indexOf("file://") === 0 ? path : "file://" + path);
     }
 
-    // Navigation buttons
-    PlasmaComponents3.Button {
+    function showCustomAddress() {
+        customUrlField.text = plasmoid.configuration.url;
+        customUrlField.visible = true;
+        customUrlField.forceActiveFocus();
+        customUrlField.selectAll();
+    }
+
+    function acceptCustomAddress() {
+        const url = providerModel.normalizeUrl(customUrlField.text);
+        customUrlField.visible = false;
+        if (!url)
+            return;
+        if (plasmoid.configuration.url !== url)
+            plasmoid.configuration.url = url;
+        homeRequested();
+    }
+
+    component ToolbarButton: PlasmaComponents3.ToolButton {
+        display: PlasmaComponents3.AbstractButton.IconOnly
+        Accessible.name: text
+        PlasmaComponents3.ToolTip.text: text
+        PlasmaComponents3.ToolTip.visible: hovered
+        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
+    }
+
+    // 1. Pin
+    ToolbarButton {
+        id: pinButton
+        visible: !plasmoid.configuration.hideKeepOpen
+        icon.name: "window-pin"
+        checkable: true
+        checked: Boolean(plasmoid.configuration.pin)
+        text: checked ? i18n("Pinned: stays open when clicking outside") : i18n("Pin: keep open when clicking outside")
+        onToggled: plasmoid.configuration.pin = checked
+    }
+
+    // 2–3. Back / Forward
+    ToolbarButton {
+        visible: !plasmoid.configuration.hideNavigationButtons
         icon.name: "go-previous"
-        display: PlasmaComponents3.AbstractButton.IconOnly
-        onClicked: navigateBackRequested()
-        visible: !plasmoid.configuration.hideNavigationButtons
-        z: 3
-        PlasmaComponents3.ToolTip.text: i18n("Go back to previous page")
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
-        PlasmaComponents3.ToolTip.visible: hovered
+        text: i18n("Back")
+        enabled: header.hasWebView && header.webviewRoot.canGoBack
+        onClicked: header.webviewRoot.goBack()
     }
 
-    PlasmaComponents3.Button {
+    ToolbarButton {
+        visible: !plasmoid.configuration.hideNavigationButtons
         icon.name: "go-next"
-        display: PlasmaComponents3.AbstractButton.IconOnly
-        onClicked: navigateForwardRequested()
-        visible: !plasmoid.configuration.hideNavigationButtons
-        z: 3
-        PlasmaComponents3.ToolTip.text: i18n("Go forward to next page")
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
-        PlasmaComponents3.ToolTip.visible: hovered
+        text: i18n("Forward")
+        enabled: header.hasWebView && header.webviewRoot.canGoForward
+        onClicked: header.webviewRoot.goForward()
     }
 
-    PlasmaComponents3.Button {
-        icon.name: "go-home"
-        display: PlasmaComponents3.AbstractButton.IconOnly
-        onClicked: goBackToHomePage()
-        visible: !plasmoid.configuration.hideHomeButton
-        z: 3
-        PlasmaComponents3.ToolTip.text: i18n("Return to homepage/default chat")
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
-        PlasmaComponents3.ToolTip.visible: hovered
-    }
-
-    PlasmaComponents3.Button {
-        icon.name: "view-refresh"
-        display: PlasmaComponents3.AbstractButton.IconOnly
-        onClicked: reloadPageRequested()
+    // 4. Reload / Stop
+    ToolbarButton {
         visible: !plasmoid.configuration.hideRefreshButton
-        z: 3
-        PlasmaComponents3.ToolTip.text: i18n("Reload current page")
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
-        PlasmaComponents3.ToolTip.visible: hovered
+        readonly property bool loadingPage: header.hasWebView && header.webviewRoot.loading
+        icon.name: loadingPage ? "process-stop" : "view-refresh"
+        text: loadingPage ? i18n("Stop loading") : i18n("Reload")
+        enabled: header.hasWebView && !header.webviewRoot.clearingCache
+        onClicked: loadingPage ? header.webviewRoot.stop() : header.webviewRoot.reload()
     }
 
-    // URL Selection components
-    PlasmaComponents3.ComboBox {
-        id: urlComboBox
+    // 5. Home
+    ToolbarButton {
+        visible: header.homeInBar
+        icon.name: "go-home"
+        text: i18n("Home page of the current assistant")
+        enabled: header.hasWebView
+        onClicked: header.homeRequested()
+    }
+
+    // 6. Select AI (or the custom address field)
+    AiSelector {
+        id: selector
+        visible: !customUrlField.visible
+        providerModel: header.providerModel
+        onSelected: header.homeRequested()
+        onCustomAddressRequested: header.showCustomAddress()
+    }
+
+    PlasmaComponents3.TextField {
+        id: customUrlField
+        visible: false
         Layout.fillWidth: true
-        PlasmaComponents3.ToolTip.text: i18n("Select or enter chat website URL")
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
-        PlasmaComponents3.ToolTip.visible: hovered && !pressed
-        model: []
-        editable: currentIndex === count - 1
-
-        property string customUrlText: ""
-
-        displayText: {
-            if (currentIndex === count - 1 && editable) {
-                return customUrlText || "";
-            }
-            return currentText;
+        placeholderText: "https://…"
+        inputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase
+        Accessible.name: i18n("Custom address")
+        onAccepted: header.acceptCustomAddress()
+        Keys.onEscapePressed: visible = false
+        onActiveFocusChanged: {
+            if (!activeFocus)
+                visible = false;
         }
-
-        onActivated: {
-            if (currentIndex === count - 1) {
-                editable = true;
-                customUrlText = "";
-                editText = "";
-                Qt.callLater(() => {
-                    forceActiveFocus();
-                    if (urlComboBox.hasOwnProperty("textField")) {
-                        urlComboBox.textField.forceActiveFocus();
-                    }
-                });
-            } else {
-                editable = false;
-                handleModelSelection();
-            }
-        }
-
-        onEditTextChanged: {
-            if (currentIndex === count - 1) {
-                customUrlText = editText;
-            }
-        }
-
-        Keys.onReturnPressed: event => {
-            if (currentIndex === count - 1 && editText) {
-                const sanitized = sanitizeUrl(editText);
-                if (sanitized) {
-                    plasmoid.configuration.url = sanitized;
-                    goBackToHomePage();
-                }
-                event.accepted = true;
-            }
-        }
-
-        onAccepted: {
-            if (currentIndex === count - 1 && editText) {
-                const sanitized = sanitizeUrl(editText);
-                if (sanitized) {
-                    plasmoid.configuration.url = sanitized;
-                    goBackToHomePage();
-                }
-            }
-        }
-
-        Component.onCompleted: renderChatModel()
     }
 
-    // Auto-Hide Button
-    PlasmaComponents3.Button {
-        id: autoHideButton
-        visible: !plasmoid.configuration.hidePrintButton
-        icon.name: plasmoid.configuration.autoHideHeader ? "view-visible" : "view-hidden"
-        display: PlasmaComponents3.AbstractButton.IconOnly
+    // 7. Search
+    ToolbarButton {
+        visible: header.searchInBar
+        icon.name: "edit-find"
+        text: i18n("Find in page (Ctrl+F)")
+        enabled: header.hasWebView
+        checkable: true
+        checked: header.hasWebView && header.webviewRoot.findBarVisible
+        onClicked: header.webviewRoot.toggleFind()
+    }
+
+    // 8. Eyes (auto-hide)
+    ToolbarButton {
+        visible: header.eyesInBar
+        icon.name: plasmoid.configuration.autoHideHeader ? "view-hidden" : "view-visible"
         checkable: true
         checked: plasmoid.configuration.autoHideHeader
-        z: 3
-        PlasmaComponents3.ToolTip.text: checked ? i18n("Header will hide automatically when not in use") : i18n("Header will stay visible")
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
-        PlasmaComponents3.ToolTip.visible: hovered
+        text: checked ? i18n("Toolbar hides automatically; click to keep it visible") : i18n("Hide the toolbar automatically")
         onToggled: plasmoid.configuration.autoHideHeader = checked
     }
 
-    // Download button with dropdown menu
-    // Provides access to download folder management
-    PlasmaComponents3.Button {
+    // 9. Downloads
+    ToolbarButton {
+        id: downloadButton
+        visible: header.downloadInBar
         icon.name: "folder-download"
-        display: PlasmaComponents3.AbstractButton.IconOnly
+        readonly property int activeCount: header.hasWebView ? header.webviewRoot.activeDownloadCount : 0
+        text: activeCount > 0 ? i18np("One download in progress", "%1 downloads in progress", activeCount) : i18n("Downloads")
         onClicked: downloadMenu.popup()
-        visible: !plasmoid.configuration.hideDownloadButton
-        z: 3
-        PlasmaComponents3.ToolTip.text: i18n("Manage downloads and download folder")
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
-        PlasmaComponents3.ToolTip.visible: hovered
+
+        Rectangle {
+            visible: downloadButton.activeCount > 0
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 1
+            width: Kirigami.Units.smallSpacing * 2.5
+            height: width
+            radius: width / 2
+            color: Kirigami.Theme.highlightColor
+            Accessible.ignored: true
+        }
 
         PlasmaComponents3.Menu {
             id: downloadMenu
+
             PlasmaComponents3.MenuItem {
                 icon.name: "folder-open"
                 text: i18n("Open Download Folder")
-                onTriggered: Qt.openUrlExternally(configRootPath(configuredDownloadPath()))
+                onTriggered: header.openDownloadFolder()
             }
             PlasmaComponents3.MenuItem {
                 icon.name: "folder"
-                text: i18n("Choose Download Folder")
+                text: i18n("Choose Download Folder…")
                 onTriggered: folderDialog.open()
+            }
+            PlasmaComponents3.MenuSeparator {}
+            PlasmaComponents3.MenuItem {
+                text: downloadButton.activeCount > 0
+                    ? i18np("One download in progress (%2%)", "%1 downloads in progress (%2%)", downloadButton.activeCount, Math.round((header.hasWebView ? header.webviewRoot.activeDownloadProgress : 0) * 100))
+                    : i18n("No downloads in progress")
+                enabled: false
+            }
+            PlasmaComponents3.MenuItem {
+                icon.name: "edit-clear-history"
+                text: i18n("Clear Finished Downloads")
+                enabled: header.hasWebView && header.webviewRoot.downloads.count > downloadButton.activeCount
+                onTriggered: header.webviewRoot.clearFinishedDownloads()
             }
         }
     }
 
-    // Dialog for selecting download folder location
     FolderDialog {
         id: folderDialog
-        currentFolder: configuredDownloadPath()
+        title: i18n("Choose Download Folder")
+        currentFolder: header.configuredDownloadPath()
         onAccepted: plasmoid.configuration.downloadPath = selectedFolder
     }
 
-    // Search button - Toggles the find bar
-    PlasmaComponents3.Button {
-        icon.name: "search"
-        display: PlasmaComponents3.AbstractButton.IconOnly
-        onClicked: toggleSearchRequested()
-        z: 3
-        PlasmaComponents3.ToolTip.text: i18n("Find in page (Ctrl+F)")
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
-        PlasmaComponents3.ToolTip.visible: hovered
-    }
+    // 10. Kebab
+    ToolbarButton {
+        id: kebabButton
+        icon.name: "overflow-menu"
+        text: i18n("More actions")
+        onClicked: kebabMenu.popup()
 
-    // Pin button - Keeps the widget open when focused is lost
-    PlasmaComponents3.Button {
-        icon.name: "window-pin"
-        display: PlasmaComponents3.AbstractButton.IconOnly
-        checkable: true
-        checked: Boolean(plasmoid.configuration.pin)
-        onToggled: plasmoid.configuration.pin = checked
-        visible: !Boolean(plasmoid.configuration.hideKeepOpen)
-        z: 3
-        PlasmaComponents3.ToolTip.text: checked ? i18n("Widget will stay open when clicking outside") : i18n("Widget will close when clicking outside")
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
-        PlasmaComponents3.ToolTip.visible: hovered
-    }
-
-    // Close button - Closes the webview and collapses the widget
-    PlasmaComponents3.Button {
-        icon.name: "window-close"
-        display: PlasmaComponents3.AbstractButton.IconOnly
-        onClicked: {
-            if (closeWebViewCallback)
-                closeWebViewCallback();
+        ChatAIMenu {
+            id: kebabMenu
+            webviewRoot: header.webviewRoot
+            showFindItem: !header.searchInBar
+            showAutoHideItem: !header.eyesInBar && !plasmoid.configuration.hideAutoHideButton
+            showHomeItem: !header.homeInBar && !plasmoid.configuration.hideHomeButton
+            showDownloadsItem: !header.downloadInBar && !plasmoid.configuration.hideDownloadButton
+            onSettingsRequested: category => header.settingsRequested(category)
+            onAboutRequested: header.aboutRequested()
+            onShortcutsRequested: header.shortcutsRequested()
+            onHomeRequested: header.homeRequested()
+            onOpenDownloadFolderRequested: header.openDownloadFolder()
+            onChooseDownloadFolderRequested: folderDialog.open()
         }
+    }
+
+    // 11. Close
+    ToolbarButton {
         visible: !plasmoid.configuration.hideCloseButton
-        z: 3
-        PlasmaComponents3.ToolTip.text: i18n("Close the webview and release memory")
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
-        PlasmaComponents3.ToolTip.visible: hovered
-    }
-
-    // Helper Functions
-    // Returns the number of available chat models
-    function getModelsLength() {
-        return urlComboBox.model.length;
-    }
-
-    // Updates the chat model list and current selection
-    // Handles both predefined and custom chat models
-    function renderChatModel() {
-        const chatModel = (models || [])
-            .filter(model => !model.configKey || Boolean(plasmoid.configuration[model.configKey]))
-            .map(model => model.name || model.text)
-            .concat([i18n("Custom URL...")]);
-
-        // Update ComboBox model and select current item
-        urlComboBox.model = chatModel;
-
-        const currentUrl = String(plasmoid.configuration.url || "");
-        const currentModel = (models || []).find(model => model.url === currentUrl || currentUrl.indexOf(model.url + "/") === 0 || currentUrl.indexOf(model.url + "?") === 0);
-
-        if (currentModel) {
-            const index = chatModel.indexOf(currentModel.name || currentModel.text);
-            urlComboBox.currentIndex = index >= 0 ? index : chatModel.length - 1;
-            urlComboBox.editable = index < 0;
-        } else {
-            urlComboBox.currentIndex = chatModel.length - 1;
-            urlComboBox.customUrlText = currentUrl;
-            urlComboBox.editText = currentUrl;
-            urlComboBox.editable = true;
-        }
-    }
-
-    // Handles model selection from ComboBox
-    // Updates current URL and navigates to selected chat
-    function handleModelSelection() {
-        if (urlComboBox.currentIndex === urlComboBox.count - 1) {
-            // Custom URL handling
-            const url = urlComboBox.editText;
-            if (url) {
-                const sanitized = sanitizeUrl(url);
-                if (sanitized) {
-                    plasmoid.configuration.url = sanitized;
-                    goBackToHomePage();
-                }
-            }
-            return;
-        }
-
-        const selectedText = urlComboBox.currentValue;
-        if (!selectedText)
-            return;
-        urlComboBox.displayText = selectedText;
-
-        const selectedModel = (models || []).find(model => (model.name || model.text) === selectedText && (!model.configKey || Boolean(plasmoid.configuration[model.configKey])));
-        if (selectedModel) {
-            plasmoid.configuration.url = selectedModel.url;
-            goBackToHomePage();
-        }
-    }
-
-    Binding {
-        target: root
-        property: "hideOnWindowDeactivate"
-        value: !plasmoid.configuration.pin
-        restoreMode: Binding.RestoreBinding
-    }
-
-    // Debounce timer for model re-rendering
-    Timer {
-        id: modelUpdateTimer
-        interval: 50
-        onTriggered: renderChatModel()
-    }
-
-    // Configuration change handler - debounced to prevent multiple rapid re-renders
-    Connections {
-        target: plasmoid.configuration
-        function onCustomSitesChanged() { modelUpdateTimer.restart() }
-        function onShowT3ChatChanged() { modelUpdateTimer.restart() }
-        function onShowDuckDuckGoChatChanged() { modelUpdateTimer.restart() }
-        function onShowChatGPTChanged() { modelUpdateTimer.restart() }
-        function onShowHugginChatChanged() { modelUpdateTimer.restart() }
-        function onShowGoogleGeminiChanged() { modelUpdateTimer.restart() }
-        function onShowYouChanged() { modelUpdateTimer.restart() }
-        function onShowPerplexityChanged() { modelUpdateTimer.restart() }
-        function onShowLobeChatChanged() { modelUpdateTimer.restart() }
-        function onShowBigAGIChanged() { modelUpdateTimer.restart() }
-        function onShowBlackBoxChanged() { modelUpdateTimer.restart() }
-        function onShowBingCopilotChanged() { modelUpdateTimer.restart() }
-        function onShowClaudeChanged() { modelUpdateTimer.restart() }
-        function onShowDeepSeekChanged() { modelUpdateTimer.restart() }
-        function onShowMetaAIChanged() { modelUpdateTimer.restart() }
-        function onShowGrokChanged() { modelUpdateTimer.restart() }
+        icon.name: "window-close"
+        text: i18n("Close and release memory")
+        onClicked: header.closeRequested()
     }
 }

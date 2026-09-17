@@ -1,6 +1,7 @@
 /*
  *  SPDX-FileCopyrightText: 2024 Denys Madureira <denysmb@zoho.com>
  *  SPDX-FileCopyrightText: 2025 Bruno Gonçalves <bigbruno@gmail.com>
+ *  SPDX-FileCopyrightText: 2026 Rafael Ruscher <rruscher@gmail.com>
  *
  *  SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
  */
@@ -11,67 +12,103 @@ import QtQuick.Layouts
 import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
 
-// Main plasmoid item that contains all the widget functionality
+import "Migration.js" as Migration
+
+/*
+ * Plasmoid orchestration: representations, lazy WebView, pin, in-widget
+ * settings, fullscreen guard and configuration migration.
+ *
+ * Note: compactRepresentation/fullRepresentation are components in Plasma 6,
+ * so their inner ids are not visible here. Shared state lives on the root and
+ * the inner items push their values up.
+ */
 PlasmoidItem {
     id: root
 
     ProviderModel {
-        id: providerModel
+        id: providerRegistry
     }
 
-    readonly property alias models: providerModel.providers
+    // WebView.qml root while loaded (null after Close). Pushed by the Loader.
+    property var webviewRoot: null
+    readonly property bool fullScreenActive: webviewRoot ? webviewRoot.fullScreenActive : false
+    property bool settingsOpen: false
+    property string settingsCategory: "general"
+    // True after Close until the next expansion: keeps the Loader inactive.
+    property bool webviewClosed: false
+    // Native dialogs (folder chooser, prompts) deactivate the popup window.
+    property bool headerModalOpen: false
+    property bool settingsModalOpen: false
+    readonly property var currentProvider: providerRegistry.providerForUrl(plasmoid.configuration.url)
 
-    // Initialize the plasmoid and check if it should load on startup
+    // Pin is the single source of truth (docs/02 B1).
+    hideOnWindowDeactivate: !(plasmoid.configuration.pin || headerModalOpen || settingsModalOpen || fullScreenActive)
+    toolTipMainText: i18n("ChatAI")
+    toolTipSubText: currentProvider ? currentProvider.name : providerRegistry.nameForUrl(plasmoid.configuration.url)
+
     Component.onCompleted: {
-        // If loadOnStartup is enabled in configuration
-        if (plasmoid.configuration.loadOnStartup) {
-            webviewLoader.active = true; // Activate the WebView loader
-            root.expanded = true; // Expand the plasmoid
-        }
+        if (Migration.run(plasmoid.configuration, providerRegistry.legacyUrlMap()))
+            console.info("ChatAI: configuration migrated to schema", plasmoid.configuration.configVersion);
     }
 
-    // Widget appearance when collapsed (icon only)
+    onExpandedChanged: {
+        if (root.expanded)
+            root.webviewClosed = false;
+    }
+
+    function openSettings(category) {
+        settingsCategory = category || "general";
+        settingsOpen = true;
+    }
+
+    function closeSettings() {
+        settingsOpen = false;
+    }
+
+    function closeWebView() {
+        settingsOpen = false;
+        webviewClosed = true;
+        root.expanded = false;
+    }
+
+    function recreateWebView() {
+        webviewClosed = true;
+        Qt.callLater(function () { root.webviewClosed = false; });
+    }
+
+    function goHome() {
+        if (webviewRoot)
+            webviewRoot.goHome();
+    }
+
     compactRepresentation: CompactRepresentation {
-        id: compactRep
-
         plasmoidItem: root
-        models: root.models
-        webview: root.webviewRoot ? root.webviewRoot.webview : null
+        providerModel: providerRegistry
     }
 
-    // Widget appearance when expanded (full view)
     fullRepresentation: ColumnLayout {
         id: mainLayout
 
-        // Expose WebView root for other components
-        property alias webviewRoot: webviewLoader.item
-        // Default dimensions (used when no saved size exists)
         readonly property int defaultWidth: Kirigami.Units.gridUnit * 28
         readonly property int defaultHeight: Kirigami.Units.gridUnit * 39
 
-        // Set minimum dimensions for the expanded view
         Layout.minimumWidth: Kirigami.Units.gridUnit * 20
         Layout.minimumHeight: Kirigami.Units.gridUnit * 28
-        // Use saved dimensions if available, otherwise use defaults
         Layout.preferredWidth: plasmoid.configuration.dialogWidth > 0 ? plasmoid.configuration.dialogWidth : defaultWidth
         Layout.preferredHeight: plasmoid.configuration.dialogHeight > 0 ? plasmoid.configuration.dialogHeight : defaultHeight
 
-        // Save window size when user resizes
-        // Use a timer to debounce saves (avoid saving on every pixel change)
+        spacing: 0
+
+        // Debounced persistence of the popup size.
         Timer {
             id: saveSizeTimer
             interval: 500
             repeat: false
             onTriggered: {
-                // Only save if the size is valid and different from saved value
                 const currentWidth = Math.round(mainLayout.width);
                 const currentHeight = Math.round(mainLayout.height);
-                const savedWidth = plasmoid.configuration.dialogWidth;
-                const savedHeight = plasmoid.configuration.dialogHeight;
-                
-                // Save if dimensions are valid and different from what's saved
-                if (currentWidth > 0 && currentHeight > 0 &&
-                    (currentWidth !== savedWidth || currentHeight !== savedHeight)) {
+                if (currentWidth > 0 && currentHeight > 0
+                    && (currentWidth !== plasmoid.configuration.dialogWidth || currentHeight !== plasmoid.configuration.dialogHeight)) {
                     plasmoid.configuration.dialogWidth = currentWidth;
                     plasmoid.configuration.dialogHeight = currentHeight;
                 }
@@ -81,161 +118,143 @@ PlasmoidItem {
         onWidthChanged: saveSizeTimer.restart()
         onHeightChanged: saveSizeTimer.restart()
 
-        spacing: 0
-
-        // Header component with auto-hide behavior
         Header {
             id: headerRoot
 
             property bool headerVisible: false
-            property bool isInteracting: false
-            property bool shouldBeVisible: {
+            readonly property bool shouldBeVisible: {
                 if (plasmoid.configuration.hideHeader)
                     return false;
-
-                if (!plasmoid.configuration.autoHideHeader)
+                if (!plasmoid.configuration.autoHideHeader || root.settingsOpen)
                     return true;
-
-                return headerVisible || isInteracting || headerMouseArea.containsMouse;
+                return headerVisible || menuOpen || headerHover.hovered || revealStrip.hovered;
             }
 
-            models: root.models
+            providerModel: providerRegistry
+            webviewRoot: root.webviewRoot
+            settingsOpen: root.settingsOpen
             Layout.fillWidth: true
-            z: 2 // Increase the z-index to ensure it is above the MouseArea
-            // Callback to close the WebView and collapse the widget
-            closeWebViewCallback: function () {
-                webviewLoader.active = false;
-                root.expanded = false;
-            }
-            // Handle navigation
-            onGoBackToHomePage: webviewRoot.goBackToHomePage()
-            onReloadPageRequested: webviewRoot.reloadPage()
-            onNavigateBackRequested: webviewRoot.goBack()
-            onNavigateForwardRequested: webviewRoot.goForward()
-            onPrintPageRequested: webviewRoot.printPage()
-            onToggleSearchRequested: {
-                if (webviewRoot && webviewRoot.findBarVisible !== undefined) {
-                    webviewRoot.findBarVisible = !webviewRoot.findBarVisible;
-                }
-            }
             Layout.preferredHeight: shouldBeVisible ? implicitHeight : 0
             Layout.maximumHeight: Layout.preferredHeight
             Layout.minimumHeight: 0
             Layout.bottomMargin: shouldBeVisible ? Kirigami.Units.smallSpacing : 0
+            z: 2
             visible: Layout.preferredHeight > 0
-            opacity: Layout.preferredHeight > 0 ? 1 : 0
+            opacity: shouldBeVisible ? 1 : 0
             clip: true
-            // Timer for hiding
-            Timer {
-                id: hideTimer
 
-                interval: 2000
-                onTriggered: {
-                    if (!headerRoot.isInteracting)
-                        headerRoot.headerVisible = false;
+            onHomeRequested: root.goHome()
+            onCloseRequested: root.closeWebView()
+            onSettingsRequested: category => root.openSettings(category)
+            onAboutRequested: root.openSettings("about")
+            onShortcutsRequested: root.openSettings("about")
+            onModalOpenChanged: root.headerModalOpen = modalOpen
+
+            // Hover detection without participating in the layout (docs/02 B4).
+            HoverHandler {
+                id: headerHover
+                onHoveredChanged: {
+                    if (hovered) {
+                        headerRoot.headerVisible = true;
+                        hideTimer.stop();
+                    } else if (!headerRoot.menuOpen) {
+                        hideTimer.restart();
+                    }
                 }
             }
 
-            // Intercept mouse events
-            MouseArea {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.alignment: Qt.AlignTop
-                hoverEnabled: true
-                propagateComposedEvents: true
-                onEntered: {
-                    headerRoot.headerVisible = true;
-                    hideTimer.stop();
-                }
-                onExited: {
-                    if (!headerRoot.isInteracting)
-                        hideTimer.restart();
-                }
-                onPressed: {
-                    headerRoot.isInteracting = true;
-                    mouse.accepted = false;
-                }
-                onReleased: {
-                    headerRoot.isInteracting = false;
-                    if (!containsMouse)
-                        hideTimer.restart();
+            onMenuOpenChanged: {
+                if (!menuOpen && !headerHover.hovered)
+                    hideTimer.restart();
+            }
 
-                    mouse.accepted = false;
+            Timer {
+                id: hideTimer
+                interval: 2000
+                onTriggered: {
+                    if (!headerRoot.menuOpen && !headerHover.hovered)
+                        headerRoot.headerVisible = false;
                 }
             }
 
             Behavior on Layout.preferredHeight {
                 NumberAnimation {
-                    duration: 150
+                    duration: Kirigami.Units.shortDuration
                     easing.type: Easing.InOutCubic
                 }
             }
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: 150
+                    duration: Kirigami.Units.shortDuration
                     easing.type: Easing.InOutQuad
                 }
             }
         }
 
-        // Mouse detection area
-        MouseArea {
-            id: headerMouseArea
-
-            height: 2
-            hoverEnabled: true
-            z: 1 // Place below the header
-            propagateComposedEvents: true
-            onEntered: {
-                headerRoot.headerVisible = true;
-                hideTimer.stop();
-            }
-            onExited: {
-                if (!headerRoot.isInteracting)
-                    hideTimer.restart();
-            }
-            // Pass mouse events to child components
-            onClicked: mouse.accepted = false
-            onPressed: mouse.accepted = false
-            onReleased: mouse.accepted = false
-            onDoubleClicked: mouse.accepted = false
-            onPositionChanged: mouse.accepted = false
-            onPressAndHold: mouse.accepted = false
-
+        // Thin strip that reveals the auto-hidden header.
+        Item {
+            id: revealStrip
+            readonly property bool hovered: stripHover.hovered
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
-        }
+            Layout.preferredHeight: plasmoid.configuration.autoHideHeader && !headerRoot.shouldBeVisible ? 3 : 0
+            z: 1
 
-        // WebView loader that manages the web content
-        Loader {
-            id: webviewLoader
-
-            // Improved the loading of the WebView & Added Error Handling
-            active: root.expanded || item !== null || plasmoid.configuration.loadOnStartup
-            asynchronous: true
-            source: "WebView.qml"
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.topMargin: 0
-
-            // Add status handling
-            onStatusChanged: {
-                if (status === Loader.Error) {
-                    console.error("Failed to load WebView.qml");
+            HoverHandler {
+                id: stripHover
+                onHoveredChanged: {
+                    if (hovered) {
+                        headerRoot.headerVisible = true;
+                        hideTimer.stop();
+                    }
                 }
             }
         }
 
-        // Monitor plasmoid expansion state
-        Connections {
-            // Activate WebView when plasmoid is expanded
-            function onExpandedChanged() {
-                if (root.expanded)
-                    webviewLoader.active = true;
+        Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            // Lazy WebEngine: created on first expansion (or when Plasma
+            // preloads the representation and loadOnStartup is set),
+            // destroyed by Close.
+            Loader {
+                id: webviewLoader
+                anchors.fill: parent
+                active: !root.webviewClosed && (root.expanded || item !== null || plasmoid.configuration.loadOnStartup)
+                asynchronous: true
+                visible: !root.settingsOpen
+                sourceComponent: WebView {
+                    providerModel: providerRegistry
+                    hidden: !root.expanded || root.settingsOpen
+                }
+                onItemChanged: root.webviewRoot = item
+                onStatusChanged: {
+                    if (status === Loader.Error)
+                        console.error("ChatAI: failed to load WebView.qml");
+                }
             }
 
-            target: root
+            Loader {
+                id: settingsLoader
+                anchors.fill: parent
+                active: root.settingsOpen
+                visible: active
+                onActiveChanged: {
+                    if (!active)
+                        root.settingsModalOpen = false;
+                }
+                sourceComponent: SettingsPanel {
+                    providerModel: providerRegistry
+                    runtime: root.webviewRoot
+                    category: root.settingsCategory
+                    onCategoryChanged: root.settingsCategory = category
+                    onCloseRequested: root.closeSettings()
+                    onModalOpenChanged: root.settingsModalOpen = modalOpen
+                    // Changing the storage name needs a fresh WebEngineView.
+                    onProfileRecreationRequested: root.recreateWebView()
+                }
+            }
         }
     }
 }
