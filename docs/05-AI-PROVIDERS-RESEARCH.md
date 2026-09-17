@@ -47,7 +47,7 @@ Racional: mudar padrões de chaves existentes altera silenciosamente listas de u
 - Harness (22 URLs × 2 UAs, mais 3 repetições dos casos duvidosos): **nenhuma diferença reproduzível** entre o UA padrão e o UA sem o token `QtWebEngine`. A única falha com o UA padrão (GitHub, `net::ERR_NETWORK_*`) não se repetiu em 2 novas execuções: erro de rede transitório. ChatGPT expira nos dois UAs no harness headless (sem GPU) e é testado na sessão real.
 - Decisão (regra do projeto: preferir o UA padrão, override só com necessidade comprovada): **UA padrão do Qt WebEngine** para instalações novas. Opção "Identificar‑se como Chromium" (`compatibilityUserAgent`) em Avançado remove só o token `QtWebEngine/x.y.z`, mantendo a versão real do Chromium — para quem encontrar um site que recuse o token (relato dos mantenedores anteriores para ChatGPT/DeepSeek, não reproduzido aqui).
 - Instalações existentes (1.0.0 sempre usou UA Chromium) recebem `compatibilityUserAgent = true` na migração para não mudar comportamento.
-- Nenhum UA mobile/Chrome 76 permanece. Override por provedor continua possível via `userAgent` no registro (nenhum usado). `customUserAgent` substitui tudo.
+- Nenhum UA mobile/Chrome 76 permanece. ChatGPT e DeepSeek declaram `stripQtToken: true` no registro (removem só o token `QtWebEngine/x.y.z`) porque o desafio anti-bot do ChatGPT pode travar com o token, mesmo com a identidade Chromium global desligada. Override por provedor continua possível via `userAgent` no registro (nenhum usado). `customUserAgent` substitui tudo.
 
 ## Ícones
 

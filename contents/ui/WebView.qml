@@ -149,7 +149,15 @@ Item {
             return;
         }
         hasLoadError = false;
-        webview.url = url;
+        // Abort any load in progress first: some pages (e.g. ChatGPT bouncing to
+        // a blocked Google sign-in) keep redirecting, and a plain url assignment
+        // would be overridden by the in-flight navigation. Stopping guarantees
+        // the selected provider becomes the page shown by Home.
+        webview.stop();
+        if (String(webview.url) === url)
+            webview.reload();
+        else
+            webview.url = url;
     }
 
     function goBack() { if (webview.canGoBack) webview.goBack(); }

@@ -46,7 +46,9 @@ QtObject {
             iconId: "chatgpt", iconStyles: ["colorful", "filled", "outlined"], category: "general",
             description: i18n("OpenAI's assistant with voice, files and web search."),
             requiresLogin: true, supportsMicrophone: true, supportsCamera: false, supportsUpload: true,
-            supportsNotifications: true, supportsWebSearch: true, loginNotes: googleLoginNote
+            supportsNotifications: true, supportsWebSearch: true, loginNotes: googleLoginNote,
+            // ChatGPT's anti-bot check hangs on the "QtWebEngine" product token.
+            stripQtToken: true
         },
         {
             id: "claude", name: "Claude", url: "https://claude.ai/new", configKey: "showClaude",
@@ -68,7 +70,7 @@ QtObject {
             iconId: "deepseek", iconStyles: ["colorful", "filled", "outlined"], category: "open",
             description: i18n("DeepSeek's chat with reasoning mode."),
             requiresLogin: true, supportsMicrophone: false, supportsCamera: false, supportsUpload: true,
-            supportsNotifications: false, supportsWebSearch: true
+            supportsNotifications: false, supportsWebSearch: true, stripQtToken: true
         },
         {
             id: "duckduckgo", name: "Duck.ai", url: "https://duck.ai/chat", legacyUrls: ["https://duckduckgo.com/chat"],
@@ -341,10 +343,16 @@ QtObject {
         return /(\/oauth|\/o\/oauth2|\/authorize|\/login|\/signin|\/sign_in|\/sign-in|\/sso\b|\/auth\b|openid|saml|\/consent|\/callback)/.test(path);
     }
 
-    // User agent policy (docs/05): Qt WebEngine's default UA unless the user
-    // enabled the Chromium-compatible identity (drops the "QtWebEngine/x.y.z"
-    // token, keeps the real Chromium version), a provider declares an
-    // override, or an advanced custom UA is set (highest precedence).
+    // User agent policy (docs/05): Qt WebEngine's default UA, unless a custom UA
+    // is set (highest precedence), a provider declares a full override, or the
+    // "QtWebEngine/x.y.z" token must be dropped — either globally (the advanced
+    // Chromium-compatible identity) or for a provider that hangs on it
+    // (stripQtToken, e.g. ChatGPT and DeepSeek). The real Chromium version is
+    // always kept.
+    function stripQtToken(userAgent) {
+        return String(userAgent || "").replace(/\s*QtWebEngine\/[\d.]+/, "");
+    }
+
     function effectiveUserAgent(defaultUserAgent, provider) {
         const custom = String(plasmoid.configuration.customUserAgent || "").trim();
         if (custom)
@@ -352,6 +360,8 @@ QtObject {
         if (provider && provider.userAgent)
             return provider.userAgent;
         const base = String(defaultUserAgent || "");
-        return plasmoid.configuration.compatibilityUserAgent ? base.replace(/\s*QtWebEngine\/[\d.]+/, "") : base;
+        if (plasmoid.configuration.compatibilityUserAgent || (provider && provider.stripQtToken))
+            return stripQtToken(base);
+        return base;
     }
 }

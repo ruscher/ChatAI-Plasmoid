@@ -65,7 +65,7 @@ Item {
         // Category list
         ColumnLayout {
             Layout.fillHeight: true
-            Layout.preferredWidth: panel.narrow ? Kirigami.Units.iconSizes.medium + Kirigami.Units.largeSpacing * 2 : Kirigami.Units.gridUnit * 10
+            Layout.preferredWidth: panel.narrow ? Kirigami.Units.iconSizes.medium + Kirigami.Units.largeSpacing * 3 : Kirigami.Units.gridUnit * 11
             Layout.maximumWidth: Layout.preferredWidth
             spacing: 0
 
@@ -86,6 +86,9 @@ Item {
                     width: ListView.view.width
                     text: modelData.text
                     icon.name: modelData.icon
+                    icon.width: Kirigami.Units.iconSizes.medium
+                    icon.height: Kirigami.Units.iconSizes.medium
+                    padding: Kirigami.Units.smallSpacing + Kirigami.Units.smallSpacing / 2
                     display: panel.narrow ? PlasmaComponents3.AbstractButton.IconOnly : PlasmaComponents3.AbstractButton.TextBesideIcon
                     highlighted: ListView.isCurrentItem
                     Accessible.name: modelData.text

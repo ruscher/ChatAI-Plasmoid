@@ -102,6 +102,13 @@ durante a sessão do usuário); a migração `configVersion 0→1` roda na prime
 - Traduções: 300 msgids; textos novos ficam em inglês até tradução humana (52 entradas antigas viraram *fuzzy* e não são usadas — comportamento seguro).
 - `renderProcessPid` retornou 0 no viewer durante o teste; diagnóstico exibe o valor da API sem inferência.
 
+## Correções pós‑release (2026‑09‑17, mesma sessão)
+
+- Ícones da barra lateral do painel de configurações agora em tamanho médio (`Kirigami.Units.iconSizes.medium`).
+- ChatGPT/DeepSeek: UA sem o token `QtWebEngine` por padrão (`stripQtToken`), independentemente da opção global.
+- Home e troca de provedor agora chamam `webview.stop()` antes de navegar: escapam de páginas em laço de redirecionamento (ex.: ChatGPT bouncing para login Google). Verificado: partindo de ChatGPT preso, selecionar/Home leva ao Duck.ai (100%, título correto).
+- ChatGPT: em teste real na sessão, o comportamento é instável — ora carrega 100% e se redireciona sozinho para `chatgpt.com/auth/login_with?connection=google-oauth2` (login Google, **bloqueado pelo Google em WebView**), ora fica em 0% (retenção anti‑bot). Não é bug do widget (Duck.ai carrega na mesma sessão); o uso pleno exige sessão/login por e‑mail e depende do ChatGPT aceitar o ambiente. ChatGPT: login via Google não é contornável.
+
 ## Riscos conhecidos
 
 - Google bloqueia OAuth em WebViews (política do Google); documentado na UI.
