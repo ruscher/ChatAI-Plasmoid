@@ -57,8 +57,8 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: contents/config/config.qml:56 contents/ui/SettingsPanel.qml:42
-msgid "About"
+#: contents/config/config.qml:56
+msgid "Help"
 msgstr ""
 
 #: contents/ui/AiSelector.qml:30
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Close sign-in window"
 msgstr ""
 
-#: contents/ui/ChatAIMenu.qml:45 contents/ui/WebView.qml:1090
+#: contents/ui/ChatAIMenu.qml:45 contents/ui/WebView.qml:1132
 msgid "Open in Browser"
 msgstr ""
 
@@ -124,6 +124,7 @@ msgid "Full Screen"
 msgstr ""
 
 #: contents/ui/ChatAIMenu.qml:102
+#: contents/ui/settings/AppearanceSettings.qml:127
 msgid "Hide Toolbar Automatically"
 msgstr ""
 
@@ -164,7 +165,7 @@ msgstr ""
 msgid "About ChatAI"
 msgstr ""
 
-#: contents/ui/CompactRepresentation.qml:28 contents/ui/WebView.qml:631
+#: contents/ui/CompactRepresentation.qml:28 contents/ui/WebView.qml:670
 #: contents/ui/main.qml:46 contents/ui/settings/AboutSettings.qml:65
 msgid "ChatAI"
 msgstr ""
@@ -371,15 +372,15 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:237 contents/ui/WebView.qml:585
+#: contents/ui/DownloadPopup.qml:237 contents/ui/WebView.qml:624
 msgid "Open"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:243 contents/ui/WebView.qml:589
+#: contents/ui/DownloadPopup.qml:243 contents/ui/WebView.qml:628
 msgid "Show in Folder"
 msgstr ""
 
-#: contents/ui/DownloadPopup.qml:249 contents/ui/WebView.qml:1085
+#: contents/ui/DownloadPopup.qml:249 contents/ui/WebView.qml:1127
 msgid "Retry"
 msgstr ""
 
@@ -413,6 +414,7 @@ msgid "Open in browser"
 msgstr ""
 
 #: contents/ui/FindBar.qml:28 contents/ui/settings/AboutSettings.qml:44
+#: contents/ui/settings/HelpSettings.qml:21
 msgid "Find in page"
 msgstr ""
 
@@ -460,15 +462,15 @@ msgstr ""
 msgid "Find in page (Ctrl+F)"
 msgstr ""
 
-#: contents/ui/Header.qml:189
+#: contents/ui/Header.qml:193
 msgid "More actions"
 msgstr ""
 
-#: contents/ui/Header.qml:209
+#: contents/ui/Header.qml:213
 msgid "Close and release memory"
 msgstr ""
 
-#: contents/ui/Header.qml:223 contents/ui/settings/DownloadsSettings.qml:88
+#: contents/ui/Header.qml:227 contents/ui/settings/DownloadsSettings.qml:88
 msgid "Choose Download Folder"
 msgstr ""
 
@@ -639,6 +641,10 @@ msgctxt "provider category"
 msgid "Custom"
 msgstr ""
 
+#: contents/ui/SettingsPanel.qml:42
+msgid "About"
+msgstr ""
+
 #: contents/ui/SettingsPanel.qml:80
 msgid "Settings categories"
 msgstr ""
@@ -647,108 +653,114 @@ msgstr ""
 msgid "Back to the assistant"
 msgstr ""
 
-#: contents/ui/WebView.qml:166
+#: contents/ui/WebView.qml:185
 msgid "The configured address is not a valid HTTP or HTTPS URL."
 msgstr ""
 
-#: contents/ui/WebView.qml:599
+#: contents/ui/WebView.qml:638
 msgid "Download finished"
 msgstr ""
 
-#: contents/ui/WebView.qml:599
+#: contents/ui/WebView.qml:638
 msgid "Download failed"
 msgstr ""
 
-#: contents/ui/WebView.qml:600
+#: contents/ui/WebView.qml:639
 msgid "interrupted"
 msgstr ""
 
-#: contents/ui/WebView.qml:600 contents/ui/settings/SitesSettings.qml:258
+#: contents/ui/WebView.qml:639 contents/ui/settings/SitesSettings.qml:258
 msgid "%1 — %2"
 msgstr ""
 
-#: contents/ui/WebView.qml:730
+#: contents/ui/WebView.qml:769
 msgid "Download in progress"
 msgstr ""
 
-#: contents/ui/WebView.qml:730
+#: contents/ui/WebView.qml:769
 msgid "The file '%1' is already being downloaded"
 msgstr ""
 
-#: contents/ui/WebView.qml:835
+#: contents/ui/WebView.qml:875
 msgid "The service did not provide an error description."
 msgstr ""
 
-#: contents/ui/WebView.qml:855
+#: contents/ui/WebView.qml:897
 msgid "The site's security certificate is not trusted."
 msgstr ""
 
-#: contents/ui/WebView.qml:869
+#: contents/ui/WebView.qml:911
 msgid "The web content process stopped unexpectedly (exit code %1)."
 msgstr ""
 
-#: contents/ui/WebView.qml:878
+#: contents/ui/WebView.qml:920
 msgid "The PDF could not be created."
 msgstr ""
 
-#: contents/ui/WebView.qml:889
+#: contents/ui/WebView.qml:931
 msgid "Blocked navigation"
 msgstr ""
 
-#: contents/ui/WebView.qml:889
+#: contents/ui/WebView.qml:931
 msgid "Only HTTP and HTTPS links can be opened from ChatAI."
 msgstr ""
 
-#: contents/ui/WebView.qml:1031
+#: contents/ui/WebView.qml:1073
 msgid "Sign-in blocked"
 msgstr ""
 
-#: contents/ui/WebView.qml:1031
+#: contents/ui/WebView.qml:1073
 msgid "The sign-in site's security certificate is not trusted."
 msgstr ""
 
-#: contents/ui/WebView.qml:1081
+#: contents/ui/WebView.qml:1123
 msgid "The site"
 msgstr ""
 
-#: contents/ui/WebView.qml:1081
+#: contents/ui/WebView.qml:1123
 msgid "%1 is taking long to respond. Some services hold the connection for automated clients; retrying usually works."
 msgstr ""
 
-#: contents/ui/WebView.qml:1107
+#: contents/ui/WebView.qml:1149
 msgid "At %1% zoom the page sees a %2 px wide viewport and switches to its mobile layout, which may break sign-in. Reset the zoom or widen the widget."
 msgstr ""
 
-#: contents/ui/WebView.qml:1108
+#: contents/ui/WebView.qml:1150
 msgid "The page sees a %1 px wide viewport and switches to its mobile layout, which may break sign-in. Widen the widget by dragging its edge."
 msgstr ""
 
-#: contents/ui/WebView.qml:1113
+#: contents/ui/WebView.qml:1155
 msgid "Reset Zoom"
 msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:45
+#: contents/ui/settings/HelpSettings.qml:22
 msgid "Zoom in / out"
 msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:46
+#: contents/ui/settings/HelpSettings.qml:23
 msgid "Reset zoom"
 msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:47
+#: contents/ui/settings/HelpSettings.qml:24
 msgid "Full screen (Esc exits)"
 msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:48
+#: contents/ui/settings/HelpSettings.qml:25
 msgctxt "mouse buttons"
 msgid "Mouse back / forward"
 msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:48
+#: contents/ui/settings/HelpSettings.qml:25
 msgid "Navigate history"
 msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:49
+#: contents/ui/settings/HelpSettings.qml:26
 msgid "Close find bar, settings or full screen"
 msgstr ""
 
@@ -761,6 +773,7 @@ msgid "AI assistants inside KDE Plasma"
 msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:80
+#: contents/ui/settings/HelpSettings.qml:32
 msgid "ChatAI embeds the official web apps of AI assistants in a native Plasma widget, with a persistent profile, per-site permissions and a memory-conscious web engine lifecycle. It does not provide an AI API and does not bypass authentication or anti-bot protections."
 msgstr ""
 
@@ -781,10 +794,12 @@ msgid "Authors"
 msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:123
+#: contents/ui/settings/HelpSettings.qml:72
 msgid "Provider icons: Icons8, IconScout, Simple Icons (CC0) and the services' own brand assets. Trademarks belong to their owners."
 msgstr ""
 
 #: contents/ui/settings/AboutSettings.qml:135
+#: contents/ui/settings/HelpSettings.qml:40
 msgid "Keyboard shortcuts"
 msgstr ""
 
@@ -958,10 +973,19 @@ msgid "Hidden buttons remain available in the ⋮ menu where it makes sense. Aut
 msgstr ""
 
 #: contents/ui/settings/AppearanceSettings.qml:126
+#: contents/ui/settings/GeneralSettings.qml:96
+msgid "Toolbar:"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:134
+msgid "Always hide the toolbar"
+msgstr ""
+
+#: contents/ui/settings/AppearanceSettings.qml:142
 msgid "Theme:"
 msgstr ""
 
-#: contents/ui/settings/AppearanceSettings.qml:127
+#: contents/ui/settings/AppearanceSettings.qml:143
 msgid "Colours, spacing and animations follow your Plasma theme. Pages receive a dark-mode hint when the theme is dark."
 msgstr ""
 
@@ -1038,10 +1062,6 @@ msgstr ""
 msgid "Preloading makes the first opening instant but keeps the web engine in memory from login."
 msgstr ""
 
-#: contents/ui/settings/GeneralSettings.qml:96
-msgid "Toolbar:"
-msgstr ""
-
 #: contents/ui/settings/GeneralSettings.qml:97
 msgid "Hide the toolbar"
 msgstr ""
@@ -1056,6 +1076,10 @@ msgstr ""
 
 #: contents/ui/settings/GeneralSettings.qml:113
 msgid "Links that would open a new window are opened in your default browser. Sign-in pages stay inside ChatAI so logins keep working."
+msgstr ""
+
+#: contents/ui/settings/HelpSettings.qml:64
+msgid "Credits"
 msgstr ""
 
 #: contents/ui/settings/PermissionsSettings.qml:32

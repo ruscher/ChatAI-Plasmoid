@@ -50,6 +50,15 @@ Item {
     property bool mobileLayoutHintDismissed: false
     property bool findBarVisible: false
 
+    // Navigation funnel: every navigation (initial load, provider switch, Home,
+    // custom address) goes through navigateTo(). The load is deferred one tick
+    // and coalesced, so the config.url change and the goHome() call that follow
+    // a provider switch never fire two competing navigations, and stop() always
+    // settles before the new URL is assigned. This is what makes switching
+    // assistants load reliably every time.
+    property string pendingUrl: ""
+    property bool navScheduled: false
+
     // Permissions
     property var pendingPermission: null
     property var permissionQueue: []
@@ -104,6 +113,8 @@ Item {
         configureProfile(profile);
         webProfile = profile;
         applyZoom();
+        // Initial load, explicit (there is no reactive url binding).
+        goHome();
     }
 
     Connections {
@@ -115,6 +126,8 @@ Item {
             // Do not carry the previous provider's icon over; the new one
             // arrives through WebEngineView.icon.
             plasmoid.configuration.favIcon = "";
+            // Navigate to the newly selected provider / address.
+            webViewRoot.goHome();
         }
         function onDownloadPathChanged() { webViewRoot.configureProfile(); }
         function onCustomUserAgentChanged() { webViewRoot.configureProfile(); }
@@ -160,23 +173,38 @@ Item {
     // ---- navigation API used by Header / menu ------------------------------
 
     function goHome() {
-        const provider = currentProvider;
-        const url = provider ? provider.url : plasmoid.configuration.url;
+        navigateTo(currentProvider ? currentProvider.url : plasmoid.configuration.url);
+    }
+
+    // Single navigation entry point. Aborts any in-flight load (some pages, e.g.
+    // ChatGPT bouncing to a blocked Google sign-in, keep redirecting and would
+    // override a plain assignment), then loads on the next tick so stop() has
+    // settled. Multiple calls in the same tick collapse into one load.
+    function navigateTo(url) {
         if (!isHttpUrl(url)) {
             loadErrorDetails = i18n("The configured address is not a valid HTTP or HTTPS URL.");
             hasLoadError = true;
             return;
         }
         hasLoadError = false;
-        // Abort any load in progress first: some pages (e.g. ChatGPT bouncing to
-        // a blocked Google sign-in) keep redirecting, and a plain url assignment
-        // would be overridden by the in-flight navigation. Stopping guarantees
-        // the selected provider becomes the page shown by Home.
+        pendingUrl = url;
+        if (navScheduled)
+            return;
+        navScheduled = true;
         webview.stop();
+        Qt.callLater(startPendingNavigation);
+    }
+
+    function startPendingNavigation() {
+        navScheduled = false;
+        const url = pendingUrl;
+        if (!url)
+            return;
         if (String(webview.url) === url)
             webview.reload();
         else
             webview.url = url;
+        navWatchdog.restart();
     }
 
     function goBack() { if (webview.canGoBack) webview.goBack(); }
@@ -336,6 +364,17 @@ Item {
         onTriggered: {
             if (webview.loading && webview.loadProgress < 10)
                 webViewRoot.slowResponse = true;
+        }
+    }
+
+    // Safety net: if a requested navigation silently never took (target still
+    // not showing and nothing is loading), force it once.
+    Timer {
+        id: navWatchdog
+        interval: 2500
+        onTriggered: {
+            if (webViewRoot.pendingUrl && String(webview.url) !== webViewRoot.pendingUrl && !webview.loading)
+                webview.url = webViewRoot.pendingUrl;
         }
     }
 
@@ -776,8 +815,9 @@ Item {
         id: webview
 
         anchors.fill: parent
-        // Wait for the configured profile before navigating.
-        url: webViewRoot.webProfile ? plasmoid.configuration.url : ""
+        // No reactive url binding: navigation is driven only by navigateTo()
+        // (initial load in Component.onCompleted, then provider switch / Home /
+        // custom address), so nothing competes with an in-flight load.
         profile: webViewRoot.webProfile || WebEngine.defaultProfile
 
         onIconChanged: {
@@ -836,6 +876,8 @@ Item {
             } else if (loadingInfo.status === WebEngineView.LoadSucceededStatus) {
                 slowResponseTimer.stop();
                 webViewRoot.slowResponse = false;
+                if (String(webview.url) === webViewRoot.pendingUrl)
+                    webViewRoot.pendingUrl = "";
                 // Chromium keeps zoom per host; re-apply the global preference.
                 webViewRoot.applyZoom();
             }

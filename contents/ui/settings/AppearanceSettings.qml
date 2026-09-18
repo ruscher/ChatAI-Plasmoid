@@ -122,6 +122,22 @@ ColumnLayout {
 
         Item { Kirigami.FormData.isSection: true }
 
+        QQC2.CheckBox {
+            Kirigami.FormData.label: i18n("Toolbar:")
+            text: i18n("Hide Toolbar Automatically")
+            checked: plasmoid.configuration.autoHideHeader
+            enabled: !plasmoid.configuration.hideHeader
+            onToggled: plasmoid.configuration.autoHideHeader = checked
+        }
+
+        QQC2.CheckBox {
+            text: i18n("Always hide the toolbar")
+            checked: plasmoid.configuration.hideHeader
+            onToggled: plasmoid.configuration.hideHeader = checked
+        }
+
+        Item { Kirigami.FormData.isSection: true }
+
         QQC2.Label {
             Kirigami.FormData.label: i18n("Theme:")
             text: i18n("Colours, spacing and animations follow your Plasma theme. Pages receive a dark-mode hint when the theme is dark.")

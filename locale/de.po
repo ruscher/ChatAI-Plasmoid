@@ -59,9 +59,9 @@ msgstr "Erscheinungsbild"
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: contents/config/config.qml:56 contents/ui/SettingsPanel.qml:42
-msgid "About"
-msgstr "Über"
+#: contents/config/config.qml:56
+msgid "Help"
+msgstr "Hilfe"
 
 #: contents/ui/AiSelector.qml:30
 msgid "Custom address…"
@@ -88,7 +88,7 @@ msgstr "Anmelden"
 msgid "Close sign-in window"
 msgstr "Anmeldefenster schließen"
 
-#: contents/ui/ChatAIMenu.qml:45 contents/ui/WebView.qml:1090
+#: contents/ui/ChatAIMenu.qml:45 contents/ui/WebView.qml:1132
 msgid "Open in Browser"
 msgstr "Im Browser öffnen"
 
@@ -126,6 +126,7 @@ msgid "Full Screen"
 msgstr "Vollbild"
 
 #: contents/ui/ChatAIMenu.qml:102
+#: contents/ui/settings/AppearanceSettings.qml:127
 msgid "Hide Toolbar Automatically"
 msgstr "Werkzeugleiste automatisch ausblenden"
 
@@ -166,7 +167,7 @@ msgstr "Entwicklerwerkzeuge"
 msgid "About ChatAI"
 msgstr "Über ChatAI"
 
-#: contents/ui/CompactRepresentation.qml:28 contents/ui/WebView.qml:631
+#: contents/ui/CompactRepresentation.qml:28 contents/ui/WebView.qml:670
 #: contents/ui/main.qml:46 contents/ui/settings/AboutSettings.qml:65
 msgid "ChatAI"
 msgstr "ChatAI"
@@ -366,15 +367,15 @@ msgstr "Anhalten"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: contents/ui/DownloadPopup.qml:237 contents/ui/WebView.qml:585
+#: contents/ui/DownloadPopup.qml:237 contents/ui/WebView.qml:624
 msgid "Open"
 msgstr "Öffnen"
 
-#: contents/ui/DownloadPopup.qml:243 contents/ui/WebView.qml:589
+#: contents/ui/DownloadPopup.qml:243 contents/ui/WebView.qml:628
 msgid "Show in Folder"
 msgstr "Im Ordner anzeigen"
 
-#: contents/ui/DownloadPopup.qml:249 contents/ui/WebView.qml:1085
+#: contents/ui/DownloadPopup.qml:249 contents/ui/WebView.qml:1127
 msgid "Retry"
 msgstr "Erneut versuchen"
 
@@ -408,6 +409,7 @@ msgid "Open in browser"
 msgstr "Im Browser öffnen"
 
 #: contents/ui/FindBar.qml:28 contents/ui/settings/AboutSettings.qml:44
+#: contents/ui/settings/HelpSettings.qml:21
 msgid "Find in page"
 msgstr "Auf Seite suchen"
 
@@ -455,15 +457,15 @@ msgstr "Eigene Adresse"
 msgid "Find in page (Ctrl+F)"
 msgstr "Auf Seite suchen (Strg+F)"
 
-#: contents/ui/Header.qml:189
+#: contents/ui/Header.qml:193
 msgid "More actions"
 msgstr "Weitere Aktionen"
 
-#: contents/ui/Header.qml:209
+#: contents/ui/Header.qml:213
 msgid "Close and release memory"
 msgstr "Schließen und Speicher freigeben"
 
-#: contents/ui/Header.qml:223 contents/ui/settings/DownloadsSettings.qml:88
+#: contents/ui/Header.qml:227 contents/ui/settings/DownloadsSettings.qml:88
 msgid "Choose Download Folder"
 msgstr "Download-Ordner auswählen"
 
@@ -634,6 +636,10 @@ msgctxt "provider category"
 msgid "Custom"
 msgstr "Eigene"
 
+#: contents/ui/SettingsPanel.qml:42
+msgid "About"
+msgstr "Über"
+
 #: contents/ui/SettingsPanel.qml:80
 msgid "Settings categories"
 msgstr "Einstellungskategorien"
@@ -642,108 +648,114 @@ msgstr "Einstellungskategorien"
 msgid "Back to the assistant"
 msgstr "Zurück zum Assistenten"
 
-#: contents/ui/WebView.qml:166
+#: contents/ui/WebView.qml:185
 msgid "The configured address is not a valid HTTP or HTTPS URL."
 msgstr "Die konfigurierte Adresse ist keine gültige HTTP- oder HTTPS-URL."
 
-#: contents/ui/WebView.qml:599
+#: contents/ui/WebView.qml:638
 msgid "Download finished"
 msgstr "Download abgeschlossen"
 
-#: contents/ui/WebView.qml:599
+#: contents/ui/WebView.qml:638
 msgid "Download failed"
 msgstr "Download fehlgeschlagen"
 
-#: contents/ui/WebView.qml:600
+#: contents/ui/WebView.qml:639
 msgid "interrupted"
 msgstr "unterbrochen"
 
-#: contents/ui/WebView.qml:600 contents/ui/settings/SitesSettings.qml:258
+#: contents/ui/WebView.qml:639 contents/ui/settings/SitesSettings.qml:258
 msgid "%1 — %2"
 msgstr "%1 – %2"
 
-#: contents/ui/WebView.qml:730
+#: contents/ui/WebView.qml:769
 msgid "Download in progress"
 msgstr "Download läuft"
 
-#: contents/ui/WebView.qml:730
+#: contents/ui/WebView.qml:769
 msgid "The file '%1' is already being downloaded"
 msgstr "Die Datei „%1“ wird bereits heruntergeladen"
 
-#: contents/ui/WebView.qml:835
+#: contents/ui/WebView.qml:875
 msgid "The service did not provide an error description."
 msgstr "Der Dienst hat keine Fehlerbeschreibung geliefert."
 
-#: contents/ui/WebView.qml:855
+#: contents/ui/WebView.qml:897
 msgid "The site's security certificate is not trusted."
 msgstr "Dem Sicherheitszertifikat der Seite wird nicht vertraut."
 
-#: contents/ui/WebView.qml:869
+#: contents/ui/WebView.qml:911
 msgid "The web content process stopped unexpectedly (exit code %1)."
 msgstr "Der Webinhalt-Prozess wurde unerwartet beendet (Exit-Code %1)."
 
-#: contents/ui/WebView.qml:878
+#: contents/ui/WebView.qml:920
 msgid "The PDF could not be created."
 msgstr "Das PDF konnte nicht erstellt werden."
 
-#: contents/ui/WebView.qml:889
+#: contents/ui/WebView.qml:931
 msgid "Blocked navigation"
 msgstr "Navigation blockiert"
 
-#: contents/ui/WebView.qml:889
+#: contents/ui/WebView.qml:931
 msgid "Only HTTP and HTTPS links can be opened from ChatAI."
 msgstr "Aus ChatAI können nur HTTP- und HTTPS-Links geöffnet werden."
 
-#: contents/ui/WebView.qml:1031
+#: contents/ui/WebView.qml:1073
 msgid "Sign-in blocked"
 msgstr "Anmeldung blockiert"
 
-#: contents/ui/WebView.qml:1031
+#: contents/ui/WebView.qml:1073
 msgid "The sign-in site's security certificate is not trusted."
 msgstr "Dem Sicherheitszertifikat der Anmeldeseite wird nicht vertraut."
 
-#: contents/ui/WebView.qml:1081
+#: contents/ui/WebView.qml:1123
 msgid "The site"
 msgstr "Die Seite"
 
-#: contents/ui/WebView.qml:1081
+#: contents/ui/WebView.qml:1123
 msgid "%1 is taking long to respond. Some services hold the connection for automated clients; retrying usually works."
 msgstr "%1 braucht lange zum Antworten. Manche Dienste halten die Verbindung für automatisierte Clients; ein erneuter Versuch hilft meist."
 
-#: contents/ui/WebView.qml:1107
+#: contents/ui/WebView.qml:1149
 msgid "At %1% zoom the page sees a %2 px wide viewport and switches to its mobile layout, which may break sign-in. Reset the zoom or widen the widget."
 msgstr "Bei %1 % Zoom sieht die Seite ein %2 px breites Ansichtsfenster und wechselt zum mobilen Layout, was die Anmeldung stören kann. Setzen Sie den Zoom zurück oder verbreitern Sie das Widget."
 
-#: contents/ui/WebView.qml:1108
+#: contents/ui/WebView.qml:1150
 msgid "The page sees a %1 px wide viewport and switches to its mobile layout, which may break sign-in. Widen the widget by dragging its edge."
 msgstr "Die Seite sieht ein %1 px breites Ansichtsfenster und wechselt zum mobilen Layout, was die Anmeldung stören kann. Verbreitern Sie das Widget, indem Sie seinen Rand ziehen."
 
-#: contents/ui/WebView.qml:1113
+#: contents/ui/WebView.qml:1155
 msgid "Reset Zoom"
 msgstr "Zoom zurücksetzen"
 
 #: contents/ui/settings/AboutSettings.qml:45
+#: contents/ui/settings/HelpSettings.qml:22
 msgid "Zoom in / out"
 msgstr "Vergrößern / verkleinern"
 
 #: contents/ui/settings/AboutSettings.qml:46
+#: contents/ui/settings/HelpSettings.qml:23
 msgid "Reset zoom"
 msgstr "Zoom zurücksetzen"
 
 #: contents/ui/settings/AboutSettings.qml:47
+#: contents/ui/settings/HelpSettings.qml:24
 msgid "Full screen (Esc exits)"
 msgstr "Vollbild (Esc beendet)"
 
 #: contents/ui/settings/AboutSettings.qml:48
+#: contents/ui/settings/HelpSettings.qml:25
 msgctxt "mouse buttons"
 msgid "Mouse back / forward"
 msgstr "Maus zurück / vor"
 
 #: contents/ui/settings/AboutSettings.qml:48
+#: contents/ui/settings/HelpSettings.qml:25
 msgid "Navigate history"
 msgstr "Im Verlauf navigieren"
 
 #: contents/ui/settings/AboutSettings.qml:49
+#: contents/ui/settings/HelpSettings.qml:26
 msgid "Close find bar, settings or full screen"
 msgstr "Suchleiste, Einstellungen oder Vollbild schließen"
 
@@ -756,6 +768,7 @@ msgid "AI assistants inside KDE Plasma"
 msgstr "KI-Assistenten in KDE Plasma"
 
 #: contents/ui/settings/AboutSettings.qml:80
+#: contents/ui/settings/HelpSettings.qml:32
 msgid "ChatAI embeds the official web apps of AI assistants in a native Plasma widget, with a persistent profile, per-site permissions and a memory-conscious web engine lifecycle. It does not provide an AI API and does not bypass authentication or anti-bot protections."
 msgstr "ChatAI bettet die offiziellen Web-Apps von KI-Assistenten in ein natives Plasma-Widget ein – mit dauerhaftem Profil, Berechtigungen pro Seite und einem speicherbewussten Lebenszyklus der Web-Engine. Es stellt keine KI-API bereit und umgeht weder Authentifizierung noch Anti-Bot-Schutz."
 
@@ -776,10 +789,12 @@ msgid "Authors"
 msgstr "Autoren"
 
 #: contents/ui/settings/AboutSettings.qml:123
+#: contents/ui/settings/HelpSettings.qml:72
 msgid "Provider icons: Icons8, IconScout, Simple Icons (CC0) and the services' own brand assets. Trademarks belong to their owners."
 msgstr "Anbietersymbole: Icons8, IconScout, Simple Icons (CC0) und die Markenelemente der Dienste selbst. Marken gehören ihren jeweiligen Inhabern."
 
 #: contents/ui/settings/AboutSettings.qml:135
+#: contents/ui/settings/HelpSettings.qml:40
 msgid "Keyboard shortcuts"
 msgstr "Tastenkürzel"
 
@@ -952,10 +967,21 @@ msgid "Hidden buttons remain available in the ⋮ menu where it makes sense. Aut
 msgstr "Ausgeblendete Knöpfe bleiben im Menü ⋮ verfügbar, wo es sinnvoll ist. Automatisches Ausblenden und Downloads befinden sich immer im Menü ⋮; eine Download-Anzeige erscheint nur dann in der Werkzeugleiste, wenn ein Download Aufmerksamkeit braucht."
 
 #: contents/ui/settings/AppearanceSettings.qml:126
+#: contents/ui/settings/GeneralSettings.qml:96
+msgid "Toolbar:"
+msgstr "Werkzeugleiste:"
+
+#: contents/ui/settings/AppearanceSettings.qml:134
+#, fuzzy
+#| msgid "Hide the toolbar"
+msgid "Always hide the toolbar"
+msgstr "Werkzeugleiste immer ausblenden"
+
+#: contents/ui/settings/AppearanceSettings.qml:142
 msgid "Theme:"
 msgstr "Design:"
 
-#: contents/ui/settings/AppearanceSettings.qml:127
+#: contents/ui/settings/AppearanceSettings.qml:143
 msgid "Colours, spacing and animations follow your Plasma theme. Pages receive a dark-mode hint when the theme is dark."
 msgstr "Farben, Abstände und Animationen folgen Ihrem Plasma-Design. Seiten erhalten einen Dunkelmodus-Hinweis, wenn das Design dunkel ist."
 
@@ -1032,10 +1058,6 @@ msgstr "Assistenten beim Start von Plasma vorladen"
 msgid "Preloading makes the first opening instant but keeps the web engine in memory from login."
 msgstr "Vorladen macht das erste Öffnen sofort, hält die Web-Engine aber ab der Anmeldung im Speicher."
 
-#: contents/ui/settings/GeneralSettings.qml:96
-msgid "Toolbar:"
-msgstr "Werkzeugleiste:"
-
 #: contents/ui/settings/GeneralSettings.qml:97
 msgid "Hide the toolbar"
 msgstr "Werkzeugleiste ausblenden"
@@ -1051,6 +1073,10 @@ msgstr "Links:"
 #: contents/ui/settings/GeneralSettings.qml:113
 msgid "Links that would open a new window are opened in your default browser. Sign-in pages stay inside ChatAI so logins keep working."
 msgstr "Links, die ein neues Fenster öffnen würden, werden in Ihrem Standardbrowser geöffnet. Anmeldeseiten bleiben in ChatAI, damit die Anmeldung funktioniert."
+
+#: contents/ui/settings/HelpSettings.qml:64
+msgid "Credits"
+msgstr "Danksagungen"
 
 #: contents/ui/settings/PermissionsSettings.qml:32
 msgid "Ask per site"

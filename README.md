@@ -251,6 +251,10 @@ git clone https://github.com/ruscher/ChatAI-Plasmoid.git
 cd ChatAI-Plasmoid
 ./tools/build-package.sh
 kpackagetool6 --type Plasma/Applet --install build/ChatAI-Plasmoid.plasmoid
+
+# Register the app logo (shown on the About page and in the widget list)
+install -Dm644 ~/.local/share/plasma/plasmoids/ChatAI-Plasmoid/contents/ui/assets/logo.svg \
+    ~/.local/share/icons/hicolor/scalable/apps/chatai.svg
 ```
 
 Then add the widget to your desktop or panel:
@@ -271,6 +275,10 @@ You can also install a downloaded `.plasmoid` file with the same
 git pull
 ./tools/build-package.sh
 kpackagetool6 --type Plasma/Applet --upgrade build/ChatAI-Plasmoid.plasmoid
+
+# Refresh the app logo
+install -Dm644 ~/.local/share/plasma/plasmoids/ChatAI-Plasmoid/contents/ui/assets/logo.svg \
+    ~/.local/share/icons/hicolor/scalable/apps/chatai.svg
 ```
 
 Your settings are preserved across updates. On first launch the widget migrates
@@ -286,6 +294,7 @@ back in (or restart Plasma) so the new version is loaded.
 
 ```bash
 kpackagetool6 --type Plasma/Applet --remove ChatAI-Plasmoid
+rm -f ~/.local/share/icons/hicolor/scalable/apps/chatai.svg
 ```
 
 **Remove the browsing data (optional).** Cookies, logins, storage, cache and
@@ -468,7 +477,7 @@ Please keep the existing SPDX license headers in the files you touch.
 
 ## Authors & Maintainers
 
-- **Rafael Ruscher** ([@ruscher](https://github.com/ruscher)) — current maintainer
+- **Rafael Ruscher** ([@ruscher](https://github.com/ruscher)) — author
 - **Denys Madureira** ([@DenysMb](https://github.com/DenysMb)) — original author
 - **Bruno Gonçalves** ([@bigbruno](https://github.com/bigbruno)) — author
 

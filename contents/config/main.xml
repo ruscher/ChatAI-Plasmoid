@@ -120,8 +120,10 @@
 
     <!-- Advanced -->
     <entry name="freezeWhenHidden" type="Bool"><default>true</default></entry>
-    <!-- Minutes hidden before the page may be discarded (0 = never) -->
-    <entry name="discardAfterMinutes" type="Int"><default>0</default></entry>
+    <!-- Minutes hidden before the page may be discarded (0 = never). Default 30:
+         short hides keep the frozen page for instant reopen; only long idle
+         discards the renderer to return its memory to the system. User-tunable. -->
+    <entry name="discardAfterMinutes" type="Int"><default>30</default></entry>
     <entry name="enableDevTools" type="Bool"><default>false</default></entry>
     <!-- Remove the "QtWebEngine/x.y" token from the user agent (identify as plain Chromium).
          Off by default: Google sign-in REJECTS browsers whose UA claims Chrome/Firefox but

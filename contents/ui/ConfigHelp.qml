@@ -10,9 +10,9 @@ import org.kde.kcmutils as KCM
 
 import "settings"
 
-// Plasma configuration dialog host for the shared About settings page.
+// Config dialog host for the Help page.
 KCM.SimpleKCM {
-    AboutSettings {
+    HelpSettings {
         width: parent ? parent.width : implicitWidth
     }
 }

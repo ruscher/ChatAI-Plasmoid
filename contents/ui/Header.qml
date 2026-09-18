@@ -105,19 +105,36 @@ RowLayout {
 
     // 2–3. Back / Forward
     ToolbarButton {
+        id: backButton
         visible: !plasmoid.configuration.hideNavigationButtons
-        icon.name: "go-previous"
         text: i18n("Back")
         enabled: header.hasWebView && header.webviewRoot.canGoBack
         onClicked: header.webviewRoot.goBack()
+        contentItem: Kirigami.Icon {
+            source: "go-previous"
+            isMask: true
+            color: Kirigami.Theme.textColor
+            // Clearly greyed (not invisible) when there is no history yet.
+            opacity: backButton.enabled ? 1 : 0.45
+            implicitWidth: Kirigami.Units.iconSizes.smallMedium
+            implicitHeight: Kirigami.Units.iconSizes.smallMedium
+        }
     }
 
     ToolbarButton {
+        id: forwardButton
         visible: !plasmoid.configuration.hideNavigationButtons
-        icon.name: "go-next"
         text: i18n("Forward")
         enabled: header.hasWebView && header.webviewRoot.canGoForward
         onClicked: header.webviewRoot.goForward()
+        contentItem: Kirigami.Icon {
+            source: "go-next"
+            isMask: true
+            color: Kirigami.Theme.textColor
+            opacity: forwardButton.enabled ? 1 : 0.45
+            implicitWidth: Kirigami.Units.iconSizes.smallMedium
+            implicitHeight: Kirigami.Units.iconSizes.smallMedium
+        }
     }
 
     // 4. Reload / Stop
@@ -185,9 +202,18 @@ RowLayout {
     // 9. Kebab
     ToolbarButton {
         id: kebabButton
-        icon.name: "overflow-menu"
         text: i18n("More actions")
         onClicked: kebabMenu.popup()
+        // Drawn as a monochrome mask in the theme text colour. Some icon themes
+        // (e.g. kora) ship a multicolour, light "overflow-menu" that the button
+        // could not recolour; masking forces it to match the other icons.
+        contentItem: Kirigami.Icon {
+            source: "overflow-menu"
+            isMask: true
+            color: Kirigami.Theme.textColor
+            implicitWidth: Kirigami.Units.iconSizes.smallMedium
+            implicitHeight: Kirigami.Units.iconSizes.smallMedium
+        }
 
         ChatAIMenu {
             id: kebabMenu
