@@ -7,7 +7,7 @@
 
 /*
  * Pure download bookkeeping shared by WebView.qml (the single downloads model)
- * and the download UI. No QML types here so tools/tests can run it in qml6.
+ * and the download UI. No QML types here so it stays plain, testable JavaScript.
  *
  * State values mirror WebEngineDownloadRequest.DownloadState.
  */

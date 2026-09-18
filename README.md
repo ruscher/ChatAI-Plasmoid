@@ -249,8 +249,8 @@ is packaged separately (for example `qt6-webengine`).
 ```bash
 git clone https://github.com/ruscher/ChatAI-Plasmoid.git
 cd ChatAI-Plasmoid
-./tools/build-package.sh
-kpackagetool6 --type Plasma/Applet --install build/ChatAI-Plasmoid.plasmoid
+zip -qr ChatAI-Plasmoid.plasmoid metadata.json contents LICENSE
+kpackagetool6 --type Plasma/Applet --install ChatAI-Plasmoid.plasmoid
 
 # Register the app logo (shown on the About page and in the widget list)
 install -Dm644 ~/.local/share/plasma/plasmoids/ChatAI-Plasmoid/contents/ui/assets/logo.svg \
@@ -273,8 +273,8 @@ You can also install a downloaded `.plasmoid` file with the same
 
 ```bash
 git pull
-./tools/build-package.sh
-kpackagetool6 --type Plasma/Applet --upgrade build/ChatAI-Plasmoid.plasmoid
+zip -qr ChatAI-Plasmoid.plasmoid metadata.json contents LICENSE
+kpackagetool6 --type Plasma/Applet --upgrade ChatAI-Plasmoid.plasmoid
 
 # Refresh the app logo
 install -Dm644 ~/.local/share/plasma/plasmoids/ChatAI-Plasmoid/contents/ui/assets/logo.svg \
@@ -436,7 +436,6 @@ ChatAI-Plasmoid/
 │       ├── settings/      # Shared settings pages (dialog + in-widget panel)
 │       └── assets/        # Provider and logo SVG icons
 ├── locale/                # Translation sources (.pot / .po / .json)
-├── tools/                 # Packaging, validation and translation scripts
 ├── metadata.json          # Plasma package metadata
 ├── LICENSE
 └── README.md
@@ -451,14 +450,25 @@ shared between the Plasma configuration dialog and the in-widget panel.
 ### Commands
 
 ```bash
-./tools/build-package.sh         # build build/ChatAI-Plasmoid.plasmoid
-./tools/validate.sh              # JSON + XML + qmllint + translations + package checks
-./tools/update-translations.sh   # regenerate the .pot, merge .po and compile .mo
-plasmoidviewer -a .              # run the widget in a standalone window
+# Build the runtime package
+zip -qr ChatAI-Plasmoid.plasmoid metadata.json contents LICENSE
+
+# Static checks (same as CI)
+python3 -m json.tool metadata.json > /dev/null
+xmllint --noout contents/config/main.xml
+qmllint contents/ui/*.qml contents/ui/settings/*.qml contents/config/*.qml
+for po in locale/*.po; do msgfmt --check --check-format -o /dev/null "$po"; done
+
+# Run the widget in a standalone window
+plasmawindowed ChatAI-Plasmoid
 ```
 
-Continuous integration (`.github/workflows/`) runs the validation suite on every
-push and keeps translations and the contributors list up to date.
+Compiled translations (`contents/locale/**/*.mo`) ship in the package; regenerate
+them from `locale/*.po` with `msgfmt` (and `xgettext` / `msgmerge` from GNU
+gettext) when strings change.
+
+Continuous integration (`.github/workflows/`) runs these checks on every push and
+keeps the contributors list up to date.
 
 ---
 
@@ -468,7 +478,7 @@ Contributions are welcome.
 
 1. Fork the repository and create a branch.
 2. Make your change (keep Plasma 6 / KF6 / Qt 6 compatibility, no new runtime deps).
-3. Run `./tools/validate.sh`.
+3. Run the static checks under **Commands** above (or push and let CI run them).
 4. Commit with a clear message and open a Pull Request.
 
 Please keep the existing SPDX license headers in the files you touch.
