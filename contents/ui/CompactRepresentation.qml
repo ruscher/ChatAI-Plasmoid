@@ -9,7 +9,6 @@
 import QtQuick
 import QtQuick.Layouts
 
-import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
@@ -41,9 +40,9 @@ Item {
         property bool wasExpanded: false
         Accessible.role: Accessible.Button
         Accessible.name: i18n("Open ChatAI — %1", compactRoot.providerName)
-        PlasmaComponents3.ToolTip.text: Accessible.name
-        PlasmaComponents3.ToolTip.visible: containsMouse
-        PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
+        // No custom ToolTip here: Plasma already shows the standard applet
+        // tooltip (toolTipMainText/toolTipSubText in main.qml). A second one
+        // rendered on top of the icon and blocked the click.
         onPressed: wasExpanded = compactRoot.plasmoidItem.expanded
         onClicked: compactRoot.plasmoidItem.expanded = !wasExpanded
     }
